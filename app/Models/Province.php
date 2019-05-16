@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class Province extends Model
 {
     protected $fillable = [
-        'room_id',
         'name',
+        'regions',
     ];
 
-    public function room()
+    public function locations()
     {
-        $this->belongsTo(Room::class);
+        $this->hasMany(Location::class, 'province_id');
     }
 }

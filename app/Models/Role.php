@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class Role extends Model
 {
     protected $fillable = [
-        'room_id',
         'name',
     ];
 
-    public function room()
+    public function users()
     {
-        $this->belongsTo(Room::class);
+        $this->hasMany(User::class);
     }
 }

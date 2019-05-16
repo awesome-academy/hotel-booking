@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class RoomDetail extends Model
 {
     protected $fillable = [
+        'room_id',
         'name',
-        'parent_id',
+        'short_description',
+        'description',
         'lang_id',
         'lang_parent_id',
         'lang_map',
@@ -19,8 +21,13 @@ class Category extends Model
         $this->belongsTo(Language::class, 'lang_id');
     }
 
-    public function posts()
+    public function room()
     {
-        $this->hasMany(Post::class, 'cate_id');
+        $this->belongsTo(Room::class, 'room_id');
+    }
+
+    public function comments()
+    {
+        $this->hasMany(Comment::class, 'object_id');
     }
 }
