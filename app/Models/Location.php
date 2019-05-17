@@ -6,5 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'address',
+        'phone',
+        'email',
+        'province_id',
+    ];
+
+    public function province()
+    {
+        $this->belongsTo(Province::class, 'province_id');
+    }
+
+    public function rooms()
+    {
+        $this->hasMany(Room::class, 'location_id');
+    }
 }
