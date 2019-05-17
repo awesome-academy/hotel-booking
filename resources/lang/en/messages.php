@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'Dashboard' => 'Dashboard'
+    'HOMEPAGE' => 'HOMEPAGE',
+    'Coming soon' => 'Comming soon',
 ];

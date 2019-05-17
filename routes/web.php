@@ -12,5 +12,10 @@
 */
 
 Route::get('/', function () {
+    
     return view('welcome');
+});
+Route::get('/hotel', 'HomeController@index');
+Route::group(['middleware' => 'locale'], function() {
+    Route::get('/language/{locale}', 'HomeController@changeLanguage');
 });

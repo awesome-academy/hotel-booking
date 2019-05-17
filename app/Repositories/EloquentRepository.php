@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-abstract class EloquentRepository{
+abstract class EloquentRepository
+{
     protected $_model;
 
     public function __construct()
@@ -24,7 +25,7 @@ abstract class EloquentRepository{
 
     public function paginate($per_page)
     {
-        return $this->_model->paginate($per_page);
+        return $this->_model->orderBy('id', 'desc')->paginate($per_page);
     }
 
     public function find($id)

@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'Dashboard' => 'Dashboard',
+    'users_table' => 'Danh sách người dùng',
+    'Email' => 'Email',
+    'email' => 'email',
+    'Fullname' => 'Họ và tên',
+    'Role' => 'Quyền',
+    'Action' => 'Thao tác',
+    'Edit' => 'Chỉnh sửa',
+    'Delete' => 'Xóa',
+    'create_user' => 'Thêm người dùng',
+    'Enter_Email' => 'Nhập Email',
+    'Enter_fullname' => 'Nhập họ và tên',
+    'Password' => 'Mật khẩu',
+    'Re-Password' => 'Nhập lại mật khẩu',
+    'Enter_password' => 'Nhập mật khẩu',
+    'Phone' => 'Số điện thoại',
+    'Enter_phone' => 'Nhập số điện thoại',
+    'Enter_address' => 'Nhập địa chỉ',
+    'Address' => 'Địa chỉ',
+    'Create' => 'Tạo',
+    'must_fill_*' => 'Vui lòng không bỏ trống các ô có dấu *',
+    'Search' => 'Tìm kiếm',
+];
