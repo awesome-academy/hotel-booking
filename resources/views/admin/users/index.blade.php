@@ -24,10 +24,11 @@
                                                     <div class="m-input-icon m-input-icon--left">
                                                         <form method="get" action="{{ route('admin.users.index') }}">
                                                             <input type="text" class="form-control m-input"
-                                                                   name="keyword" placeholder="{{ __('messages.search') }}">
+                                                                   name="keyword"
+                                                                   placeholder="{{ __('messages.Search') }}">
                                                         </form>
                                                         <span class="m-input-icon__icon m-input-icon__icon--left">
-                                                            <i class="la la-search"></i>
+                                                            <i class="la la-search search-item"></i>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -64,12 +65,18 @@
                                                 {{ $role->name }}
                                             </td>
                                             <td>
-                                                <a href=""
+                                                <a href="{{ route('admin.users.edit', $user->id) }}"
                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
                                                    title="{{ __('messages.Edit') }}"><i class="la la-edit"></i></a>
-                                                <a href=""
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
-                                                   title="{{ __('messages.Delete') }}"><i class="la la-trash"></i></a>
+                                                <form method="post" action="{{ route('admin.users.destroy', $user->id) }}" class="form_content" id="form-delete-{{$user->id}}">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button id="{{ $user->id }}" type="submit"
+                                                            class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill btn-submit"
+                                                            title="{{ __('messages.Delete') }}">
+                                                        <i class="la la-trash"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                         @php ($i++)
@@ -87,8 +94,31 @@
 @endsection
 @section('script')
     <script>
-        @if (session('store'))
-        swal('Thêm người dùng mới thành công', '', 'success');
+        $(document).ready(function () {
+            $('.btn-submit').on('click', function (e) {
+                e.preventDefault();
+                var id = $(this).attr('id');
+                var form = $('#form-delete-' + id);
+                swal({
+                    title: "{{ __('messages.Are_you_sure') }}",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: !0,
+                    cancelButtonText: "{{ __('messages.Cancel') }}",
+                    confirmButtonText: "{{ __('messages.Im_sure') }}"
+                }).then(function (e) {
+                    e.value && form.submit();
+                })
+            })
+        });
+        @if(session('store'))
+        swal('{{ __('messages.Store_success') }}', '', 'success');
+        @endif
+        @if(session('delete'))
+        swal('{{ __('messages.Delete_success') }}', '', 'success');
+        @endif
+        @if(session('delete-error'))
+        swal('{{ __('messages.Got_errors') }}', '', 'error');
         @endif
     </script>
 @endsection

@@ -28,6 +28,11 @@ abstract class EloquentRepository
         return $this->_model->orderBy('id', 'desc')->paginate($per_page);
     }
 
+    public function search($column, $keyword, $per_page)
+    {
+        return $this->_model->where($column, 'LIKE', '%' . $keyword . '%')->orderBy('id', 'desc')->paginate($per_page);
+    }
+
     public function find($id)
     {
         return $this->_model->find($id);
@@ -35,7 +40,7 @@ abstract class EloquentRepository
 
     public function findOrFail($id)
     {
-        return $this->_model>$this->findOrFail($id);
+        return $this->_model > $this->findOrFail($id);
     }
 
     public function first()
@@ -58,7 +63,6 @@ abstract class EloquentRepository
         $result = $this->find($id);
         if ($result) {
             $result->update($attributes);
-
             return $result;
         }
 
