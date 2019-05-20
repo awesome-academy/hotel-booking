@@ -51,4 +51,10 @@ return [
     'Validate_cant_found_user' => 'Không tìm thấy tài khoản này',
     'Cancel' => 'Hủy',
     'Im_sure' => 'Tôi chắc chắn',
+    'Remember_me' => 'Đăng nhập tự động',
+    'Forget_password' => 'Quên mật khẩu?',
+    'Sign_in' => 'Đăng nhập',
+    'Profile' => 'Thông tin cá nhân',
+    'Log_out' => 'Đăng xuất',
+    'Wrong_pass_or_email' => 'Mật khẩu hoặc Email không đúng',
 ];
