@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -51,5 +52,16 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public static function getRoleId($role_name)
+    {
+        $role = Role::where('name', $role_name)->first();
+        if (is_null($role)) {
+            abort('404');
+        }
+        $id = $role->id;
+
+        return $id;
     }
 }

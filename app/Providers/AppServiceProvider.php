@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
                $admin = Auth::user();
             } elseif (Cookie::get('remember_token')) {
                 $remember_token = json_decode(Cookie::get('remember_token'));
-                $admin = User::where('remember_token', $remember_token)->first();
+                $admin = User::find($remember_token->id);
             }
             $view->with('admin', $admin);
         });
