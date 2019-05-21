@@ -57,4 +57,7 @@ return [
     'Profile' => 'Thông tin cá nhân',
     'Log_out' => 'Đăng xuất',
     'Wrong_pass_or_email' => 'Mật khẩu hoặc Email không đúng',
+    'Users_manage' => 'Quản lý người dùng',
+    'Add' => 'Thêm',
+    'List' => 'Danh sách',
 ];
