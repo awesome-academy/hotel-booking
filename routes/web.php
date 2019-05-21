@@ -16,10 +16,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('index');
 Route::get('/hotel', 'HomeController@index');
-Route::group(['middleware' => 'locale'], function() {
-    Route::get('/language/{locale}', 'HomeController@changeLanguage');
-});
+
+Route::get('/language/{id}', 'LanguageController@change')->name('changeLanguage');
 
 Auth::routes();
+
 Route::get('login', 'Auth\LoginController@form')->name('login_form');
 Route::post('login', 'Auth\LoginController@authenticate')->name('login');

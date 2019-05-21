@@ -14,9 +14,8 @@ class RoomRepository extends EloquentRepository
         return Room::class;
     }
 
-    public function getDataStore($request, $location_id)
+    public function getDataStore($data, $location_id)
     {
-        $data = $request->all();
         $now = date('m/d/Y');
         $end_available = '12/31/2100';
         $available_rooms = explode(',', $data['list_room_number']);
@@ -30,8 +29,6 @@ class RoomRepository extends EloquentRepository
         $data['available_time'] = json_encode($available_arr, true);
         $dataRoom = array(
             'location_id' => $location_id,
-            'price' => $data['price'],
-            'sale_price' => $data['sale_price'],
             'sale_start_at' => $data['sale_start_at'],
             'sale_end_at' => $data['sale_end_at'],
             'list_room_number' => $data['list_room_number'],

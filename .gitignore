@@ -11,3 +11,5 @@ npm-debug.log
 yarn-error.log
 .idea/
 /public/bower_components
+/public/css
+/public/js

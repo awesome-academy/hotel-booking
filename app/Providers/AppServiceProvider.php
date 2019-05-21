@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Language;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use View;
 
@@ -38,6 +41,14 @@ class AppServiceProvider extends ServiceProvider
             $view->with('admin', $admin);
             $locations_for_sidebar = Location::all();
             $view->with('locations_for_sidebar', $locations_for_sidebar);
+            $header_languages = Language::all();
+            $view->with('header_languages', $header_languages);
+            if (Session::get('locale')) {
+                $current_language = Language::find(Session::get('locale'));
+            } else {
+                $current_language = Language::where('name', Config::get('language.name'))->where('short', Config::get('language.short'))->first();
+            }
+            $view->with('current_language', $current_language);
         });
     }
 }
