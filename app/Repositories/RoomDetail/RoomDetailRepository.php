@@ -21,7 +21,6 @@ class RoomDetailRepository extends EloquentRepository
             'description' => $data['description'],
             'lang_id' => 1,
             'lang_parent_id' => 0,
-            'lang_map' => '1',
         );
 
         return $dataRoomDetail;

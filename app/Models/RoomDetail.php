@@ -18,16 +18,16 @@ class RoomDetail extends Model
 
     public function language()
     {
-        $this->belongsTo(Language::class, 'lang_id');
+        return $this->belongsTo(Language::class, 'lang_id');
     }
 
     public function room()
     {
-        $this->belongsTo(Room::class, 'room_id');
+        return $this->belongsTo(Room::class, 'room_id');
     }
 
     public function comments()
     {
-        $this->hasMany(Comment::class, 'object_id');
+        return $this->hasMany(Comment::class, 'object_id');
     }
 }
