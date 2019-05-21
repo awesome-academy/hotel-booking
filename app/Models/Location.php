@@ -16,11 +16,11 @@ class Location extends Model
 
     public function province()
     {
-        $this->belongsTo(Province::class, 'province_id');
+        return $this->belongsTo(Province::class, 'province_id');
     }
 
     public function rooms()
     {
-        $this->hasMany(Room::class, 'location_id');
+        return $this->hasMany(Room::class, 'location_id');
     }
 }

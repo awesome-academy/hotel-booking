@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Location;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -27,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['admin.layouts.header'], function ($view) {
+        View::composer(['admin.layouts.header', 'admin.layouts.aside'], function ($view) {
             if (Auth::check()) {
                $admin = Auth::user();
             } elseif (Cookie::get('remember_token')) {
@@ -35,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
                 $admin = User::find($remember_token->id);
             }
             $view->with('admin', $admin);
+            $locations_for_sidebar = Location::all();
+            $view->with('locations_for_sidebar', $locations_for_sidebar);
         });
     }
 }
