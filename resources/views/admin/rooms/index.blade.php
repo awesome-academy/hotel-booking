@@ -52,6 +52,7 @@
                                         <th>{{ __('messages.Room_name') }}</th>
                                         <th>{{ __('messages.Price') }}</th>
                                         <th>{{ __('messages.Rating') }}</th>
+                                        <th>{{ __('messages.Original') }}</th>
                                         <th>{{ __('messages.Action') }}</th>
                                     </tr>
                                     </thead>
@@ -75,9 +76,30 @@
                                                 <td class="price">{{ $roomDetail->price }} {{ __('messages.currency') }}</td>
                                                 <td>{{ $room->rating }} {{ __('messages.star') }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.rooms.edit', [$location->id, $room->id]) }}"
+                                                    @if ($roomDetail->lang_parent_id == 0)
+                                                        {{ __('messages.Original') }}
+                                                    @elseif ($roomDetail->lang_parent_id != 0)
+                                                        @php($parent = $room->roomDetails()->find($roomDetail->lang_parent_id))
+                                                        @if(!is_null($parent))
+                                                            <a href="{{ route('admin.rooms.showOriginal', [$location->id, $parent->id]) }}">{{ $parent->name }}</a>
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('admin.rooms.edit', [$location->id, $roomDetail->id]) }}"
                                                        class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
                                                        title="{{ __('messages.Edit') }}"><i class="la la-edit"></i></a>
+                                                    @if ($roomDetail->lang_parent_id == 0)
+                                                        <a href="{{ route('admin.rooms.translate', [$location->id, $roomDetail->id]) }}"
+                                                           class="m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill"
+                                                           title="{{ __('messages.Create_translate') }}"><i
+                                                                    class="la la-plus"></i></a>
+                                                    @else
+                                                        <a href="{{ route('admin.rooms.translate', [$location->id, $roomDetail->lang_parent_id]) }}"
+                                                           class="m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill"
+                                                           title="{{ __('messages.Create_translate') }}"><i
+                                                                    class="la la-plus"></i></a>
+                                                    @endif
                                                     <form method="post" action=""
                                                           class="form_content" id="form-delete-{{ $roomDetail->id }}">
                                                         {{ method_field('DELETE') }}

@@ -21,6 +21,9 @@ Route::prefix('/{location_id}/rooms')->name('rooms.')->group(function () {
     Route::get('/', $roomController . 'index')->name('index');
     Route::get('/create', $roomController . 'create')->name('create');
     Route::post('/store', $roomController . 'store')->name('store');
-    Route::get('/edit/{room_id}', $roomController . 'edit')->name('edit');
-    Route::post('/update/{room_id}', $roomController . 'update')->name('update');
+    Route::get('/edit/{id}', $roomController . 'edit')->name('edit');
+    Route::post('/update/{id}', $roomController . 'update')->name('update');
+    Route::get('/translate/{parent_id}', $roomController . 'translate')->name('translate');
+    Route::post('/translate/store', $roomController . 'translateStore')->name('translate.store');
+    Route::get('/show-original/{id}', $roomController . 'showOriginal')->name('showOriginal');
 });

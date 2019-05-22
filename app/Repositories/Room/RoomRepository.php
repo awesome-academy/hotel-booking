@@ -38,4 +38,15 @@ class RoomRepository extends EloquentRepository
 
         return $dataRoom;
     }
+
+    public function getDataUpdate($data)
+    {
+        $dataRoom = array(
+            'sale_start_at' => $data['sale_start_at'],
+            'sale_end_at' => $data['sale_end_at'],
+            'list_room_number' => $data['list_room_number'],
+        );
+
+        return $dataRoom;
+    }
 }

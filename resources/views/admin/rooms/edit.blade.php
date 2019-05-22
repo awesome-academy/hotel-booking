@@ -114,6 +114,7 @@
                                         @endif
                                     </div>
                                     <input type="hidden" name="old_image" value="{{ $room->image }}">
+                                    <input type="hidden" name="room_id" value="{{ $room->id }}">
                                     <div class="form-group m-form__group">
                                         <button class="btn btn-primary">{{ __('messages.Edit') }}</button>
                                     </div>
