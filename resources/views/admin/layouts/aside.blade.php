@@ -41,7 +41,7 @@
         </li>
         <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
             <a href="javascript:;" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon fa fa-cubes"></i>
+                <i class="m-menu__link-icon fa fa-building"></i>
                 <span class="m-menu__link-text">{{ __('messages.Location_manage') }}</span>
                 <i class="m-menu__ver-arrow la la-angle-right"></i>
             </a>
@@ -64,6 +64,28 @@
                             <span class="m-menu__link-text">{{ __('messages.List') }}</span>
                         </a>
                     </li>
+                </ul>
+            </div>
+        </li>
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-home"></i>
+                <span class="m-menu__link-text">{{ __('messages.Room_manage') }}</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    @foreach ($locations_for_sidebar as $location)
+                        <li class="m-menu__item" aria-haspopup="true">
+                            <a href="{{ route('admin.rooms.index', $location->id) }}" class="m-menu__link ">
+                                <i class="m-menu__link-bullet fa fa-angle-right">
+                                    <span></span>
+                                </i>
+                                <span class="m-menu__link-text">{{ $location->name }}</span>
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </li>

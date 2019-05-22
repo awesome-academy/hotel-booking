@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\StoreRoomRequest;
+use App\Http\Requests\Admin\TranslateRoomRequest;
+use App\Http\Requests\Admin\UpdateRoomRequest;
+use App\Models\Room;
+use App\Models\RoomDetail;
 use App\Repositories\Language\LanguageRepository;
 use App\Repositories\Location\LocationRepository;
 use App\Repositories\Room\RoomRepository;
@@ -11,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 
 class RoomController extends Controller
 {
@@ -56,12 +61,11 @@ class RoomController extends Controller
     {
         $data = $request->all();
         $data['base_id'] = $this->base_lang_id;
-        $checkName = $this->roomDetailRepository->checkName($request->name, $this->base_lang_id);
+        $checkName = $this->roomDetailRepository->checkName($request->name, $location_id, $this->base_lang_id);
         if (!$checkName) {
             $request->session()->flash('name_used');
 
             return redirect()->back();
-
         }
         $dataRoom = $this->roomRepository->getDataStore($data, $location_id);
         $dataRoomDetail = $this->roomDetailRepository->getDataStore($data);
@@ -79,26 +83,35 @@ class RoomController extends Controller
             $this->roomDetailRepository->update($roomDetail->id, $lang_map);
             DB::commit();
             $request->session()->flash('notification', 'store');
+            Session::put('locale', $this->base_lang_id);
+
+            return redirect(route('admin.rooms.index', $location_id));
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception($e->getMessage());
-            $request->session()->flash('errors');
         }
 
-        return redirect(route('admin.rooms.index', $location_id));
     }
 
-    public function edit($location_id, $room_id)
+    public function edit($location_id, $id)
     {
         $location = $this->locationRepository->find($location_id);
-        $room = $location->rooms()->findOrFail($room_id);
-        if (session('locale')) {
-            $roomDetail = $room->roomDetails()->where('lang_id', session('locale'))->first();
-        } else {
-            $roomDetail = $room->roomDetails()->where('lang_id', $this->base_lang_id)->first();
+        if (is_null($location)) {
+            abort(404);
         }
+        $roomDetail = $this->roomDetailRepository->find($id);
         if (is_null($roomDetail)) {
             abort(404);
+        }
+        $room = $this->roomRepository->find($roomDetail->room_id);
+        if (is_null($room)) {
+            abort(404);
+        }
+        if (Session::get('locale') && Session::get('locale') != $this->base_lang_id) {
+            $roomDetail = $this->roomDetailRepository->getByLang($id, Session::get('locale'));
+            if (!$roomDetail) {
+                abort(404);
+            }
         }
         $data = compact(
             'location',
@@ -109,7 +122,90 @@ class RoomController extends Controller
         return view('admin.rooms.edit', $data);
     }
 
-    public function update(Request $request)
+    public function update(UpdateRoomRequest $request, $location_id, $id)
     {
+        $data = $request->all();
+        $dataRoom = $this->roomRepository->getDataUpdate($data);
+        $dataRoomDetail = $this->roomDetailRepository->getDataUpdate($data);
+        DB::beginTransaction();
+        try {
+            if ($request->hasFile('image')) {
+                $dataRoom['image'] = uploadImage(Config::get('upload.rooms'), $request->image);
+            } else {
+                $dataRoom['image'] = $data['old_image'];
+            }
+            $this->roomRepository->update($data['room_id'], $dataRoom);
+            $this->roomDetailRepository->update($id, $dataRoomDetail);
+            DB::commit();
+            $request->session()->flash('notification', 'update');
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function translate(Request $request, $location_id, $parent_id)
+    {
+        $location = $this->locationRepository->find($location_id);
+        if (is_null($location)) {
+            abort(404);
+        }
+        $parent = $this->roomDetailRepository->find($parent_id);
+        if (is_null($parent)) {
+            abort(404);
+        }
+        $room = $this->roomRepository->find($parent->room_id);
+        if (is_null($room)) {
+            abort(404);
+        }
+        $languages = $this->roomDetailRepository->getTranslateId($parent_id);
+        if (count($languages) == 0) {
+            $request->session()->flash('notification', 'full_lang');
+
+            return redirect()->back();
+        }
+        $data = compact(
+            'location',
+            'parent',
+            'room',
+            'languages'
+        );
+
+        return view('admin.rooms.translate', $data);
+    }
+
+    public function translateStore(TranslateRoomRequest $request, $location_id)
+    {
+        $data = $request->all();
+        $checkName = $this->roomDetailRepository->checkName($data['name'], $location_id, $data['lang_id']);
+        if (!$checkName) {
+            $request->session()->flash('name_used');
+
+            return redirect()->back();
+        }
+        $lang_map_arr = $this->roomDetailRepository->getLangMap($data['lang_parent_id']);
+        DB::beginTransaction();
+        try {
+            $new_room = $this->roomDetailRepository->create($data);
+            array_push($lang_map_arr, $new_room->id);
+            $this->roomDetailRepository->updateLangMap($data['lang_parent_id'], $lang_map_arr);
+            DB::commit();
+            $request->session()->flash('notification', 'store');
+            Session::put('locale', $data['lang_id']);
+
+            return redirect(route('admin.rooms.index', $location_id));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function showOriginal($location_id, $id)
+    {
+        Session::put('locale', $this->base_lang_id);
+
+        return redirect(route('admin.rooms.edit', [$location_id, $id]));
     }
 }

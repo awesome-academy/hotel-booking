@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\LocationRequest;
+use App\Models\Room;
 use App\Repositories\Location\LocationRepository;
 use App\Repositories\Province\ProvinceRepository;
+use App\Repositories\Room\RoomRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class LocationController extends Controller
 {
-    public function __construct(provinceRepository $provinceRepository, locationRepository $locationRepository)
+    public function __construct(ProvinceRepository $provinceRepository, LocationRepository $locationRepository, RoomRepository $roomRepository)
     {
         $this->provinceRepository = $provinceRepository;
         $this->locationRepository = $locationRepository;
+        $this->roomRepository = $roomRepository;
     }
 
     /**
@@ -118,9 +122,22 @@ class LocationController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $this->locationRepository->delete($id);
-        $request->session()->flash('delete');
+        DB::beginTransaction();
+        try {
+            $location = $this->locationRepository->find($id);
+            $rooms = $this->locationRepository->find($id)->rooms()->get();
+            foreach ($rooms as $room) {
+                $room->roomDetails()->delete();
+            }
+            $location->rooms()->delete();
+            $location->delete();
+            $request->session()->flash('delete');
+            DB::commit();
 
-        return redirect(route('admin.locations.index'));
+            return redirect(route('admin.locations.index'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
     }
 }
