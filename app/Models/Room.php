@@ -9,8 +9,6 @@ class Room extends Model
     protected $fillable = [
         'location_id',
         'image',
-        'price',
-        'sale_price',
         'sale_status',
         'sale_start_at',
         'sale_end_at',
@@ -21,26 +19,26 @@ class Room extends Model
 
     public function properties()
     {
-        $this->belongsToMany(Property::class, 'room_property');
+        return $this->belongsToMany(Property::class, 'room_property');
     }
 
     public function locations()
     {
-        $this->belongsTo(Location::class, 'location_id');
+        return $this->belongsTo(Location::class, 'location_id');
     }
 
     public function roomDetails()
     {
-        $this->hasMany(RoomDetail::class, 'room_id');
+        return $this->hasMany(RoomDetail::class, 'room_id');
     }
 
     public function images()
     {
-        $this->hasMany(Image::class);
+        return $this->hasMany(Image::class);
     }
 
     public function invoices()
     {
-        $this->belongsToMany(Invoice::class, 'room_invoice', 'room_id', 'invoice_code');
+        return $this->belongsToMany(Invoice::class, 'room_invoice', 'room_id', 'invoice_code');
     }
 }
