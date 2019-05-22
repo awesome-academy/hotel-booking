@@ -11,3 +11,15 @@ if (!function_exists('uploadImage')) {
         return $fileName;
     }
 }
+
+if (!function_exists('uploadImageDrop')) {
+    function uploadImageDrop($dir, $file) {
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $fileName = $file->getClientOriginalName();
+        $file->move($dir, $fileName);
+
+        return $fileName;
+    }
+}

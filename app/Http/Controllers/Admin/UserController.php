@@ -8,6 +8,7 @@ use App\Repositories\Role\RoleRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -124,11 +125,23 @@ class UserController extends Controller
      */
     public function destroy($id, Request $request)
     {
+        $user = $this->userRepository->getUser();
+        $checkAdmin = $this->userRepository->checkAdmin($user->role_id);
+        if (!$checkAdmin) {
+            $request->session()->flash('notification', 'not-admin');
+
+            return redirect(route('admin.users.index'));
+        }
+        if ($user->id == $id) {
+            $request->session()->flash('notification', 'cant-delete-yourself');
+
+            return redirect(route('admin.users.index'));
+        }
         $delete = $this->userRepository->delete($id);
         if ($delete == true) {
-            $request->session()->flash('delete');
+            $request->session()->flash('notification', 'delete');
         } else {
-            $request->session()->flash('delete-error');
+            $request->session()->flash('notification', 'delete-error');
         }
 
         return redirect(route('admin.users.index'));
@@ -162,6 +175,7 @@ class UserController extends Controller
 
             return response()->json(['errors' => 'wrong_old_password', 'messages' => __('messages.Validate_wrong_old_password')], 200);
         } else {
+            $data['password'] = bcrypt($request->password);
             $this->userRepository->update($data['id'], $data);
 
             return response()->json(['messages' => 'success'], 200);

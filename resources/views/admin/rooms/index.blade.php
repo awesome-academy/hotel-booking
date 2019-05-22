@@ -36,10 +36,12 @@
                                             </div>
                                         </div>
                                         <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                            <a href="{{ route('admin.rooms.create', $location->id) }}"
-                                               class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                                                <span><i class="la la-plus"></i>{{ __('messages.Create_room') }}</span>
-                                            </a>
+                                            @if (session('locale') == $base_lang_id || !session('locale'))
+                                                <a href="{{ route('admin.rooms.create', $location->id) }}"
+                                                   class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                                    <span><i class="la la-plus"></i>{{ __('messages.Create_room') }}</span>
+                                                </a>
+                                            @endif
                                             <div class="m-separator m-separator--dashed d-xl-none"></div>
                                         </div>
                                     </div>
@@ -61,9 +63,17 @@
                                     @foreach($rooms as $room)
                                         <?php
                                         if (session('locale')) {
-                                            $roomDetail = $room->roomDetails()->where('lang_id', session('locale'))->first();
+                                            if (isset($_GET['keyword'])) {
+                                                $roomDetail = $room->roomDetails()->where('name', 'LIKE', '%' . $_GET['keyword'] . '%')->where('lang_id', session('locale'))->first();
+                                            } else {
+                                                $roomDetail = $room->roomDetails()->where('lang_id', session('locale'))->first();
+                                            }
                                         } else {
-                                            $roomDetail = $room->roomDetails()->where('lang_id', $base_lang_id)->first();
+                                            if (isset($_GET['keyword'])) {
+                                                $roomDetail = $room->roomDetails()->where('name', 'LIKE', '%' . $_GET['keyword'] . '%')->where('lang_id', $base_lang_id)->first();
+                                            } else {
+                                                $roomDetail = $room->roomDetails()->where('lang_id', $base_lang_id)->first();
+                                            }
                                         }
                                         ?>
                                         @if ($roomDetail != null)
@@ -94,22 +104,96 @@
                                                            class="m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill"
                                                            title="{{ __('messages.Create_translate') }}"><i
                                                                     class="la la-plus"></i></a>
+                                                        <button data-toggle="modal"
+                                                                data-target="#modal_prop_{{ $room->id }}"
+                                                                class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
+                                                                title="{{ __('messages.Create_translate') }}"><i
+                                                                    class="la la-magic"></i></button>
+                                                        <div class="modal fade" id="modal_prop_{{ $room->id }}"
+                                                             tabindex="-1" role="dialog" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="exampleModalLabel"></h5>
+                                                                        <button type="button" class="close"
+                                                                                data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body row">
+                                                                        <div class="col-6">
+                                                                            <div class="m-scrollable m-scroller ps"
+                                                                                 data-scrollbar-shown="true"
+                                                                                 data-scrollable="true"
+                                                                                 data-height="150">
+                                                                                <ul class="list-props-{{ $room->id }}">
+                                                                                    <?php
+                                                                                    $room_properties = $room->properties()->get();
+                                                                                    $room_prop_id = [];
+                                                                                    $i = 0;
+                                                                                    ?>
+                                                                                    @foreach ($room_properties as $room_property)
+                                                                                        <li class="list-prop-item-{{ $room->id }}-{{ $room_property->id }}">
+                                                                                            <span class="list-prop-item">{{ $room_property->name }}</span>
+                                                                                            <button data-room="{{ $room->id }}"
+                                                                                                    id="{{ $room_property->id }}"
+                                                                                                    addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
+                                                                                                    deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
+                                                                                                    class="btn m-btn m-btn--hover-danger m-btn--icon btn-delete-prop">
+                                                                                                <i class="la la-trash"></i>
+                                                                                            </button>
+                                                                                        </li>
+                                                                                        <?php
+                                                                                        $room_prop_id[$i] = $room_property->id;
+                                                                                        $i++;
+                                                                                        ?>
+                                                                                    @endforeach
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="m-scrollable m-scroller ps"
+                                                                                 data-scrollbar-shown="true"
+                                                                                 data-scrollable="true"
+                                                                                 data-height="150">
+                                                                                <form>
+                                                                                    <ul class="list-not-use-prop-{{ $room->id }}">
+                                                                                        <?php
+                                                                                        $properties_not_use = $properties->getNotUse($room_prop_id, $base_lang_id);
+                                                                                        ?>
+                                                                                        @foreach ($properties_not_use as $property)
+                                                                                            <li class="item-{{$room->id}}-{{$property->id}}">
+                                                                                                <span class="add-property-item">{{ $property->name }}</span>
+                                                                                                <button data-room="{{ $room->id }}"
+                                                                                                        id="{{ $property->id }}"
+                                                                                                        addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
+                                                                                                        deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
+                                                                                                        class="btn m-btn m-btn--hover-success m-btn--icon btn-add-prop">
+                                                                                                    <i class="la la-plus"></i>
+                                                                                                </button>
+                                                                                            </li>
+                                                                                        @endforeach
+                                                                                    </ul>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     @else
                                                         <a href="{{ route('admin.rooms.translate', [$location->id, $roomDetail->lang_parent_id]) }}"
                                                            class="m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill"
                                                            title="{{ __('messages.Create_translate') }}"><i
                                                                     class="la la-plus"></i></a>
                                                     @endif
-                                                    <form method="post" action=""
-                                                          class="form_content" id="form-delete-{{ $roomDetail->id }}">
-                                                        {{ method_field('DELETE') }}
-                                                        @csrf
-                                                        <button id="{{ $roomDetail->id }}" type="submit"
-                                                                class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill btn-delete"
-                                                                title="{{ __('messages.Delete') }}">
-                                                            <i class="la la-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    <a href="javascript:;"
+                                                       linkurl="{{ route('admin.rooms.delete', [$location->id, $roomDetail->id]) }}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill btn-delete-link"
+                                                       title="{{ __('messages.Delete') }}">
+                                                        <i class="la la-trash"></i>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             @php($i++)
@@ -125,4 +209,7 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script type="text/javascript" src="{{ asset('bower_components/bower/js/properties.js') }}"></script>
 @endsection
