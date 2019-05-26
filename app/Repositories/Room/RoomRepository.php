@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Room;
 
+use App\Models\Location;
 use App\Models\Room;
 use App\Repositories\EloquentRepository;
 use http\Env\Request;
@@ -21,11 +22,13 @@ class RoomRepository extends EloquentRepository
         $available_rooms = explode(',', $data['list_room_number']);
         $now_to_end = Carbon::parse($now)->diff(Carbon::parse($end_available))->days;
         $available_arr = array(
-            'check_in' => $now,
-            'check_out' => $end_available,
-            'length' => $now_to_end,
-            'available_rooms' => $available_rooms,
-        );
+            '0' => [
+                'check_in' => $now,
+                'check_out' => $end_available,
+                'length' => $now_to_end,
+                'available_rooms' => $available_rooms,
+
+            ]);
         $data['available_time'] = json_encode($available_arr, true);
         $dataRoom = array(
             'location_id' => $location_id,
@@ -48,5 +51,46 @@ class RoomRepository extends EloquentRepository
         );
 
         return $dataRoom;
+    }
+
+    public function checkListRoom($list_room, $location_id)
+    {
+        $list_room = explode(',', $list_room);
+        $location = Location::find($location_id);
+        if (is_null($location)) {
+            return false;
+        }
+        $check = [];
+        $rooms = $location->rooms()->get();
+        foreach ($rooms as $key => $room) {
+            $same = array_intersect($list_room, explode(',', $room->list_room_number));
+            if (count($same) > 0) {
+                $check = $same;
+            }
+        }
+        if (count($check) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkListRoomUpdate($list_room, $location_id, $id)
+    {
+        $list_room = explode(',', $list_room);
+        $location = Location::find($location_id);
+        if (is_null($location)) {
+            return false;
+        }
+        $rooms = $location->rooms()->whereNotIn('id', [$id])->get();
+        foreach ($rooms as $room) {
+            $same = array_intersect($list_room, explode(',', $room->list_room_number));
+            if (count($same) > 0) {
+                return false;
+                break;
+            } else {
+                return true;
+            }
+        }
     }
 }

@@ -64,6 +64,9 @@
                                         @if ($errors->has('list_room_number'))
                                             <b class="text-danger">{{ $errors->first('list_room_number') }}</b>
                                         @endif
+                                        @if (session('room_number_used'))
+                                            <b class="text-danger">{{ __('messages.Room_number_used') }}</b>
+                                        @endif
                                     </div>
                                     <div class="form-group m-form__group row">
                                         <div class="col-lg-6">

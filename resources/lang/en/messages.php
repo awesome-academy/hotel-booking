@@ -20,4 +20,5 @@ return [
     'categories_table' => 'categories_table',
     'validate_name' => 'Name is not null',
     'validate_file' => 'File is not null',
+    'currency' => '$',
 ];

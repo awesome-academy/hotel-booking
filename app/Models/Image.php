@@ -13,6 +13,6 @@ class Image extends Model
 
     public function room()
     {
-        $this->belongsTo(Room::class);
+        return $this->belongsTo(Room::class);
     }
 }

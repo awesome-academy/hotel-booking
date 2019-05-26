@@ -23,14 +23,29 @@ abstract class EloquentRepository
         return $this->_model->orderBy('id', 'desc')->get();
     }
 
+    public function getAllByLang($lang_id)
+    {
+        return $this->_model->where('lang_id', $lang_id)->get();
+    }
+
     public function paginate($per_page)
     {
         return $this->_model->orderBy('id', 'desc')->paginate($per_page);
     }
 
+    public function paginateByLang($lang_id, $per_page)
+    {
+        return $this->_model->where('lang_id', $lang_id)->orderBy('id', 'desc')->paginate($per_page);
+    }
+
     public function search($column, $keyword, $per_page)
     {
         return $this->_model->where($column, 'LIKE', '%' . $keyword . '%')->orderBy('id', 'desc')->paginate($per_page);
+    }
+
+    public function searchByLang($column, $keyword, $per_page, $lang_id)
+    {
+        return $this->_model->where('lang_id', $lang_id)->where($column, 'LIKE', '%' . $keyword . '%')->orderBy('id', 'desc')->paginate($per_page);
     }
 
     public function find($id)

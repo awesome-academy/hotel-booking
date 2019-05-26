@@ -117,4 +117,8 @@ return [
     'Create_location' => 'Thêm cơ sở',
     'Enter_location_name' => 'Nhập tên cơ sở',
     'Select_provinces' => 'Chọn tỉnh thành',
+    'Room_number_used' => 'Tồn tại số phòng đã thuộc về hạng phòng khác',
+    'Create_property' => 'Thêm tiện nghi',
+    'Properties_table' => 'Danh sách các tiện nghi',
+    'Select_properties' => 'Chọn tiện nghi',
 ];

@@ -26,4 +26,24 @@ Route::prefix('/{location_id}/rooms')->name('rooms.')->group(function () {
     Route::get('/translate/{parent_id}', $roomController . 'translate')->name('translate');
     Route::post('/translate/store', $roomController . 'translateStore')->name('translate.store');
     Route::get('/show-original/{id}', $roomController . 'showOriginal')->name('showOriginal');
+    Route::get('/delete/{id}', $roomController . 'delete')->name('delete');
+    Route::post('/add-properties', $roomController . 'addProperties')->name('addProperties');
+    Route::post('/delete-properties', $roomController . 'deleteProperties')->name('deleteProperties');
+});
+Route::post('/rooms/upload-images/{id}', 'Admin\RoomController@uploadImage')->name('rooms.uploadImage');
+Route::post('/rooms/destroy-images', 'Admin\RoomController@destroyImage')->name('rooms.destroyImage');
+Route::get('/rooms/delete-images/{id}', 'Admin\RoomController@deleteImage')->name('rooms.deleteImage');
+
+/**
+ * Properties manage
+ */
+Route::prefix('properties')->name('properties.')->group(function () {
+    $propertyController = 'Admin\PropertyController@';
+    Route::get('/', $propertyController . 'index')->name('index');
+    Route::post('/', $propertyController. 'store')->name('store');
+    Route::get('/edit/{id}', $propertyController . 'edit')->name('edit');
+    Route::get('/translate/{lang_parent_id}', $propertyController . 'translate')->name('translate');
+    Route::post('/translate/{lang_parent_id}/store', $propertyController . 'translateStore')->name('translateStore');
+    Route::post('update/{id}', $propertyController . 'update')->name('update');
+    Route::get('delete/{id}', $propertyController . 'delete')->name('delete');
 });
