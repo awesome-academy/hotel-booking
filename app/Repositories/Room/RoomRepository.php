@@ -4,6 +4,7 @@ namespace App\Repositories\Room;
 
 use App\Models\Location;
 use App\Models\Room;
+use App\Models\RoomDetail;
 use App\Repositories\EloquentRepository;
 use http\Env\Request;
 use Carbon\Carbon;
@@ -82,15 +83,30 @@ class RoomRepository extends EloquentRepository
         if (is_null($location)) {
             return false;
         }
-        $rooms = $location->rooms()->whereNotIn('id', [$id])->get();
-        foreach ($rooms as $room) {
-            $same = array_intersect($list_room, explode(',', $room->list_room_number));
-            if (count($same) > 0) {
-                return false;
-                break;
-            } else {
-                return true;
+        $roomDetail = RoomDetail::find($id);
+        if (is_null($roomDetail)) {
+            return false;
+        }
+        $room = $roomDetail->room()->first();
+        if (is_null($room)) {
+            return false;
+        }
+        $rooms = $location->rooms()->whereNotIn('id', [$room->id])->get();
+        $check = [];
+        if (count($rooms) == 0) {
+            return true;
+        } else {
+            foreach ($rooms as $room) {
+                $same = array_intersect($list_room, explode(',', $room->list_room_number));
+                if (count($same) > 0) {
+                    $check = $same;
+                }
             }
+        }
+        if (count($check) == 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

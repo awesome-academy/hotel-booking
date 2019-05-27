@@ -31,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /**
+         * Admin
+         */
         View::composer(['admin.layouts.header', 'admin.layouts.aside'], function ($view) {
             if (Auth::check()) {
                $admin = Auth::user();
@@ -49,6 +52,16 @@ class AppServiceProvider extends ServiceProvider
                 $current_language = Language::where('name', Config::get('language.name'))->where('short', Config::get('language.short'))->first();
             }
             $view->with('current_language', $current_language);
+        });
+
+        /**
+         * Client
+         */
+        View::composer(['client.layouts.header', 'client.layouts.slider'], function ($view) {
+            $header_languages = Language::all();
+            $view->with('header_languages', $header_languages);
+            $locations_for_nav = Location::all();
+            $view->with('locations_for_nav', $locations_for_nav);
         });
     }
 }

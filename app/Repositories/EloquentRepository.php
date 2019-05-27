@@ -103,4 +103,9 @@ abstract class EloquentRepository
             $item->delete();
         }
     }
+
+    public function limit($limit)
+    {
+        return $this->_model->orderBy('id', 'desc')->limit($limit)->get();
+    }
 }
