@@ -131,4 +131,12 @@ return [
     'Locations' => 'Các cơ sở',
     'Check_in_day' => 'Ngày tới',
     'Check_out_day' => 'Ngày đi',
+    'Comment' => 'Bình luận',
+    'Write_your_comment' => 'Viết bình luận của bạn',
+    'Send' => 'Gửi',
+    'List_comments' => 'Danh sách bình luận',
+    'Validate_rating_required' => 'Vui lòng đánh giá sao',
+    'Validate_email_required' => 'Vui lòng nhập email',
+    'Validate_email_email' => 'Vui lòng nhập đúng định dạng email',
+    'Validate_body_required' => 'Vui lòng nhập nội dung bình luận',
 ];

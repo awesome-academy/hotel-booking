@@ -23,4 +23,6 @@ Route::prefix('rooms')->name('rooms.')->group(function (){
     $roomController = 'Client\RoomController@';
     Route::get('/', $roomController . 'index')->name('index');
     Route::get('/{location_id}', $roomController . 'location')->name('location');
+    Route::get('/detail/{id}', $roomController . 'detail')->name('detail');
+    Route::post('/detail/comment', $roomController . 'comment')->name('comment');
 });

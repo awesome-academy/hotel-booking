@@ -30,4 +30,8 @@ return [
     'Locations' => 'Locations',
     'Check_in_day' => 'Check in',
     'Check_out_day' => 'Check out',
+    'Comment' => 'Comment',
+    'Write_your_comment' => 'Write your comment',
+    'Send' => 'Send',
+    'List_comments' => 'List comments',
 ];
