@@ -10,12 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    
-    return view('welcome');
-})->name('index');
-Route::get('/hotel', 'HomeController@index');
+Route::get('/', 'Client\HomeController@index')->name('index');
 
 Route::get('/language/{id}', 'LanguageController@change')->name('changeLanguage');
 
@@ -23,3 +18,8 @@ Auth::routes();
 
 Route::get('login', 'Auth\LoginController@form')->name('login_form');
 Route::post('login', 'Auth\LoginController@authenticate')->name('login');
+
+Route::prefix('rooms')->name('rooms.')->group(function (){
+    $roomController = 'Client\RoomController@';
+    Route::get('/', $roomController . 'index')->name('index');
+});

@@ -165,37 +165,36 @@
                                                         deleteUrl="{{ route('admin.rooms.destroyImage') }}">Thêm ảnh
                                                 </button>
                                             </div>
-                                        </div>
-
-                                        <div class="row">
-                                            @foreach($images as $image)
-                                                <div class="col-md-3 admin-image-grid">
-                                                    <img src="{{ asset(config('upload.images')) }}/{{ $image->name }}"
-                                                         class="img-fluid admin-image-gallery">
-                                                    <a href="{{ route('admin.rooms.deleteImage', $image->id) }}" class="btn btn-danger btn-img">Xóa
-                                                        ảnh</a>
-                                                </div>
-                                            @endforeach
-                                            <div class="modal fade show" id="m_modal_4" tabindex="-1"
-                                                 role="dialog" aria-labelledby="exampleModalLabel"
-                                                 style="display: none;">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Thêm
-                                                                ảnh</h5>
-                                                            <a href="" style="font-size: 20px">x</a>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="m-dropzone dropzone m-dropzone--success dz-clickable"
-                                                                 action="{{ route('admin.rooms.uploadImage', [$room->id]) }}"
-                                                                 id="m-dropzone-three">
-                                                                @csrf
-                                                                <div class="m-dropzone__msg dz-message needsclick">
-                                                                    <h3 class="m-dropzone__msg-title">Thả ảnh
-                                                                        vào để tải lên (Ảnh sẽ tự động
-                                                                        upload)</h3>
-                                                                    <span class="m-dropzone__msg-desc">Chỉ chấp nhận ảnh định dạng jpg, jpeg, png. Dung lượng tối đa là 2MB</span>
+                                            <div class="row">
+                                                @foreach ($images as $image)
+                                                    <div class="col-md-3 admin-image-grid">
+                                                        <img src="{{ asset(config('upload.images')) }}/{{ $image->name }}"
+                                                             class="img-fluid admin-image-gallery">
+                                                        <a href="{{ route('admin.rooms.deleteImage', $image->id) }}" class="btn btn-danger btn-img">Xóa
+                                                            ảnh</a>
+                                                    </div>
+                                                @endforeach
+                                                <div class="modal fade show" id="m_modal_4" tabindex="-1"
+                                                     role="dialog" aria-labelledby="exampleModalLabel"
+                                                     style="display: none;">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm
+                                                                    ảnh</h5>
+                                                                <a href="" style="font-size: 20px">x</a>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="m-dropzone dropzone m-dropzone--success dz-clickable"
+                                                                     action="{{ route('admin.rooms.uploadImage', [$room->id]) }}"
+                                                                     id="m-dropzone-three">
+                                                                    @csrf
+                                                                    <div class="m-dropzone__msg dz-message needsclick">
+                                                                        <h3 class="m-dropzone__msg-title">Thả ảnh
+                                                                            vào để tải lên (Ảnh sẽ tự động
+                                                                            upload)</h3>
+                                                                        <span class="m-dropzone__msg-desc">Chỉ chấp nhận ảnh định dạng jpg, jpeg, png. Dung lượng tối đa là 2MB</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

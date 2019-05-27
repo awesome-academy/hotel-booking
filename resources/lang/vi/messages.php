@@ -122,4 +122,13 @@ return [
     'Properties_table' => 'Danh sách các tiện nghi',
     'Select_properties' => 'Chọn tiện nghi',
     'Properties_manage' => 'Quản lý thuộc tính',
+    'Welcome' => 'Chào mừng bạn tới với Sun Hotel',
+    'lorem' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A beatae facilis ipsa libero odit officiis quae quam tenetur veniam veritatis!Lorem ipsum dolor sit amet, consectetur adipisicing elit. A beatae facilis ipsa libero odit officiis quae quam tenetur veniam veritatis!',
+    'Gallery' => 'Gallery',
+    'About_us' => 'Giới thiệu',
+    'Day' => 'Ngày',
+    'See_more' => 'Chi tiết',
+    'Locations' => 'Các cơ sở',
+    'Check_in_day' => 'Ngày tới',
+    'Check_out_day' => 'Ngày đi',
 ];
