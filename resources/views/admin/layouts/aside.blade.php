@@ -89,5 +89,11 @@
                 </ul>
             </div>
         </li>
+        <li class="m-menu__item" aria-haspopup="true">
+            <a href="{{ route('admin.properties.index') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-cubes"></i>
+                <span class="m-menu__link-text">{{ __('messages.Properties_manage') }}</span>
+            </a>
+        </li>
     </ul>
 </div>
