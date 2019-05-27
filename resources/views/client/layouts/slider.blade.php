@@ -63,7 +63,7 @@
                             </li>
                             <li>
                                 <div class="button-style-1">
-                                    <button href="#"><i class="fa fa-search"></i>{{ trans('messages.Search') }}</>
+                                    <button><i class="fa fa-search"></i>{{ trans('messages.Search') }}</button>
                                 </div>
                             </li>
                         </ul>
