@@ -15,11 +15,11 @@ class Property extends Model
 
     public function language()
     {
-        $this->belongsTo(Language::class, 'lang_id');
+        return $this->belongsTo(Language::class, 'lang_id');
     }
 
     public function rooms()
     {
-        $this->belongsToMany(Room::class, 'room_property');
+        return $this->belongsToMany(Room::class, 'room_property');
     }
 }

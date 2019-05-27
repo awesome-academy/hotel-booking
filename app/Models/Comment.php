@@ -14,11 +14,11 @@ class Comment extends Model
 
     public function post()
     {
-        $this->belongsTo(Post::class, 'object_id');
+        return $this->belongsTo(Post::class, 'object_id');
     }
 
     public function roomDetail()
     {
-        $this->belongsTo(RoomDetail::class, 'object_id');
+        return $this->belongsTo(RoomDetail::class, 'object_id');
     }
 }

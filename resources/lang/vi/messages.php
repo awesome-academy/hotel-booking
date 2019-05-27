@@ -121,4 +121,5 @@ return [
     'Create_property' => 'Thêm tiện nghi',
     'Properties_table' => 'Danh sách các tiện nghi',
     'Select_properties' => 'Chọn tiện nghi',
+    'Properties_manage' => 'Quản lý thuộc tính',
 ];
