@@ -44,10 +44,10 @@ use Illuminate\Support\Facades\Request;
                     <div class="pull-left">
                         <nav class="nav">
                             <ul id="navigate" class="sf-menu navigate">
-                                <li @if (Request::is('/')) {{'class=active'}} @endif>
+                                <li @if (Request::is('/')) class="active" @endif>
                                     <a href="{{ url('/') }}">{{ trans('messages.HOMEPAGE') }}</a>
                                 </li>
-                                <li @if (Request::is('rooms/*')) {{'class=active'}} @endif class="parent-menu"><a href="javascript:;">{{ __('messages.Locations') }}</a>
+                                <li @if (Request::is('rooms*')) class="active parent-menu" @else class="parent-menu" @endif><a href="javascript:;">{{ __('messages.Locations') }}</a>
                                     <ul>
                                         @foreach ($locations_for_nav as $location)
                                             <li><a href="{{ route('client.rooms.location', $location->id) }}">{{ $location->name }}</a></li>

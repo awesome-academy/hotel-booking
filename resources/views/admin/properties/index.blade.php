@@ -165,3 +165,6 @@
         </div>
     </div>
 @endsection
+@section('script')
+    <script type="text/javascript" src="{{ asset('bower_components/bower/admin/custom/js/properties.js') }}"></script>
+@endsection

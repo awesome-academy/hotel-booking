@@ -31,9 +31,9 @@ class HomeController extends Controller
 
     public function index()
     {
-        $locations = $this->locationRepository->limit(config('paginate.limit_home'));
+        $locations = $this->locationRepository->limit(config('pagination.limit_home'));
         $base_lang_id = $this->base_lang_id;
-        $images = $this->imageRepository->limit(config('paginate.limit_home'));
+        $images = $this->imageRepository->limit(config('pagination.limit_home'));
         $data = compact(
             'locations',
             'base_lang_id',

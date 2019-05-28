@@ -12,6 +12,10 @@
                         <div class="margint40 marginb20"><h4>{{ __('messages.Gallery') }}</h4></div>
                         <div class="flexslider-thumb falsenav">
                             <ul class="slides">
+                                <li data-thumb="{{ asset(config('upload.rooms')) }}/{{ $room->image }}">
+                                    <img class="img-responsive main-flex-image"
+                                         src="{{ asset(config('upload.rooms')) }}/{{ $room->image}}"/>
+                                </li>
                                 @foreach ($images as $image)
                                     <li data-thumb="{{ asset(config('upload.images')) }}/{{ $image->name }}">
                                         <img class="img-responsive main-flex-image"
