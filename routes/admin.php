@@ -47,3 +47,12 @@ Route::prefix('properties')->name('properties.')->group(function () {
     Route::post('update/{id}', $propertyController . 'update')->name('update');
     Route::get('delete/{id}', $propertyController . 'delete')->name('delete');
 });
+Route::prefix('category')->group(function () {
+    Route::get('/', 'Admin\CategoryController@index');
+    Route::get('/anyway', 'Admin\CategoryController@anyway')->name('categoy.Datatable');
+    Route::post('/', 'Admin\CategoryController@store')->name('store');
+    Route::get('/{id}/edit', 'Admin\CategoryController@edit')->name('edit');
+    Route::post('/update', 'Admin\CategoryController@update')->name('update');
+    Route::get('/{id}', 'Admin\CategoryController@destroy');
+    Route::post('/trans', 'Admin\CategoryController@trans');
+});

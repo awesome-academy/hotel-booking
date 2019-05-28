@@ -12,6 +12,7 @@ class Category extends Model
         'lang_id',
         'lang_parent_id',
         'lang_map',
+        'id',
     ];
 
     public function language()

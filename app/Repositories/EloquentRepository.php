@@ -108,4 +108,14 @@ abstract class EloquentRepository
     {
         return $this->_model->orderBy('id', 'desc')->limit($limit)->get();
     }
+
+      public function whereall($column, $object)
+    {
+        return $this->_model->where($column, '=', $object)->orderBy('id', 'desc')->get();
+    }
+    
+    public function wherewhere($column1, $object1, $column2, $object2)
+    {
+        return $this->_model->where($column1, '=', $object1)->where($column2, '=', $object2)->get();
+    }
 }

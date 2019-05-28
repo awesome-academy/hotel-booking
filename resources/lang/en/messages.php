@@ -34,4 +34,5 @@ return [
     'Write_your_comment' => 'Write your comment',
     'Send' => 'Send',
     'List_comments' => 'List comments',
+    'Select Language' => 'Select Language',
 ];
