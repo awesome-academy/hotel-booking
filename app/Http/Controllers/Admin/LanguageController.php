@@ -30,7 +30,7 @@ class LanguageController extends Controller
 
                 return '<button class="btn btn-sm btn-warning" language_id="' . $language->id . '" data-toggle="modal" data-target="#EditLanguage" title="' . __('messages.Edit Language') . '" id="editLanguage"><i class="fas fa-edit"></i></button>';
         })
-            ->editColumn('frag', function ($language) { 
+            ->editColumn('frag', function ($language) {
                 $url = config('upload.default') . $language->frag;
 
                 return '<img src="' . asset($url) . '" alt="" class="store_img">';
@@ -55,7 +55,7 @@ class LanguageController extends Controller
     {
         $language = $this->langRepository->find($id);
         if (is_null($language)) {
-            abort('404');
+            return response()->json(['error' => __('messages.Notfound')]);
         }
         $language['frag'] = config('upload.default') . $language->frag;
 
@@ -67,7 +67,7 @@ class LanguageController extends Controller
         $data = $request->all();
         $language = $this->langRepository->find($data['id']);
         if (is_null($language)) {
-            abort('404');
+            return response()->json(['error' => __('messages.Notfound')]);;
         }
         $data['short'] = strtolower(substr($request->name, 0, 2));
         if ($request->file == 'undefine') {

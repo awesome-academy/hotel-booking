@@ -118,4 +118,30 @@ abstract class EloquentRepository
     {
         return $this->_model->where($column1, '=', $object1)->where($column2, '=', $object2)->get();
     }
+
+    public function pluck($colum, $object, $id)
+    {
+        return $this->_model->where($colum, '=', $object)->pluck($id)->toArray();
+    }
+
+    public function whereIn($colum, $object)
+    {
+        return $this->_model->whereIn($colum, $object);
+    }
+
+    public function lang_map($id)
+    {
+        $post = $this->_model->find($id);
+        if(is_null($post)) {
+            abort('404');
+        }
+        $posts = $this->_model->where('lang_map', $post['lang_map'])->get();
+        foreach ($posts as $key => $value) {
+            $array = explode(',', $value['lang_map']);
+            $pos = array_search($post['id'], $array);
+            unset($array[$pos]);
+            $lang_map = implode(',', $array);
+            $this->_model->find($value['id'])->update(['lang_map' => $lang_map]);
+        }
+    }
 }

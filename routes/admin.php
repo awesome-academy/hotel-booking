@@ -56,3 +56,13 @@ Route::prefix('category')->group(function () {
     Route::get('/{id}', 'Admin\CategoryController@destroy');
     Route::post('/trans', 'Admin\CategoryController@trans');
 });
+Route::prefix('post')->group(function () {
+    Route::get('/', 'Admin\PostController@index');
+    Route::get('/anyway', 'Admin\PostController@anyway')->name('categoy.Datatable');
+    Route::post('/', 'Admin\PostController@store')->name('store');
+    Route::get('/{id}/edit', 'Admin\PostController@edit')->name('edit');
+    Route::post('/update', 'Admin\PostController@update')->name('update');
+    Route::get('/{id}', 'Admin\PostController@destroy');
+    Route::get('/{id}/detail', 'Admin\PostController@edit');
+    Route::post('/trans', 'Admin\PostController@trans');
+});

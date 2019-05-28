@@ -14,6 +14,7 @@ class Post extends Model
         'lang_id',
         'lang_parent_id',
         'lang_map',
+        'image',
     ];
 
     public function language()
