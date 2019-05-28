@@ -211,5 +211,5 @@
     </div>
 @endsection
 @section('script')
-    <script type="text/javascript" src="{{ asset('bower_components/bower/js/properties.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bower/admin/custom/js/room.js') }}"></script>
 @endsection

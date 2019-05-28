@@ -3,3 +3,4 @@
 <script type="text/javascript" src="{{ asset('bower_components/bower/admin/vendors/custom/datatables/datatables.bundle.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bower_components/bower/admin/demo/default/custom/crud/datatables/advanced/row-callback.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bower_components/bower/js/script.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bower_components/bower/js/sweetalert.js') }}"></script>

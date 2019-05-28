@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Http\Requests\Client\SearchHomeRequest;
 use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Language\LanguageRepository;
 use App\Repositories\Location\LocationRepository;
@@ -105,5 +106,26 @@ class RoomController extends Controller
             DB::rollBack();
             throw new \Exception($e->getMessage());
         }
+    }
+
+    public function index(SearchHomeRequest $request)
+    {
+        if (isset($_GET['check_in']) && isset($_GET['check_out']) && isset($_GET['location'])) {
+            $data = $this->roomRepository->roomAvailable($request);
+            if (!$data) {
+                $request->session()->flash('notification', 'no_room_found');
+
+                return redirect(route('client.index'));
+            }
+            $rooms = $this->roomRepository->filter($data);
+            $data = compact(
+                'rooms'
+            );
+
+            return view('client.rooms.index', $data);
+        } else {
+            return redirect(route('client.index'));
+        }
+
     }
 }

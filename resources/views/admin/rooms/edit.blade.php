@@ -214,4 +214,5 @@
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('bower_components/bower/js/uploadImage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bower/admin/custom/js/room.js') }}"></script>
 @endsection

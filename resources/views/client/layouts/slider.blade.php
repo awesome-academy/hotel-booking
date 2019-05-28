@@ -47,11 +47,17 @@
                                 <label>{{ trans('messages.Check_in_day') }}</label>
                                 <input type="text" id="dpd1" name="check_in" data-date-format="mm/dd/yyyy"
                                        class="date-selector" placeholder="&#xf073;" autocomplete="off"/>
+                                @if ($errors->has('check_in'))
+                                    <p class="text-danger">{{ $errors->first('check_in') }}</p>
+                                @endif
                             </li>
                             <li class="li-input">
                                 <label>{{ trans('messages.Check_out_day') }}</label>
                                 <input type="text" id="dpd2" name="check_out" data-date-format="mm/dd/yyyy"
                                        class="date-selector" placeholder="&#xf073;" autocomplete="off"/>
+                                @if ($errors->has('check_out'))
+                                    <p class="text-danger">{{ $errors->first('check_out') }}</p>
+                                @endif
                             </li>
                             <li class="li-select">
                                 <label>{{ trans('messages.Coming soon') }}</label>
