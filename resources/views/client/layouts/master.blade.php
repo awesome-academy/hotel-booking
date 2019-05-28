@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html class="no-js"> 
+<html class="no-js">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Luxen Premium Hotel Template</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <link rel="shortcut icon" href="img/favicon.ico" />
+    <title></title>
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="shortcut icon" href="img/favicon.ico"/>
     <!-- CSS FILES -->
     <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/flexslider.css') }}">
@@ -16,18 +16,16 @@
     <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/selectordie.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/2035.responsive.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('bower_components/bower/css/toastr.css') }}">
     <script src="{{ asset('bower_components/bower/client/js/vendor/modernizr-2.8.3-respond-1.1.0.min.js') }}"></script>
 </head>
 <body>
 
-    <div id="wrapper">
-        @include('client.layouts.header')
-        @yield('content')
-        @include('client.layouts.footer')
-    </div>
-
-
+<div id="wrapper">
+    @include('client.layouts.header')
+    @yield('content')
+    @include('client.layouts.footer')
+</div>
 <script src="{{ asset('bower_components/bower/client/js/vendor/jquery-1.11.1.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower/client/js/vendor/bootstrap.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower/client/js/retina-1.1.0.min.js') }}"></script>
@@ -39,5 +37,6 @@
 <script src="{{ asset('bower_components/bower/client/js/jquery.slicknav.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower/client/js/jquery.parallax-1.1.3.js') }}"></script>
 <script src="{{ asset('bower_components/bower/client/js/main.js') }}"></script>
+@yield('script')
 </body>
 </html>

@@ -40,9 +40,10 @@
                                             </div>
                                             <div class="pull-left room-rating">
                                                 <ul>
-                                                    @for ($i = 0; $i < $rating; $i++)
+                                                    @for ($i = 0; $i < floor($rating); $i++)
                                                         <li><i class="fa fa-star"></i></li>
                                                     @endfor
+                                                        <li>({{ $room->rating }})</li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -58,7 +59,7 @@
                                     </td>
                                     <td>
                                         <div class="button-style-1">
-                                            <a href="">
+                                            <a href="{{ route('client.rooms.detail', $room->id) }}">
                                                 <span class="mobile-visibility">{{ __('messages.See_more') }}</span>
                                             </a>
                                         </div>

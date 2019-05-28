@@ -6,7 +6,6 @@ use App\Models\Location;
 use App\Models\Room;
 use App\Models\RoomDetail;
 use App\Repositories\EloquentRepository;
-use http\Env\Request;
 use Carbon\Carbon;
 
 class RoomRepository extends EloquentRepository
@@ -108,5 +107,18 @@ class RoomRepository extends EloquentRepository
         } else {
             return false;
         }
+    }
+
+    public function updateRating($rating, $id)
+    {
+        $room = $this->_model->find($id);
+        if (is_null($room)) {
+            return false;
+        }
+        $old_rating = $room->rating;
+        $total_rating = $rating + $old_rating;
+        $new_rating = roundRating($total_rating);
+        $data = ['rating' => $new_rating];
+        $room->update($data);
     }
 }

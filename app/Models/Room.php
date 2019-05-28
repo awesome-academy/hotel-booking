@@ -41,4 +41,9 @@ class Room extends Model
     {
         return $this->belongsToMany(Invoice::class, 'room_invoice', 'room_id', 'invoice_code');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'object_id', 'id');
+    }
 }
