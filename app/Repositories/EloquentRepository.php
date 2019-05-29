@@ -144,4 +144,9 @@ abstract class EloquentRepository
             $this->_model->find($value['id'])->update(['lang_map' => $lang_map]);
         }
     }
+    
+    public function paginateByLangCate($lang_id, $per_page, $cate_id)
+    {
+        return $this->_model->where('lang_id', $lang_id)->where('cate_id', $cate_id)->orderBy('id', 'desc')->paginate($per_page);
+    }
 }
