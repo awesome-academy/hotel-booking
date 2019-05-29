@@ -41,7 +41,7 @@ class Room extends Model
 
     public function invoices()
     {
-        return $this->belongsToMany(Invoice::class, 'room_invoice', 'room_id', 'invoice_code');
+        return $this->belongsToMany(Invoice::class, 'room_invoice', 'room_id', 'invoice_code' , 'id', 'code')->withPivot('check_in_date', 'check_out_date');
     }
 
     public function comments()

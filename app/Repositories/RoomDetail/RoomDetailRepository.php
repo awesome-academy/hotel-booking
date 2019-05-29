@@ -7,6 +7,7 @@ use App\Models\Location;
 use App\Models\Room;
 use App\Models\RoomDetail;
 use App\Repositories\EloquentRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
@@ -160,38 +161,55 @@ class RoomDetailRepository extends EloquentRepository
         $roomDetail = $this->_model->find($id);
         if (is_null($roomDetail)) {
             return false;
-        }
-        $room_id = $roomDetail->room_id;
-        $lang_map = explode(',', $roomDetail->lang_map);
-        $key = array_search($id, $lang_map);
-        unset($lang_map[$key]);
-        if ($checkOriginal) {
-            $room = Room::find($room_id);
-            if (is_null($room)) {
-                return false;
-            }
-            $properties_id = $this->getRoomPropertiesId($room->id);
-            DB::beginTransaction();
-            try {
-                $room->roomDetails()->delete();
-                $room->properties()->detach($properties_id);
-                $room->delete();
-                DB::commit();
-
-                return true;
-            } catch (\Exception $e) {
-                DB::rollBack();
-                throw new \Exception($e->getMessage());
-            }
         } else {
-            $room = $this->_model->find($id);
-            if (is_null($room)) {
-                return false;
-            }
-            $this->updateLangMap($roomDetail->lang_parent_id, $lang_map);
-            $room->delete();
+            $room_id = $roomDetail->room_id;
+            $lang_map = explode(',', $roomDetail->lang_map);
+            $key = array_search($id, $lang_map);
+            unset($lang_map[$key]);
+            if ($checkOriginal) {
+                $room = Room::find($room_id);
+                if (is_null($room)) {
+                    return false;
+                } else {
+                    $checkInvoice = $this->checkInvoices($room_id);
+                    if (count($checkInvoice) == 0) {
+                        $properties_id = $this->getRoomPropertiesId($room->id);
+                        DB::beginTransaction();
+                        try {
+                            $room->invoices()->delete();
+                            $room->invoices()->detach();
+                            $room->roomDetails()->delete();
+                            $room->properties()->detach($properties_id);
+                            $room->delete();
+                            DB::commit();
 
-            return true;
+                            return true;
+                        } catch (\Exception $e) {
+                            DB::rollBack();
+                            throw new \Exception($e->getMessage());
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                $room = $this->_model->find($id);
+                if (is_null($room)) {
+                    return false;
+                } else {
+                    DB::beginTransaction();
+                    try {
+                        $this->updateLangMap($roomDetail->lang_parent_id, $lang_map);
+                        $room->delete();
+                        DB::commit();
+
+                        return true;
+                    } catch (\Exception $e) {
+                        DB::rollBack();
+                        throw new \Exception($e->getMessage());
+                    }
+                }
+            }
         }
     }
 
@@ -201,5 +219,36 @@ class RoomDetailRepository extends EloquentRepository
         $properties_id = $room->properties()->pluck('properties.id')->toArray();
 
         return $properties_id;
+    }
+
+    public function checkInvoices($room_id)
+    {
+        $today = Carbon::parse(date('m/d/Y'));
+        $room = Room::find($room_id);
+        if (is_null($room)) {
+            return false;
+        }
+        $invoices = $room->invoices()->get();
+        $check = [];
+        foreach ($invoices as $invoice) {
+            $pivot = $invoice->pivot;
+            $check_in = Carbon::parse($pivot->check_in_date);
+            $check_out = Carbon::parse($pivot->check_out_date);
+            $check_in_now = $today->diff($check_in);
+            $check_out_now = $today->diff($check_out);
+            if ($check_in_now->days > 0 && $check_in_now->invert == 0) {
+                array_push($check, $invoice);
+            }
+            if ($check_in_now->days == 0 && $check_in_now->invert == 1) {
+                array_push($check, $invoice);
+            }
+            if ($check_in_now->days > 0 && $check_in_now->invert == 1) {
+                if ($check_out_now->days >= 0 && $check_out_now->invert == 0) {
+                    array_push($check, $invoice);
+                }
+            }
+        }
+
+        return $check;
     }
 }
