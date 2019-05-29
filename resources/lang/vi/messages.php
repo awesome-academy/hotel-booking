@@ -171,4 +171,6 @@ return [
     'Time' => 'Thời gian',
     'Price_in_invoice' => 'Giá trong hóa đơn',
     'Price_in_room' => 'Giá hiện tại',
+    'Websetting' => 'Cài đặt website',
+    'Logo' => 'Logo',
 ];

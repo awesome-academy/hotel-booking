@@ -101,5 +101,11 @@
                 <span class="m-menu__link-text">{{ __('messages.Invoices_manage') }}</span>
             </a>
         </li>
+        <li class="m-menu__item" aria-haspopup="true">
+            <a href="{{ route('admin.web-setting.index') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-wrench"></i>
+                <span class="m-menu__link-text">{{ __('messages.Websetting') }}</span>
+            </a>
+        </li>
     </ul>
 </div>
