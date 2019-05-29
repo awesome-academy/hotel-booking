@@ -91,8 +91,14 @@
         </li>
         <li class="m-menu__item" aria-haspopup="true">
             <a href="{{ route('admin.properties.index') }}" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon fa fa-cubes"></i>
+                <i class="m-menu__link-icon fa fa-magic"></i>
                 <span class="m-menu__link-text">{{ __('messages.Properties_manage') }}</span>
+            </a>
+        </li>
+        <li class="m-menu__item" aria-haspopup="true">
+            <a href="{{ route('admin.invoices.index') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-money-bill"></i>
+                <span class="m-menu__link-text">{{ __('messages.Invoices_manage') }}</span>
             </a>
         </li>
     </ul>

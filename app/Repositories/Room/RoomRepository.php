@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Room;
 
+use App\Models\Invoice;
 use App\Models\Location;
 use App\Models\Room;
 use App\Models\RoomDetail;
@@ -193,5 +194,33 @@ class RoomRepository extends EloquentRepository
             ['path' => $url]);
 
         return $rooms;
+    }
+
+    public function updateAvailableTime($invoice_id)
+    {
+        $invoice = Invoice::find($invoice_id);
+        if (is_null($invoice)) {
+            return false;
+        } else {
+            $room = $invoice->rooms()->first();
+            $pivot = $room->pivot;
+            $check_in = Carbon::parse($pivot->check_in_date);
+            $check_out = Carbon::parse($pivot->check_out_date);
+            $length = $check_in->diff($check_out)->days;
+            $room_number = $pivot->room_number;
+            $arr = array(
+                'check_in' => $pivot->check_in_date,
+                'check_out' => $pivot->check_out_date,
+                'length' => $length,
+                'available_rooms' => array($room_number),
+            );
+            $available_times = json_decode($room->available_time, true);
+            array_push($available_times, $arr);
+            $data = array(
+                'available_time' => json_encode($available_times, true),
+            );
+            $room->update($data);
+            $room->save();
+        }
     }
 }

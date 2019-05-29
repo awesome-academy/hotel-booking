@@ -66,3 +66,13 @@ Route::prefix('post')->group(function () {
     Route::get('/{id}/detail', 'Admin\PostController@edit');
     Route::post('/trans', 'Admin\PostController@trans');
 });
+
+/**
+ * Invoice manage
+ */
+Route::prefix('/invoices')->name('invoices.')->group(function () {
+    $invoiceController = 'Admin\InvoiceController@';
+    Route::get('/', $invoiceController . 'index')->name('index');
+    Route::get('/{id}', $invoiceController . 'show')->name('show');
+    Route::get('/delete/{id}', $invoiceController . 'delete')->name('delete');
+});
