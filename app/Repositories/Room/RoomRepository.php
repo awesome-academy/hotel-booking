@@ -123,13 +123,13 @@ class RoomRepository extends EloquentRepository
         $room->update($data);
     }
 
-    public function roomAvailable($request)
+    public function roomAvailable($check_in, $check_out, $location)
     {
-        $check_in_day = Carbon::parse($_GET['check_in']);
-        $check_out_day = Carbon::parse($_GET['check_out']);
-        $location = Location::find($_GET['location']);
+        $check_in_day = Carbon::parse($check_in);
+        $check_out_day = Carbon::parse($check_out);
+        $location = Location::find($location);
         if (is_null($location)) {
-           return false;
+            return false;
         }
         $rooms = $location->rooms()->get();
         foreach ($rooms as $room) {
@@ -193,6 +193,5 @@ class RoomRepository extends EloquentRepository
             ['path' => $url]);
 
         return $rooms;
-
     }
 }

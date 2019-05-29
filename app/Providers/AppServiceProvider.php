@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
         /**
          * Client
          */
-        View::composer(['client.layouts.header', 'client.layouts.slider', 'client.layouts.sidebar_rooms'], function ($view) {
+        View::composer(['client.layouts.header', 'client.layouts.slider', 'client.layouts.sidebar_rooms', 'client.booking.index'], function ($view) {
             $header_languages = Language::all();
             $view->with('header_languages', $header_languages);
             $locations_for_nav = Location::all();
@@ -74,6 +74,15 @@ class AppServiceProvider extends ServiceProvider
                 $current_language = Language::where('name', Config::get('language.name'))->where('short', Config::get('language.short'))->first();
             }
             $view->with('current_language', $current_language);
+            if (Auth::check()) {
+                $user = Auth::user();
+                $view->with('user', $user);
+            } elseif (Cookie::get('remember_token')) {
+                $remember_token = json_decode(Cookie::get('remember_token'));
+                $user = User::find($remember_token->id);
+                $view->with('user', $user);
+            }
+
         });
     }
 }

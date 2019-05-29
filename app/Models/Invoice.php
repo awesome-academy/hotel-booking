@@ -19,7 +19,7 @@ class Invoice extends Model
 
     public function rooms()
     {
-        return $this->belongsToMany(Room::class)->withPivot('room_id', 'invoice_code', 'room_number', 'price', 'check_in_date', 'check_out_date');
+        return $this->belongsToMany(Room::class, 'room_invoice', 'invoice_code', 'code');
     }
 
     public function user()

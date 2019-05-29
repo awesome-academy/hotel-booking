@@ -35,4 +35,10 @@ return [
     'Send' => 'Send',
     'List_comments' => 'List comments',
     'Select Language' => 'Select Language',
+    'Book_now' => 'Book Now',
+    'rooms' => 'rooms',
+    'Rest' => 'Rest',
+    'Messages' => 'Messages',
+    'Checkout' => 'Checkout',
+    'Info_booking' => 'Info Booking',
 ];

@@ -155,4 +155,10 @@ return [
     'validate_description' => 'Miêu tả không được để trống',
     'validate_cate' => 'Phải chọn danh mục',
     'validate_body' => 'Nội dung không được bỏ trống',
+    'Book_now' => 'Đặt phòng',
+    'rooms' => 'phòng',
+    'Rest' => 'Còn lại',
+    'Messages' => 'Tin nhắn',
+    'Checkout' => 'Thanh toán',
+    'Info_booking' => 'Thông tin hóa đơn',
 ];

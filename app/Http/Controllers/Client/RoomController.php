@@ -110,8 +110,9 @@ class RoomController extends Controller
 
     public function index(SearchHomeRequest $request)
     {
+        $base_lang_id = $this->baseLangId;
         if (isset($_GET['check_in']) && isset($_GET['check_out']) && isset($_GET['location'])) {
-            $data = $this->roomRepository->roomAvailable($request);
+            $data = $this->roomRepository->roomAvailable($_GET['check_in'], $_GET['check_out'], $_GET['location']);
             if (!$data) {
                 $request->session()->flash('notification', 'no_room_found');
 
@@ -119,7 +120,8 @@ class RoomController extends Controller
             }
             $rooms = $this->roomRepository->filter($data);
             $data = compact(
-                'rooms'
+                'rooms',
+                'base_lang_id'
             );
 
             return view('client.rooms.index', $data);

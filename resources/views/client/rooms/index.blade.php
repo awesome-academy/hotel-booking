@@ -14,17 +14,22 @@
                             <td class="table-products-name pos-center"><h6>{{ __('messages.Name') }}</h6></td>
                             <td class="table-products-price pos-center"><h6>{{ __('messages.Price') }}</h6></td>
                             <td class="table-products-total pos-center"><h6>{{ __('messages.See_more') }}</h6></td>
+                            <td class="pos-center"><h6>{{ __('messages.Rest') }}</h6></td>
+                            <td class="pos-center"><h6></h6></td>
                         </tr>
                         @foreach ($rooms as $room)
                             <?php
                             $rating = $room->rating;
                             if (session('locale')) {
                                 $roomDetail = $room->roomDetails()->where('lang_id', session('locale'))->first();
+                                if(is_null($roomDetail)) {
+                                    $roomDetail = $room->roomDetails()->where('lang_id', $base_lang_id)->first();
+                                }
                             } else {
                                 $roomDetail = $room->roomDetails()->where('lang_id', $base_lang_id)->first();
-                            }
+                            };
+                            $roomNumbers = $room->availableRoomNumber($_GET['check_in'], $_GET['check_out'], $room->id);
                             ?>
-                            @if (!is_null($roomDetail))
                                 <tr class="table-products-list pos-center">
                                     <td class="products-image-table">
                                         <img alt="Products Image 1"
@@ -61,8 +66,22 @@
                                             </a>
                                         </div>
                                     </td>
+                                    <td>
+                                        {{ sizeof($roomNumbers) }} {{ __('messages.rooms') }}
+                                    </td>
+                                    <td>
+                                        <div class="button-style-1">
+                                            <form method="post" action="{{ route('client.booking.submit') }}">
+                                                @csrf
+                                                <input type="hidden" name="check_in" value="{{ $_GET['check_in'] }}">
+                                                <input type="hidden" name="check_out" value="{{ $_GET['check_out'] }}">
+                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                                <input type="hidden" name="price" value="{{ ($room->sale_status == 1) ? $roomDetail->sale_price : $roomDetail->price }}">
+                                                <button>{{ __('messages.Book_now') }}</button>
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
-                            @endif
                         @endforeach
                     </table>
                     {{ $rooms->links() }}
