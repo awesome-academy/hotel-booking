@@ -85,4 +85,34 @@ class PostController extends Controller
             return view('client.blog.blog_category', compact('cates', 'cate_child'));
         }
     }
+
+    public function detail($id)
+    {
+        $post = $this->postRepo->find($id);
+        if (is_null($post)) {
+            abort('404');
+        }
+        $post['image'] = asset('') . config('upload.default') . $post['image'];
+        $vi_id = $this->langRepository->whereFirst('short', 'vi');
+        if (is_null($vi_id)) {
+            abort('404');
+        }
+        $lag_id = Session::get('locale');
+        if ($lag_id == $vi_id['id']) {
+            $post['date'] = $post->created_at->format('d/m/Y');
+        } else {
+            $post['date'] = $post->created_at->format('Y M d');
+        }
+        $category = $this->cateRepository->find($post['cate_id']);
+        if (is_null($category)) {
+            abort('404');
+        }
+        $post['cate_name'] = $category['name'];
+        $new_posts = $this->postRepo->whereall('lang_id', Session::get('locale'))->take(config('post.default'));
+        foreach ($new_posts as $key => $value) {
+            $new_posts[$key]['image'] = asset('') . config('upload.default') . $value['image'];
+        }
+        
+        return view('client.blog.blogDetail', compact('post', 'new_posts'));
+    }
 }

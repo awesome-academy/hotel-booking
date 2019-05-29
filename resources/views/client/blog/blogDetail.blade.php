@@ -7,8 +7,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-sm-8 blog-post-contents">
-                    @if (isset($posts))
-                    @foreach ($posts as $post)
+                    @if (isset($post))
                     <div class="blog-post"><!-- Blog Post -->
                         <h3><a href="{{ route('blog.detail'), $post->id }}">{{ $post->title }}</a></h3>
                         <div class="post-materials  clearfix">
@@ -20,18 +19,15 @@
                             </ul>
                         </div>
                         <div class="blog-image marginb30 margint30">
-                            <img alt="Blog Image 2" class="img-responsive img-blog" src="{{ $post->image }}" >
+                            <img alt="Blog Image 2" class="img-responsive" src="{{ $post->image }}" >
                         </div>
-                        <div class="post-content margint10">
-                            <p>{{ $post->description }}</p>
+                        <div class="button mini-button button-style-2 margint30">
+                            {!! $post->body !!}
                         </div>
-                        <div class="button mini-button button-style-2 margint30"><h6><a href="{{ route('blog.detail'), $post->id }}">{{ __('messages.READ MORE') }}</a></h6></div>
                     </div>
-                    @endforeach
                     @else
                     <p>{{ __('messages.NoPost') }}</p>
                     @endif
-                    {{ $posts->links() }}
                 </div>
                 <div class="col-lg-3 col-sm-4 margint60"><!-- Sidebar -->
                     <div class="luxen-widget news-widget">
@@ -40,14 +36,14 @@
                         </div>
                         <ul class="sidebar-recent">
                             @if (isset($new_posts))
-                            @foreach($new_posts as $new)
+                            @foreach ($new_posts as $new)
                             <li class="clearfix">
                                 <h6><a href="#">News from us from now</a></h6>
                                 <div class="pull-left blg-img margint20">
                                     <img src="{{ $new->image }}" class="img-responsive img1" alt="">
                                 </div>
                                 <div class="pull-left blg-txt">
-                                    <p>{{ $new->title }}<a class="active-color" href="{{ route('blog.detail'), $new->id }}">[...]</a></p>
+                                    <p>{{ route('blog.detail'), $new->id }}">[...]</a></p>
                                 </div>
                             </li>
                             @endforeach
