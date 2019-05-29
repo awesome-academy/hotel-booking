@@ -76,3 +76,12 @@ Route::prefix('/invoices')->name('invoices.')->group(function () {
     Route::get('/{id}', $invoiceController . 'show')->name('show');
     Route::get('/delete/{id}', $invoiceController . 'delete')->name('delete');
 });
+
+/**
+ * Web setting manage
+ */
+Route::prefix('/web-setting')->name('web-setting.')->group(function () {
+    $webSettingController = 'Admin\WebSettingController@';
+    Route::get('/', $webSettingController . 'index')->name('index');
+    Route::post('/update/{id}', $webSettingController . 'update')->name('update');
+});

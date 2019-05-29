@@ -9,4 +9,5 @@ return [
     'sliders' => 'bower_components/bower/uploads/sliders/',
     'client_static' => 'bower_components/bower/client/img/',
     'avatar_comment' => 'http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg',
+    'logo' => 'bower_components/bower/uploads/logo/',
 ];
