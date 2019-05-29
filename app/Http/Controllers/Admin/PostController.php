@@ -27,6 +27,11 @@ class PostController extends Controller
     {
         $languages = $this->langRepository->all();
         $categories = $this->cateRepository->whereall('lang_id', Session::get('locale'));
+        foreach ($categories as $key => $value) {
+            if ($value['parent_id'] == 0) {
+                unset($categories[$key]);
+            }
+        }
         $check_unique = $this->langRepository->wherewhere('short', 'vi', 'id', Session::get('locale'));
         $posts = $this->postRepository->all();
 

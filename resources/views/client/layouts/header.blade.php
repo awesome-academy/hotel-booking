@@ -54,13 +54,15 @@ use Illuminate\Support\Facades\Request;
                                         @endforeach
                                     </ul>
                                 </li>
+                                <li @if (Request::is('blog*'))  class="active" @else class="" @endif>
+                                    <a href="{{ asset('blog') }}">{{ trans('messages.NEWS') }}</a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
                     <div class="pull-right">
                         <div class="button-style-1 margint45">
-                            <a href=""><i
-                                        class="fa fa-calendar"></i>{{ trans('messages.Coming soon') }}</a>
+                            <a href=""><i class="fa fa-calendar"></i>{{ trans('messages.Coming soon') }}</a>
                         </div>
                     </div>
                 </div>
