@@ -12,13 +12,17 @@ use App\Repositories\Language\LanguageRepository;
 use Session;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\Post\PostRepository;
+use App\Models\Post;
 
 class CategoryController extends Controller
 {
-    public function __construct(CategoryRepository $cateRepository, LanguageRepository $langRepository)
+
+    public function __construct(CategoryRepository $cateRepository, LanguageRepository $langRepository, PostRepository $postRepository)
     {
         $this->cateRepository = $cateRepository;
         $this->langRepository = $langRepository;
+        $this->postRepository = $postRepository;
     }
 
     public function index()
@@ -28,7 +32,7 @@ class CategoryController extends Controller
         }
         $check_unique = $this->langRepository->wherewhere('short', 'vi', 'id', $locale);
         $languages = $this->langRepository->all();
-        if(count($languages) > 0) {
+        if (count($languages) > 0) {
             $categories = $this->cateRepository->whereall('lang_id', $locale);
 
             return view('admin.categories.category', compact('categories', 'languages', 'check_unique'));
@@ -42,16 +46,16 @@ class CategoryController extends Controller
         }
         $language = $this->langRepository->find($locale);
         if (is_null($language)) {
-            abort('404');
+            return response()->json(['error' => __('messages.Notfound')]);;
         }
         $categories = $this->cateRepository->whereall('lang_id', $language['id']);
         foreach ($categories as $key => $category) {
-            if($category['parent_id'] == 0) {
+            if ($category['parent_id'] == 0) {
                 $categories[$key]['name_parent'] = __('messages.No parent_name');
             } else {
                 $parent = $this->cateRepository->find($category['parent_id']);
-                if(is_null($parent)) {
-                    abort('404');
+                if (is_null($parent)) {
+                    return response()->json(['error' => __('messages.Notfound')]);
                 }
                 $categories[$key]['name_parent'] = $parent['name'];
             }
@@ -59,8 +63,15 @@ class CategoryController extends Controller
 
         return Datatables::of($categories) 
         ->addColumn('action', function($category) {
-
-            return ' <button class="btn btn-sm btn-success" category_id="' . $category->id . '" data-toggle="modal" data-target="#TransCate" id="transCate" lang_id="' . $category->lang_id . '"><i class="fas fa-language"></i></button> <button class="btn btn-sm btn-warning" category_id="' . $category->id . '" data-toggle="modal" data-target="#EditCategory" title="' . __('messages.Edit Category') . '" id="editCategory"><i class="fas fa-edit"></i></button> <button class="btn btn-sm btn-danger" category_id="' . $category->id . '" data-toggle="modal" id="deleteCate"><i class="far fa-trash-alt"></i></button>';
+            $vi_id = $this->langRepository->whereFirst('short', 'vi');
+            if (is_null($vi_id)) {
+                return response()->json(['error' => __('messages.Notfound')]);;
+            }
+            if (Session::get('locale') == $vi_id['id']) {
+                return ' <button class="btn btn-sm btn-success" category_id="' . $category->id . '" data-toggle="modal" data-target="#TransCate" id="transCate" lang_id="' . $category->lang_id . '"><i class="fas fa-language"></i></button> <button class="btn btn-sm btn-warning" category_id="' . $category->id . '" data-toggle="modal" data-target="#EditCategory" title="' . __('messages.Edit Category') . '" id="editCategory"><i class="fas fa-edit"></i></button> <button class="btn btn-sm btn-danger" category_id="' . $category->id . '" data-toggle="modal" id="deleteCate"><i class="far fa-trash-alt"></i></button>';
+            } else {
+                return ' <button class="btn btn-sm btn-success" category_id="' . $category->lang_parent_id . '" data-toggle="modal" data-target="#TransCate" id="transCate" lang_id="' . $category->lang_id . '"><i class="fas fa-language"></i></button> <button class="btn btn-sm btn-warning" category_id="' . $category->id . '" data-toggle="modal" data-target="#EditCategory" title="' . __('messages.Edit Category') . '" id="editCategory"><i class="fas fa-edit"></i></button> <button class="btn btn-sm btn-danger" category_id="' . $category->id . '" data-toggle="modal" id="deleteCate"><i class="far fa-trash-alt"></i></button>';
+            }
         })
         ->addColumn('parent_name', function($category) {
 
@@ -74,32 +85,29 @@ class CategoryController extends Controller
     {
         $data = $request->all();
         $check_unique = $this->cateRepository->wherewhere('lang_id', Session::get('locale'), 'name', $request->name);
-        if(count($check_unique) <= 0) {
-            if($request->parent_id == 'undefined') {
+        if (count($check_unique) <= 0) {
+            if ($request->parent_id == 'undefined') {
                 $data['parent_id'] = 0;
             }
             $data['lang_parent_id'] = 0;
             $lang = $this->langRepository->whereFirst('short', config('language.short'));
-            if(is_null($lang)) {
-                abort('404');
+            if (is_null($lang)) {
+                return response()->json(['error' => __('messages.Notfound')]);
             }
             $data['lang_id'] = $lang['id'];
             DB::beginTransaction();
             try {
-               $cate = $this->cateRepository->create($data);
-               $langMap = $cate['id'];
-               $this->cateRepository->update($cate['id'], ['lang_map' => $langMap]);
-
-               DB::commit();
+                $cate = $this->cateRepository->create($data);
+                $langMap = $cate['id'];
+                $this->cateRepository->update($cate['id'], ['lang_map' => $langMap]);
+                DB::commit();
             } catch (Exception $e) {
                 DB::rollBack();
-
                 throw new Exception($e->getMessage());
             }
 
             return response()->json(['success' => __('messages.Add Successfully'), 'error' => false]);
         } else {
-
             return response()->json(['error' => __('messages.Validate_unique')]);
         }
     }
@@ -108,19 +116,17 @@ class CategoryController extends Controller
     {
         $category = $this->cateRepository->find($id);
         if (is_null($category)) {
-            abort('404');
+            return response()->json(['error' => __('messages.Notfound')]);
         }
-
         return $category;
     }
 
     public function update(UpdateCategory $request)
     {
-
         $data = $request->all();
         $category = $this->cateRepository->find($data['id']);
         if (is_null($category)) {
-            abort('404');
+            return response()->json(['error' => __('messages.Notfound')]);
         }
         $cate = $this->cateRepository->update($data['id'], ['name' => $data['name']]);
 
@@ -130,44 +136,113 @@ class CategoryController extends Controller
     public function trans(StoreCategory $request) {
         $data = $request->all();
         $check_unique = $this->cateRepository->wherewhere('lang_id', $request->lang_id, 'lang_parent_id', $request->lang_parent_id);
-        if(count($check_unique) <= 0) {
-            $category = $this->cateRepository->find($request->lang_parent_id);
-            if (is_null($category)) {
-            abort('404');
-            }
-            if($category['parent_id'] == 0) {
-                $data['parent_id'] = 0;
-            } else {
-            $category2 = $this->cateRepository->wherewhere('lang_parent_id', $category['parent_id'], 'lang_id', $request->lang_id);
-            $data['parent_id'] = $category2[0]['id'];
-            }
-            DB::beginTransaction();
+        $vi_id = $this->langRepository->whereFirst('short', 'vi');
+        if (is_null($vi_id)) {
+            return response()->json(['error' => __('messages.Notfound')]);
+        }
+        if (count($check_unique) <= 0) {
+            if ((int)$request->lang_id !== $vi_id['id']) {
+                $category = $this->cateRepository->find($request->lang_parent_id);
+                if (is_null($category)) {
+                    return response()->json(['error' => __('messages.Notfound')]);
+                }
+                if ($category['parent_id'] == 0) {
+                    $data['parent_id'] = 0;
+                } else {
+                    $category2 = $this->cateRepository->wherewhere('lang_parent_id', $category['parent_id'], 'lang_id', $request->lang_id);
+                    $data['parent_id'] = $category2[0]['id'];
+                }
+                DB::beginTransaction();
                 try {
                     $newcate = $this->cateRepository->create($data);
                     $langMap = $category['lang_map'] . ',' . $newcate['id'];
                     $this->cateRepository->update($newcate['id'], ['lang_map' => $langMap]);
-                    $cates = $this->cateRepository->whereall('lang_map', $category['lang_map']);
-                    foreach ($cates as $key => $value) {
-                        $value->update(['lang_map' => $langMap]);
-                    }
-
+                    $cates = $this->cateRepository->pluck('lang_map', $category['lang_map'], 'id');
+                    $this->cateRepository->whereIn('id', $cates)->update(['lang_map' => $langMap]);
                     DB::commit();
                 } catch (Exception $e) {
                     DB::rollBack();
-
                     throw new Exception($e->getMessage());
                 }
    
-
-            return response()->json(['success' => __('messages.Add Successfully'), 'error' => false]);
+                return response()->json(['success' => __('messages.Add Successfully'), 'error' => false]);
             } else {
-
+                return response()->json(['error' => __('messages.Validate_unique')]);
+            }
+        } else {
             return response()->json(['error' => __('messages.Validate_unique')]);
         }
     }
     public function destroy($id)
     {
-        $this->cateRepository->delete($id);
-        $this->cateRepository->whereDelete('parent_id', $id);
+        $vi_id = $this->langRepository->whereFirst('short', 'vi');
+        if (is_null($vi_id)) {
+            return response()->json(['error' => __('messages.Notfound')]);
+        }
+        $cate = $this->cateRepository->find($id);
+        if (is_null($cate)) {
+            return response()->json(['error' => __('messages.Notfound')]);
+        }
+        if ((int)Session::get('locale') !== $vi_id['id']) {
+            if ($cate['parent_id'] == 0) {
+                DB::beginTransaction();
+                try {
+                    $cate_id = $this->cateRepository->pluck('parent_id', $id, 'id');
+                    $this->postRepository->whereIn('cate_id', $cate_id)->delete();
+                    $this->cateRepository->delete($id);
+                    $this->cateRepository->whereDelete('parent_id', $id);
+                    $this->postRepository->whereDelete('cate_id', $id);
+
+                    DB::commit();
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    throw new Exception($e->getMessage());
+                }
+            } else {
+                DB::beginTransaction();
+                try {
+                    $this->cateRepository->lang_map($id);
+                    $this->cateRepository->delete($id);
+                    $this->postRepository->wheredelete('cate_id', $id);
+                    DB::commit();
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    throw new Exception($e->getMessage());
+                }
+            }
+        } else {
+            if ($cate['parent_id'] == 0) {
+                DB::beginTransaction();
+                try {
+                    $child_cate = $this->cateRepository->pluck('parent_id', $cate['id'], 'id');
+                    foreach ($child_cate as $key => $value) {
+                        $post_cate = $this->cateRepository->find($value);
+                        if (is_null($post_cate)) {
+                            return response()->json(['error' => __('messages.Notfound')]);;
+                        }
+                        $cate_id = $this->cateRepository->pluck('lang_map', $post_cate['lang_map'], 'id');
+                        $this->postRepository->whereIn('cate_id', $cate_id)->delete();
+                    }
+                    $this->postRepository->wheredelete('cate_id', $cate['id']);
+                    $this->cateRepository->whereDelete('lang_map', $cate['lang_map']);
+                    $this->cateRepository->whereDelete('parent_id', $id);
+                    DB::commit();
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    throw new Exception($e->getMessage());
+                }
+            }
+            DB::beginTransaction();
+            try {
+                $child_cate = $this->cateRepository->pluck('lang_map', $cate['lang_map'], 'id');
+                $this->postRepository->whereIn('id', $child_cate)->delete();
+                $this->cateRepository->whereDelete('lang_map', $cate['lang_map']);
+                DB::commit();
+            } catch (Exception $e) {
+                DB::rollBack();
+                throw new Exception($e->getMessage());
+            }
+        }
+
     }
 }

@@ -15,6 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "bower": "git@github.com:duongmanhhoang/bower-sun-hotel.git"
+    "bower": "https://github.com/duongmanhhoang/bower-sun-hotel.git"
   }
 }
