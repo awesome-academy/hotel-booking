@@ -88,3 +88,4 @@
         </div>
     </div>
 </header>
+<input type="hidden" name="" a="{{ __('messages.Are_you_sure') }}" b="{{ __('messages.Delete') }}" c="{{ __('messages.Cancel') }}" id="hiddendelete">

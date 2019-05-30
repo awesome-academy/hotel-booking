@@ -85,3 +85,8 @@ Route::prefix('/web-setting')->name('web-setting.')->group(function () {
     Route::get('/', $webSettingController . 'index')->name('index');
     Route::post('/update/{id}', $webSettingController . 'update')->name('update');
 });
+Route::prefix('contact')->name('contact.')->group(function() {
+    Route::get('/', 'Admin\ContactController@index')->name('contact');
+    Route::get('/anyway', 'Admin\ContactController@anyway')->name('Datatable');
+    Route::get('/{id}', 'Admin\ContactController@delete')->name('delete');
+});

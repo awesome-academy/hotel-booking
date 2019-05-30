@@ -10,13 +10,13 @@
                     @if (isset($posts))
                     @foreach ($posts as $post)
                     <div class="blog-post"><!-- Blog Post -->
-                        <h3><a href="{{ route('blog.detail'), $post->id }}">{{ $post->title }}</a></h3>
+                        <h3><a href="{{ route('client.blog.detail', $post->id) }}">{{ $post->title }}</a></h3>
                         <div class="post-materials  clearfix">
                             <ul>
                                 <li><h6><i class="fa fa-calendar"></i>{{ $post->date }}</h6></li>
                                 <li><h6><i class="fa fa-user"></i>{{ __('messages.ADMIN') }}</h6></li>
                                 <li><h6><i class="fa fa-comments"></i>13 {{ __('messages.COMMENTS') }}</h6></li>
-                                <li><h6><a href="{{ route('blog.index'), $post->cate_id }}"><i class="fa fa-bars"></i>{{ $post->cate_name }}</a></h6></li>
+                                <li><h6><a href="{{ route('client.blog.index', $post->cate_id) }}"><i class="fa fa-bars"></i>{{ $post->cate_name }}</a></h6></li>
                             </ul>
                         </div>
                         <div class="blog-image marginb30 margint30">
@@ -25,7 +25,7 @@
                         <div class="post-content margint10">
                             <p>{{ $post->description }}</p>
                         </div>
-                        <div class="button mini-button button-style-2 margint30"><h6><a href="{{ route('blog.detail'), $post->id }}">{{ __('messages.READ MORE') }}</a></h6></div>
+                        <div class="button mini-button button-style-2 margint30"><h6><a href="{{ route('client.blog.detail', $post->id) }}">{{ __('messages.READ MORE') }}</a></h6></div>
                     </div>
                     @endforeach
                     @else
@@ -47,7 +47,7 @@
                                     <img src="{{ $new->image }}" class="img-responsive img1" alt="">
                                 </div>
                                 <div class="pull-left blg-txt">
-                                    <p>{{ $new->title }}<a class="active-color" href="{{ route('blog.detail'), $new->id }}">[...]</a></p>
+                                    <p>{{ $new->title }}<a class="active-color" href="{{ route('client.blog.detail', $new->id) }}">[...]</a></p>
                                 </div>
                             </li>
                             @endforeach

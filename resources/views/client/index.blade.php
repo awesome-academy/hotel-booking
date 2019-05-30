@@ -19,11 +19,13 @@
                             </div>
                             <div class="flexslider">
                                 <ul class="slides">
+                                    @if ($images)
                                     @foreach ($images as $image)
                                         <li>
                                             <img class="img-responsive client-image-gallery" src="{{ config('upload.images') }}{{ $image->name }}"/>
                                         </li>
                                     @endforeach
+                                    @endif
                                 </ul>
                             </div>
                         </div>
