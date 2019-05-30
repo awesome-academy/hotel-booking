@@ -147,6 +147,5 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('bower_components/bower/js/toastr.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower/js/comment.js') }}"></script>
 @endsection

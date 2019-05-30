@@ -160,7 +160,7 @@ class UserController extends Controller
             'password' => 'required|min:6|max:15|confirmed',
         );
         $messages = array(
-            'old_password.required' => __('messages.Validate_required'),
+            'old_password.required' => __('messages.Validate_old_password_required'),
             'password.required' => __('messages.Validate_required'),
             'password.min' => __('messages.Validate_min') . ' :min ' . __('messages.Validate_character'),
             'password.max' => __('messages.Validate_max') . ' :max ' . __('messages.Validate_character'),

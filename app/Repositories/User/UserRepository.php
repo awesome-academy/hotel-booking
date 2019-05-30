@@ -36,4 +36,15 @@ class UserRepository extends EloquentRepository
         return $user;
     }
 
+    public function getRoleId($role_name)
+    {
+        $role = Role::where('name', $role_name)->first();
+        if (is_null($role)) {
+            return false;
+        }
+        $id = $role->id;
+
+        return $id;
+    }
+
 }

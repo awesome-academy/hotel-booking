@@ -18,6 +18,7 @@ Auth::routes();
 
 Route::get('login', 'Auth\LoginController@form')->name('login_form');
 Route::post('login', 'Auth\LoginController@authenticate')->name('login');
+Route::post('register', 'Auth\LoginController@register')->name('register');
 
 Route::prefix('rooms')->name('rooms.')->group(function () {
     $roomController = 'Client\RoomController@';
@@ -37,4 +38,11 @@ Route::prefix('blog')->group(function(){
 	Route::get('/list/{cate_id}', 'Client\PostController@index')->name('blog.index');
 	Route::get('/', 'Client\PostController@category');
     Route::get('/{id}/detail', 'Client\PostController@detail')->name('blog.detail');
+});
+
+Route::prefix('users')->name('users.')->middleware('checkUserLogin')->group(function(){
+    $userController = 'Client\UserController@';
+    Route::get('/{id}', $userController . 'profile')->name('profile');
+    Route::post('/update/{id}', $userController . 'update')->name('update');
+    Route::post('/changepassword', $userController . 'changePassword')->name('changepassword');
 });

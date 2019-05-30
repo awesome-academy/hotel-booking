@@ -38,6 +38,8 @@
 <script src="{{ asset('bower_components/bower/client/js/jquery.slicknav.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower/client/js/jquery.parallax-1.1.3.js') }}"></script>
 <script src="{{ asset('bower_components/bower/client/js/main.js') }}"></script>
+<script src="{{ asset('bower_components/bower/js/toastr.min.js') }}"></script>
+<script src="{{ asset('bower_components/bower/js/register.js') }}"></script>
 <script src="{{ asset('bower_components/bower/js/sweetalert.js') }}"></script>
 @yield('script')
 </body>
