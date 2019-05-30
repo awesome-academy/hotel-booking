@@ -63,8 +63,8 @@
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-12 col-sm-12">{{ __('messages.Category') }}</label>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div class="select">
-                                        <select id="selectCate">
+                                    <div>
+                                        <select id="selectCate" class="form-control">
                                             @foreach($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
@@ -85,6 +85,7 @@
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" id="default-image" value="{{ asset(config('upload.default_image')) }}">
                         <div class="m-portlet__foot m-portlet__foot--fit">
                             <div class="m-form__actions m-form__actions">
                                 <div class="row">
@@ -176,8 +177,8 @@
                                 <label class="col-form-label col-lg-12 col-sm-12">{{ __('messages.List Language') }}</label>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     @if(isset($languages))
-                                    <div class="select">
-                                        <select id="selectLang1">
+                                    <div>
+                                        <select id="selectLang1" class="form-control">
                                         @foreach($languages as $language)
                                             <option value="{{ $language->id }}">{{ $language->name }}</option>
                                         @endforeach

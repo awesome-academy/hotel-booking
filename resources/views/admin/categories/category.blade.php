@@ -53,8 +53,8 @@
                         @if(count($categories) > 0)
                         <label for="">{{ __('messages.Cate_Parent') }}</label><br>
                         <input type="checkbox" name="" class="checkCate"> <span>{{ __('messages.CheckCate') }}</span>
-                        <div class="select">
-                            <select id="selectCate">
+                        <div>
+                            <select id="selectCate" class="form-control">
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
@@ -108,8 +108,8 @@
                     </div>
                     <div class="form-group">
                         <label for="">{{ __('messages.List Language') }}</label>
-                        <div class="select">
-                            <select id="selectLangTran">
+                        <div>
+                            <select id="selectLangTran" class="form-control">
                             @foreach($languages as $language)
                                 <option value="{{ $language->id }}">{{ $language->name }}</option>
                             @endforeach
