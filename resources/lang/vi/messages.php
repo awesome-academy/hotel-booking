@@ -179,4 +179,10 @@ return [
     'Email_unique' => 'Email này đã được sử dụng',
     'Validate_password_confirmation_required' => 'Vui lòng nhập lại mật khẩu',
     'Validate_phone_numeric' => 'Số điện thoại không được nhập chữ',
+    'Send_request' => 'Gửi mã xác nhận',
+    'Validate_email_exists' => 'Email không tồn tại',
+    'Reset-password-confirmation-mail' => 'Email khôi phục lại mật khẩu',
+    'Reset-password-messages' => 'Click vào link này để tiến hành khôi phục mật khẩu của bạn',
+    'Reset-password-expire' => 'Link reset mật khẩu sẽ hết hiệu lực trong vòng 10 phút',
+    'Reset-password' => 'Thiết lập lại mật khẩu',
 ];
