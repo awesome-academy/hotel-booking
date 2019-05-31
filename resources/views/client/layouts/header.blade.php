@@ -88,6 +88,19 @@ use Illuminate\Support\Facades\Cookie;
                                 <li @if (Request::is('blog*'))  class="active" @else class="" @endif>
                                     <a href="{{ asset('blog') }}">{{ trans('messages.NEWS') }}</a>
                                 </li>
+                                <li @if (Request::is('contact*')) class="active parent-menu oppa" @else class="parent-menu oppa" @endif><a href="javascript:;">{{ __('messages.Contact') }}</a>
+                                    <ul>
+                                        @foreach ($provinces as $province)
+                                            <li class="parent-menu">{{ $province->name }}
+                                                <ul>
+                                                    @foreach( $province['pro_loca'] as $loca)
+                                                    <li><a href="{{ route('client.contact.index', $loca->id) }}">{{ $loca->name }}</a></li>
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
                             </ul>
                         </nav>
                     </div>

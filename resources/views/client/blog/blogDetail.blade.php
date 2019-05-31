@@ -9,17 +9,17 @@
                 <div class="col-lg-9 col-sm-8 blog-post-contents">
                     @if (isset($post))
                     <div class="blog-post"><!-- Blog Post -->
-                        <h3><a href="{{ route('blog.detail'), $post->id }}">{{ $post->title }}</a></h3>
+                        <h3><a href="{{ route('client.blog.detail', $post->id) }}">{{ $post->title }}</a></h3>
                         <div class="post-materials  clearfix">
                             <ul>
                                 <li><h6><i class="fa fa-calendar"></i>{{ $post->date }}</h6></li>
                                 <li><h6><i class="fa fa-user"></i>{{ __('messages.ADMIN') }}</h6></li>
                                 <li><h6><i class="fa fa-comments"></i>13 {{ __('messages.COMMENTS') }}</h6></li>
-                                <li><h6><a href="{{ route('blog.index'), $post->cate_id }}"><i class="fa fa-bars"></i>{{ $post->cate_name }}</a></h6></li>
+                                <li><h6><a href="{{ route('client.blog.index', $post->cate_id) }}"><i class="fa fa-bars"></i>{{ $post->cate_name }}</a></h6></li>
                             </ul>
                         </div>
                         <div class="blog-image marginb30 margint30">
-                            <img alt="Blog Image 2" class="img-responsive" src="{{ $post->image }}" >
+                            <img alt="Blog Image 2" class="img-responsive img-blog" src="{{ $post->image }}" >
                         </div>
                         <div class="button mini-button button-style-2 margint30">
                             {!! $post->body !!}
@@ -43,7 +43,7 @@
                                     <img src="{{ $new->image }}" class="img-responsive img1" alt="">
                                 </div>
                                 <div class="pull-left blg-txt">
-                                    <p>{{ route('blog.detail'), $new->id }}">[...]</a></p>
+                                    <p><a href="{{ route('client.blog.detail', $new->id) }}">[...]</a></p>
                                 </div>
                             </li>
                             @endforeach

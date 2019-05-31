@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Language;
 use App\Models\Location;
 use App\Models\User;
+use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
@@ -82,7 +83,19 @@ class AppServiceProvider extends ServiceProvider
                 $user = User::find($remember_token->id);
                 $view->with('user', $user);
             }
-
+            $provinces = Province::all();
+            if (count($provinces) <= 0) {
+                abort('404');
+            }
+            foreach ($provinces as $key => $value) {
+                $location_s = $value->locations()->where('province_id', $value->id)->get();
+                if (count($location_s) <= 0) {
+                    unset($provinces[$key]);
+                } else {
+                    $provinces[$key]['pro_loca'] = $location_s;
+                }
+            }
+            $view->with('provinces', $provinces);
         });
     }
 }

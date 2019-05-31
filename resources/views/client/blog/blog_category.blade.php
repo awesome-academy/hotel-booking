@@ -25,7 +25,7 @@
                                         @if (isset($cate_child))
                                         @foreach ($cate_child as $child)
                                         <li>
-                                            <a href="{{ route('blog.index'), $child->id }}"><span class="child_cate">{{ $child->name }}</span></a>
+                                            <a href="{{ route('client.blog.index', $child->id) }}"><span class="child_cate">{{ $child->name }}</span></a>
                                         </li>
                                         @endforeach
                                         @endif

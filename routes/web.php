@@ -38,15 +38,16 @@ Route::prefix('booking')->name('booking.')->middleware('checkUserLogin')->group(
     Route::post('/submit', $bookingController . 'submit')->name('submit');
     Route::post('/checkout', $bookingController . 'checkout')->name('checkout');
 });
-Route::prefix('blog')->group(function(){
+Route::prefix('blog')->group(function() {
     Route::get('/list/{cate_id}', 'Client\PostController@index')->name('blog.index');
     Route::get('/', 'Client\PostController@category');
     Route::get('/{id}/detail', 'Client\PostController@detail')->name('blog.detail');
 });
-
 Route::prefix('users')->name('users.')->middleware('checkUserLogin')->group(function(){
     $userController = 'Client\UserController@';
     Route::get('/{id}', $userController . 'profile')->name('profile');
     Route::post('/update/{id}', $userController . 'update')->name('update');
     Route::post('/changepassword', $userController . 'changePassword')->name('changepassword');
 });
+Route::get('/contact/{loca_id}', 'Client\ContactController@index')->name('contact.index');
+Route::post('/contact/send', 'Client\ContactController@send')->name('contact.send');
