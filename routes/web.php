@@ -42,6 +42,8 @@ Route::prefix('blog')->group(function() {
     Route::get('/list/{cate_id}', 'Client\PostController@index')->name('blog.index');
     Route::get('/', 'Client\PostController@category');
     Route::get('/{id}/detail', 'Client\PostController@detail')->name('blog.detail');
+    Route::post('/send', 'Client\PostController@comment');
+    Route::get('/more/{id}', 'Client\PostController@more')->name('blog.more');
 });
 Route::prefix('users')->name('users.')->middleware('checkUserLogin')->group(function(){
     $userController = 'Client\UserController@';

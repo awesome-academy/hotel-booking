@@ -14,8 +14,7 @@
                         <div class="post-materials  clearfix">
                             <ul>
                                 <li><h6><i class="fa fa-calendar"></i>{{ $post->date }}</h6></li>
-                                <li><h6><i class="fa fa-user"></i>{{ __('messages.ADMIN') }}</h6></li>
-                                <li><h6><i class="fa fa-comments"></i>13 {{ __('messages.COMMENTS') }}</h6></li>
+                                <li><h6><i class="fa fa-comments"></i>{{ count($allcomments) }}</span> {{ __('messages.COMMENTS') }}</h6></li>
                                 <li><h6><a href="{{ route('client.blog.index', $post->cate_id) }}"><i class="fa fa-bars"></i>{{ $post->cate_name }}</a></h6></li>
                             </ul>
                         </div>
@@ -40,14 +39,14 @@
                         </div>
                         <ul class="sidebar-recent">
                             @if (isset($new_posts))
-                            @foreach($new_posts as $new)
+                            @foreach ($new_posts as $new)
                             <li class="clearfix">
-                                <h6><a href="#">News from us from now</a></h6>
+                                <h6><a href="{{ route('client.blog.detail', $new->id) }}">{{ $new->title }}</a></h6>
                                 <div class="pull-left blg-img margint20">
                                     <img src="{{ $new->image }}" class="img-responsive img1" alt="">
                                 </div>
                                 <div class="pull-left blg-txt">
-                                    <p>{{ $new->title }}<a class="active-color" href="{{ route('client.blog.detail', $new->id) }}">[...]</a></p>
+                                    <p><a href="{{ route('client.blog.detail', $new->id) }}">{{ $new->description }}[...]</a></p>
                                 </div>
                             </li>
                             @endforeach
