@@ -9,16 +9,20 @@ use App\Repositories\Post\PostRepository;
 use App\Http\Controllers\Controller;
 use App\Repositories\Language\LanguageRepository;
 use App\Repositories\Category\CategoryRepository;
+use App\Repositories\Comment\CommentRepository;
+use App\Http\Requests\Client\StoreComment;
 
 class PostController extends Controller
 {
-    public function __construct(PostRepository $postRepo, LanguageRepository $langRepository, CategoryRepository $cateRepository) {
+    public function __construct(PostRepository $postRepo, LanguageRepository $langRepository, CategoryRepository $cateRepository, CommentRepository $commentRepo) {
         $this->postRepo = $postRepo;
         $this->langRepository = $langRepository;
         $this->cateRepository = $cateRepository;
+        $this->commentRepo = $commentRepo;
     }
 
-    public function index($cate_id) {
+    public function index($cate_id)
+    {
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
         }
@@ -51,13 +55,14 @@ class PostController extends Controller
                 $posts[$key]['date'] = $value->created_at->format('Y M d');
             }
                 $posts[$key]['cate_name'] = $category['name'];
+                $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $value['id']);
         }
         $new_posts = $this->postRepo->whereall('lang_id', Session::get('locale'))->take(config('post.default'));
         foreach ($new_posts as $key => $value) {
             $new_posts[$key]['image'] = asset('') . config('upload.default') . $value['image'];
         }
 
-        return view('client.blog.blog', compact('posts', 'new_posts'));
+        return view('client.blog.blog', compact('posts', 'new_posts', 'allcomments'));
     }
 
     public function category()
@@ -69,12 +74,16 @@ class PostController extends Controller
             foreach ($cates as $key => $value) {
                 if ($value['parent_id'] == 0) {
                     $cate_child = $this->cateRepository->whereall('parent_id', $value['id']);
-                    foreach ($cate_child as $key1 => $value1) {
-                        $post = $this->postRepo->whereall('cate_id', $value1['id']);
-                        if (count($post) <= 0 ) {
-                            unset($cate_child[$key1]);
-                        } else {
-                            $cates[$key]['image'] = asset('') . config('upload.default') . $post[0]['image'];
+                    if (count($cate_child) <= 0) {
+                        unset($cates[$key]);
+                    } else {
+                        foreach ($cate_child as $key1 => $value1) {
+                            $post = $this->postRepo->whereall('cate_id', $value1['id']);
+                            if (count($post) <= 0 ) {
+                                unset($cate_child[$key1]);
+                            } else {
+                                $cates[$key]['image'] = asset('') . config('upload.default') . $post[0]['image'];
+                            }
                         }
                     }
                 } else {
@@ -98,6 +107,8 @@ class PostController extends Controller
             abort('404');
         }
         $lag_id = Session::get('locale');
+        $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $id);
+        $comments = $this->commentRepo->takeByComment($id);
         if ($lag_id == $vi_id['id']) {
             $post['date'] = $post->created_at->format('d/m/Y');
         } else {
@@ -112,7 +123,29 @@ class PostController extends Controller
         foreach ($new_posts as $key => $value) {
             $new_posts[$key]['image'] = asset('') . config('upload.default') . $value['image'];
         }
+        foreach ($comments as $key => $value) {
+            $comments[$key]['date'] = $value->created_at->format('Y M d');
+        }
         
-        return view('client.blog.blogDetail', compact('post', 'new_posts'));
+        return view('client.blog.blogDetail', compact('post', 'new_posts', 'comments', 'allcomments'));
+    }
+
+    public function comment(StoreComment $request)
+    {
+        $input = $request->all();
+        $input['object'] = 'post';
+        $input['body'] = $input['text'];
+        $comment_send = $this->commentRepo->create($input);
+        $comment_send['date'] = $comment_send->created_at->format('Y M d');
+        $comment_send['number'] = count($this->commentRepo->all());
+
+        return response()->json(['data' => $comment_send, 'error' => false]);
+    }
+
+    public function more($id)
+    {
+        $comments = $this->commentRepo->skipByComment($id);
+
+        return $comments;
     }
 }
