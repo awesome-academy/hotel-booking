@@ -57,7 +57,7 @@
                                 <div class="tab-pane fade" id="tab2s">
                                     <div class="col-lg-9 margint30">
                                         <div class="contact-form"><!-- Contact Form -->
-                                            <form action="" method="post" id="comment-form">
+                                            <form id="comment-form">
                                                 @csrf
                                                 <section class='rating-widget'>
                                                     <div class='rating-stars text-center'>
@@ -81,25 +81,25 @@
                                                     </div>
                                                 </section>
                                                 <div class="margint20">
-                                                    <input type="hidden" id="rating" name="rating" class="success-box">
+                                                    <input type="hidden" id="rating-room" name="rating" class="success-box">
                                                     <input type="hidden" id="object_id" name="object_id"
                                                            value="{{ $room->id }}">
-                                                    <input type="hidden" name="url" id="url"
+                                                    <input type="hidden" name="url" id="url-comment"
                                                            value="{{ route('client.rooms.comment') }}">
                                                     @if ($errors->has('rating'))
                                                         <p class="text-danger">{{ $errors->first('rating') }}</p>
                                                     @endif
                                                     <input type="text" placeholder="{{ __('messages.Enter_Email') }}"
-                                                           id="email" name="email">
+                                                           id="email-comment-room">
                                                     @if ($errors->has('email'))
                                                         <p class="text-danger">{{ $errors->first('email') }}</p>
                                                     @endif
                                                     <textarea placeholder="{{ __('messages.Write_your_comment') }}"
-                                                              id="body" name="body"></textarea>
+                                                              id="body-room" name="body"></textarea>
                                                     @if ($errors->has('body'))
                                                         <p class="text-danger">{{ $errors->first('body') }}</p>
                                                     @endif
-                                                    <input class="pull-right margint10 btn-comment" type="submit"
+                                                    <input class="pull-right margint10 btn-comment-room" type="submit"
                                                            value="{{ __('messages.Send') }}">
                                                 </div>
                                             </form>
