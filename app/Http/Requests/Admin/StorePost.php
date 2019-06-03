@@ -25,19 +25,23 @@ class StorePost extends FormRequest
     {
 
         return [
-            'title' => 'required',
+            'title' => 'required|unique:posts',
             'description' => 'required',
             'body' => 'required',
-            'file' => 'file',
+            'file' => 'required|file',
+            'cate_id' => 'required',
         ];
     }
     public function messages(){
         
         return [
             'title.required' => __('messages.validate_title'),
+            'title.unique' => __('messages.Validate_unique'),
             'description.required' => __('messages.validate_description'),
             'body.required' => __('messages.validate_body'),
-            'file.file' => __('messages.validate_file')
+            'file.file' => __('messages.validate_file'),
+            'file.required' => __('messages.validate_required'),
+            'cate_id.required' => __('messages.validate_category'),
         ];
     }
 }
