@@ -19,6 +19,8 @@
                                 <form method="post"
                                       action="{{ route('admin.rooms.update', [$location->id, $roomDetail->id]) }}"
                                       enctype="multipart/form-data">
+                                    <input type="hidden" id="old_list_room_number" name="old_list_room_number"
+                                           value="{{ $room->list_room_number }}">
                                     @csrf
                                     <div class="form-group m-form__group m--margin-top-10">
                                         <div class="alert alert-danger m-alert m-alert--default" role="alert">
@@ -74,11 +76,65 @@
                                             <div class="form-group m-form__group">
                                                 <label>{{ __('messages.List_room_number') }} <b
                                                             class="text-danger">*</b></label>
-                                                <input type="text" class="form-control m-input" name="list_room_number"
-                                                       placeholder="{{ __('messages.Enter_list_room_number') }}"
-                                                       value="{{ old('list_room_number', $room->list_room_number) }}">
-                                                @if ($errors->has('list_room_number'))
-                                                    <b class="text-danger">{{ $errors->first('list_room_number') }}</b>
+                                                <br>
+                                                <div class="form-group m-form__group">
+                                                    <div>
+                                                        <div class="col-lg-10">
+                                                            @php($i = 0)
+                                                            @foreach($list_room_number as $item)
+                                                                <div data-repeater-item="{{ $item }}"
+                                                                     class="row m--margin-bottom-10-desktop"
+                                                                     id="room-number-{{ $item }}">
+                                                                    <div class="col-md-3">
+                                                                        <p>{{ $item }}</p>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <a href="javascript:;"
+                                                                           data-repeater-delete="{{ $item }}"
+                                                                           class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill btn-list-room-number-delete">
+                                                                            <i class="la la-trash-o"></i>{{ __('messages.Delete') }}
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                @php($i++)
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="m_repeater_edit">
+                                                    <div class="form-group  m-form__group row m_repeater_edit">
+                                                        <div data-repeater-list="" class="col-lg-10">
+                                                            <div data-repeater-item
+                                                                 class="form-group m-form__group row align-items-center">
+                                                                <div class="col-md-3">
+                                                                    <div class="m-form__group m-form__group--inline">
+                                                                        <div class="m-form__control">
+                                                                            <input type="text" name="list_room_number[]"
+                                                                                   class="form-control m-input">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-md-none m--margin-bottom-10"></div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div data-repeater-delete=""
+                                                                         class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
+                                                                        <i class="la la-trash-o"></i>{{ __('messages.Delete') }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="m-form__group form-group row">
+                                                        <div class="col-lg-4">
+                                                            <div data-repeater-create=""
+                                                                 class="btn btn btn-sm btn-brand m-btn m-btn--icon m-btn--pill m-btn--wide">
+                                                                <i class="la la-plus"></i>{{ __('messages.Add') }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @if ($errors->has('list_room_number.*'))
+                                                    <b class="text-danger">{{ $errors->first('list_room_number.*') }}</b>
                                                 @endif
                                                 @if (session('room_number_used'))
                                                     <b class="text-danger">{{ __('messages.Room_number_used') }}</b>
@@ -170,19 +226,19 @@
                                                     <div class="col-md-3 admin-image-grid">
                                                         <img src="{{ asset(config('upload.images')) }}/{{ $image->name }}"
                                                              class="img-fluid admin-image-gallery">
-                                                        <a href="{{ route('admin.rooms.deleteImage', $image->id) }}" class="btn btn-danger btn-img">Xóa
+                                                        <a href="{{ route('admin.rooms.deleteImage', $image->id) }}"
+                                                           class="btn btn-danger btn-img">Xóa
                                                             ảnh</a>
                                                     </div>
                                                 @endforeach
                                                 <div class="modal fade show" id="m_modal_4" tabindex="-1"
-                                                     role="dialog" aria-labelledby="exampleModalLabel"
-                                                     style="display: none;">
+                                                     role="dialog" aria-labelledby="exampleModalLabel">
                                                     <div class="modal-dialog modal-lg" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Thêm
                                                                     ảnh</h5>
-                                                                <a href="" style="font-size: 20px">x</a>
+                                                                <a href="">x</a>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="m-dropzone dropzone m-dropzone--success dz-clickable"
@@ -211,6 +267,9 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="room_number_delete" value="">
+    <input type="hidden" id="url-delete" value="{{ route('admin.rooms.deleteRoomNumber') }}">
+    <input type="hidden" id="room_id" value="{{ $room->id }}">
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('bower_components/bower/js/uploadImage.js') }}"></script>

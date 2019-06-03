@@ -79,7 +79,7 @@ class RoomRepository extends EloquentRepository
 
     public function checkListRoomUpdate($list_room, $location_id, $id)
     {
-        $list_room = explode(',', $list_room);
+        $list_room = array_unique(explode(',', $list_room));
         $location = Location::find($location_id);
         if (is_null($location)) {
             return false;
@@ -222,5 +222,54 @@ class RoomRepository extends EloquentRepository
             $room->update($data);
             $room->save();
         }
+    }
+
+    public function checkRoomNumberInvoice($room_id, $room_number)
+    {
+        $room = Room::find($room_id);
+        if (is_null($room)) {
+            return false;
+        }
+        $check = $room->invoices()->wherePivot('room_number', $room_number)->first();
+        if (is_null($check)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteRoomNumberFromAvailableTime($room, $room_number)
+    {
+        $available_times = json_decode($room->available_time, true);
+        foreach ($available_times as $new_key => $item) {
+            foreach ($item['available_rooms'] as $key => $available_room) {
+                if ($available_room == $room_number) {
+                    unset($available_times[$new_key]['available_rooms'][$key]);
+                    unset($item['available_rooms'][$key]);
+                    if ($item['available_rooms'] == null) {
+                        unset($available_times[$new_key]);
+                    }
+                }
+            }
+        }
+        $room->available_time = json_encode($available_times);
+        $room->save();
+    }
+
+    public function updateRoomNumberAvailableTime($room, $list_room_number)
+    {
+        $now = date('m/d/Y');
+        $end_available = '12/31/2100';
+        $now_to_end = Carbon::parse($now)->diff(Carbon::parse($end_available))->days;
+        $new_available_time = array(
+            'check_in' => $now,
+            'check_out' => $end_available,
+            'length' => $now_to_end,
+            'available_rooms' => $list_room_number,
+        );
+        $available_time = json_decode($room->available_time, true);
+        array_push($available_time, $new_available_time);
+        $room->available_time = json_encode($available_time, true);
+        $room->save();
     }
 }

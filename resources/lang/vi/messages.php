@@ -195,4 +195,7 @@ return [
     'NEWS' => 'BÀI VIẾT',
     'SOCIAL MEDIA' => 'Truyền thông xã hội',
     'write-comment' => 'Viết bình luận',
+    'room_not_found' => 'Phòng không tồn tại',
+    'room_number_in_invoice' => 'Số phòng này đã tồn tại trong hóa đơn',
+    'room_number_errors_null' => 'Không được để trống số phòng',
 ];
