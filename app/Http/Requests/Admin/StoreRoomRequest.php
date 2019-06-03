@@ -26,7 +26,7 @@ class StoreRoomRequest extends FormRequest
         return [
             'image' => 'required|mimes:jpg,jpeg,png|max:2000',
             'name' => 'required|max:191',
-            'list_room_number' => 'required',
+            'list_room_number.*' => 'required|numeric',
             'price' => 'required|numeric|min:1000',
             'sale_price' => 'nullable|lt:price|numeric',
             'sale_start_at' => 'nullable|after:yesterday',
@@ -44,7 +44,8 @@ class StoreRoomRequest extends FormRequest
             'image.max' => __('messages.Validate_file_mb'),
             'name.required' => __('messages.Validate_required'),
             'name.max' => __('messages.Validate_max') . ' :max ' . __('messages.Validate_character'),
-            'list_room_number.required' => __('messages.Validate_required'),
+            'list_room_number.*.required' => __('messages.Validate_required'),
+            'list_room_number.*.numeric' => __('messages.Validate_numeric'),
             'price.required' => __('messages.Validate_required'),
             'price.numeric' => __('messages.Validate_numeric'),
             'price.min' => __('messages.Validate_min') . ' :min ' . __('messages.Validate_character'),

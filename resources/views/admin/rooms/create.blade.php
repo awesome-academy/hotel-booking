@@ -58,11 +58,43 @@
                                     <div class="form-group m-form__group">
                                         <label>{{ __('messages.List_room_number') }} <b
                                                     class="text-danger">*</b></label>
-                                        <input type="text" class="form-control m-input" name="list_room_number"
-                                               placeholder="{{ __('messages.Enter_list_room_number') }}"
-                                               value="{{ old('list_room_number') }}">
-                                        @if ($errors->has('list_room_number'))
-                                            <b class="text-danger">{{ $errors->first('list_room_number') }}</b>
+                                        <br>
+                                        <div class="m_repeater">
+                                            <div class="form-group  m-form__group row m_repeater">
+                                                <div data-repeater-list="" class="col-lg-10">
+                                                    <div data-repeater-item class="form-group m-form__group row align-items-center">
+                                                        <div class="col-md-3">
+                                                            <div class="m-form__group m-form__group--inline">
+                                                                <div class="m-form__control">
+                                                                    <input type="text" name="list_room_number[]" class="form-control m-input">
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-md-none m--margin-bottom-10"></div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div data-repeater-delete="" class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
+																<span>
+																	<i class="la la-trash-o"></i>
+																	<span>{{ __('messages.Delete') }}</span>
+																</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="m-form__group form-group row">
+                                                <div class="col-lg-4">
+                                                    <div data-repeater-create="" class="btn btn btn-sm btn-brand m-btn m-btn--icon m-btn--pill m-btn--wide">
+														<span>
+															<i class="la la-plus"></i>
+															<span>{{ __('messages.Add') }}</span>
+														</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if ($errors->has('list_room_number.*'))
+                                            <b class="text-danger">{{ $errors->first('list_room_number.*') }}</b>
                                         @endif
                                         @if (session('room_number_used'))
                                             <b class="text-danger">{{ __('messages.Room_number_used') }}</b>

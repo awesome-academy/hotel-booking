@@ -74,6 +74,7 @@ class RoomController extends Controller
     public function store($location_id, StoreRoomRequest $request)
     {
         $data = $request->all();
+        $data['list_room_number'] = implode(',', $request->list_room_number);
         $data['base_id'] = $this->base_lang_id;
         $checkName = $this->roomDetailRepository->checkName($request->name, $location_id, $this->base_lang_id);
         if (!$checkName) {
@@ -133,11 +134,13 @@ class RoomController extends Controller
             }
         }
         $images = $this->imageRepository->getImageByRoom($room->id);
+        $list_room_number = explode(',', $room->list_room_number);
         $data = compact(
             'location',
             'roomDetail',
             'room',
-            'images'
+            'images',
+            'list_room_number'
         );
 
         return view('admin.rooms.edit', $data);
@@ -146,9 +149,20 @@ class RoomController extends Controller
     public function update(UpdateRoomRequest $request, $location_id, $id)
     {
         $data = $request->all();
+        $old_list_room = explode(',', $data['old_list_room_number']);
+        $room = $this->roomRepository->find($data['room_id']);
+        $checkName = $this->roomDetailRepository->checkNameUpdate($request->name, $location_id, $this->base_lang_id, $id);
+        $status = 0;
+        if (!isset($data['list_room_number'])) {
+            $data['list_room_number'] = $old_list_room;
+        } else {
+            $new_list_room = $data['list_room_number'];
+            $status = 1;
+            $data['list_room_number'] = array_unique(array_merge($old_list_room, $data['list_room_number']));
+        }
+        $data['list_room_number'] = implode(',', $data['list_room_number']);
         $dataRoom = $this->roomRepository->getDataUpdate($data);
         $dataRoomDetail = $this->roomDetailRepository->getDataUpdate($data);
-        $checkName = $this->roomDetailRepository->checkNameUpdate($request->name, $location_id, $this->base_lang_id, $id);
         if (!$checkName) {
             $request->session()->flash('name_used');
 
@@ -166,6 +180,9 @@ class RoomController extends Controller
                 $dataRoom['image'] = uploadImage(Config::get('upload.rooms'), $request->image);
             } else {
                 $dataRoom['image'] = $data['old_image'];
+            }
+            if ($status == 1) {
+                $this->roomRepository->updateRoomNumberAvailableTime($room, $new_list_room);
             }
             $this->roomRepository->update($data['room_id'], $dataRoom);
             $this->roomDetailRepository->update($id, $dataRoomDetail);
@@ -300,5 +317,31 @@ class RoomController extends Controller
         $request->session()->flash('image_active');
 
         return redirect()->back();
+    }
+
+    public function deleteRoomNumber(Request $request)
+    {
+        $data = $request->all();
+        $room = $this->roomRepository->find($data['room_id']);
+        if (is_null($room)) {
+            return response()->json(['messages' => 'errors', 'data' => __('messages.room_not_found')], 200);
+        }
+        $list_room_number = explode(',', $room->list_room_number);
+        $key = array_search($data['room_number'], $list_room_number);
+        $check = $this->roomRepository->checkRoomNumberInvoice($data['room_id'], $data['room_number']);
+        if ($check) {
+            unset($list_room_number[$key]);
+            if ($list_room_number == null) {
+                return response()->json(['messages' => 'errors_null', 'data' => __('messages.room_number_errors_null')], 200);
+            }
+            $list_room_number = implode(',', $list_room_number);
+            $dataUpdate = array('list_room_number' => $list_room_number);
+            $this->roomRepository->deleteRoomNumberFromAvailableTime($room, $data['room_number']);
+            $this->roomRepository->update($data['room_id'], $dataUpdate);
+
+            return response()->json(['messages' => 'success'], 200);
+        } else {
+            return response()->json(['messages' => 'errors_invoice', 'data' => __('messages.room_number_in_invoice')], 200);
+        }
     }
 }
