@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateLanguage extends FormRequest
 {
@@ -24,12 +25,22 @@ class UpdateLanguage extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => [
+                'required',
+                Rule::unique('languages')->ignore($this->id),
+            ],
+            'short' => [
+                'required',
+                Rule::unique('languages')->ignore($this->id),
+            ]
         ];
     }
     public function messages(){
         return [
             'name.required' => __('messages.validate_name'),
+            'short.required' => __('messages.validate_short'),
+            'name.unique' => __('messages.Validate_unique'),
+            'short.unique' => __('messages.Validate_unique'),
         ];
     }
 }

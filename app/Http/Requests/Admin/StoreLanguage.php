@@ -24,13 +24,17 @@ class StoreLanguage extends FormRequest
     public function rules()
     {
         return [
-           'name' => 'required',
+           'name' => 'required|unique:languages',
+           'short' => 'required|unique:languages',
            'file' => 'file',
         ];
     }
     public function messages(){
         return [
             'name.required' => __('messages.validate_name'),
+            'short.required' => __('messages.validate_short'),
+            'name.unique' => __('messages.Validate_unique'),
+            'short.unique' => __('messages.Validate_unique'),
             'file.file' => __('messages.validate_file'),
         ];
     }

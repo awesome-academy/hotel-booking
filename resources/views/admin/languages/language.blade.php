@@ -48,6 +48,10 @@
                     <label for="">{{ __('messages.Name') }}</label>
                     <input type="text" class="form-control" id="name_lang" placeholder="{{ __('messages.Language name') }}">
                 </div>
+                <div class="form-group">
+                    <label for="">{{ __('messages.Short') }}</label>
+                    <input type="text" class="form-control" id="short_lang" placeholder="{{ __('messages.Language name') }}">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('messages.Close') }}</button>
@@ -71,128 +75,22 @@
                     <label for="">{{ __('messages.Name') }}</label>
                     <input type="text" class="form-control" id="name_lang_1" placeholder="{{ __('messages.Language name') }}">
                 </div>
+                <div class="form-group">
+                    <label for="">{{ __('messages.Short') }}</label>
+                    <input type="text" class="form-control" id="short_lang_1" placeholder="{{ __('messages.Language name') }}">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('messages.Close') }}</button>
                 <button type="submit" class="btn btn-primary update_languages">{{ __('messages.Submit') }}</button> 
             </div>
         </div>
-
     </div>
 </div>
+<input type="hidden" name="" id="hiddenasset" value="{{ asset('') }}">
+<input type="hidden" name="" id="hiddenroute" value="{!! route('admin.laguage.Datatable') !!}">
 @endsection
 @section('script')
-<script type="text/javascript">
-    $(document).ready(function() {
-        $.ajaxSetup({
-            headers:{
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });     
-    });
-
-    $(function() {
-        $('#language-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{!! route('admin.laguage.Datatable') !!}',
-            columns: [
-            { data: 'name', name: 'name' },
-            { data: 'frag', name: 'frag' },
-            { data: 'short', name: 'short' },
-            { data: 'action', name: 'action' },
-            ]
-        });
-    });
-
-    $('#profile-img-tag').attr('src', "");
-    $('#profile-img-tag-1').attr('src', "");
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#profile-img-tag').attr('src', e.target.result);
-                $('#profile-img-tag-1').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#profile-img").change(function() {
-        readURL(this);
-    });
-
-    $("#profile-img-1").change(function() {
-        readURL(this);
-    });
-
-    $('.add_languages').click(function(e) {
-        e.preventDefault();
-        var formData = new FormData();
-        formData.append('name', $('#name_lang').val());
-        formData.append('file', $('#profile-img')[0].files[0]);
-        $.ajax({
-            type: 'post',
-            processData: false,
-            contentType: false,
-            url: '{{ asset('') }}admin/lang',
-            data: formData,
-            success: function(response) {
-                toastr.success(response.success);
-                $('#language-table').DataTable().ajax.reload(null, false);
-                $('#addLanguage').modal('hide');
-            },
-            error: function(jqXHR, textStatus, errorThrown){
-                if (jqXHR.responseJSON.errors.name !== undefined) {
-                    toastr.error(jqXHR.responseJSON.errors.name[0]);
-                }
-                if (jqXHR.responseJSON.errors.file !== undefined) {
-                    toastr.error(jqXHR.responseJSON.errors.file[0]);
-                }
-            }
-        })
-    });
-
-    $(document).on('click', '#editLanguage', function(e) {
-        e.preventDefault();
-        var id = $(this).attr('language_id');
-        $('#hiddenlang').attr('lang_id',id);
-        $.ajax({
-            type: 'get',
-            url: '{{ asset("") }}admin/lang/'+id+'/edit',
-            success: function(response){
-                $('#name_lang_1').val(response.name);
-                $('#profile-img-tag-1').attr('src','{{ asset("") }}'+response.frag);
-            }
-        })
-    })
-    $('.update_languages').click(function(e) {
-        e.preventDefault();
-        var formData = new FormData();
-        formData.append('name',$('#name_lang_1').val());
-        formData.append('file',$('#profile-img-1')[0].files[0]);
-        formData.append('id',$('#hiddenlang').attr('lang_id'));
-        $.ajax({
-            type: 'post',
-            processData: false,
-            contentType: false,
-            url: '{{ asset('') }}admin/lang/update',
-            data: formData,
-            success: function(response) {
-                toastr.success(response.success);
-                $('#language-table').DataTable().ajax.reload(null, false);
-                $('#EditLanguage').modal('hide');
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                if (jqXHR.responseJSON.errors.name !== undefined) {
-                    toastr.error(jqXHR.responseJSON.errors.name[0]);
-                }
-                if (jqXHR.responseJSON.errors.file !== undefined) {
-                    toastr.error(jqXHR.responseJSON.errors.file[0]);
-                }
-            }
-        })
-    });
+<script type="text/javascript" src="{{ asset('bower_components/bower/admin/custom/js/language.js') }}">
 </script>
 @endsection

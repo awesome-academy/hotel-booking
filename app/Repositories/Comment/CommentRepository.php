@@ -21,4 +21,9 @@ class CommentRepository extends EloquentRepository
     {
         return $this->_model->where('object', 'post')->where('object_id', $post_id)->orderBy('id', 'desc')->skip(env('COMMENT_PAGES'))->take(env('COMMENT_ALL'))->get();
     }
+
+    public function wherewhereDelete($object1)
+    {
+        return $this->_model->where('object', 'post')->where('object_id', $object1)->delete();
+    }
 }

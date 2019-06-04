@@ -42,7 +42,6 @@ class LanguageController extends Controller
     public function store(StoreLanguage $request)
     {
         $data = $request->all();
-        $data['short'] = strtolower(substr($request->name, 0, 2));
         if ($request->hasFile('file')) {
             $data['frag'] = uploadImage(config('upload.default'), $request->file);
         }
@@ -69,7 +68,6 @@ class LanguageController extends Controller
         if (is_null($language)) {
             return response()->json(['error' => __('messages.Notfound')]);;
         }
-        $data['short'] = strtolower(substr($request->name, 0, 2));
         if ($request->file == 'undefine') {
             $data['frag'] = $language['frag'];
         } else if ($request->hasFile('file')) {

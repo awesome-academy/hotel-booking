@@ -308,7 +308,7 @@ class CategoryController extends Controller
                         try {
                             $child_cate = $this->cateRepository->whereall('parent_id', $cate['id']);
                             if (count($child_cate) <= 0) {
-                                $this->cateRepository->delete($id);
+                                $this->cateRepository->whereDelete('lang_map', $cate['lang_map']);
                             } else {
                                 foreach ($child_cate as $key => $value) {
                                     $cate_id = $this->cateRepository->pluck('lang_map', $value['lang_map'], 'id');
@@ -319,8 +319,8 @@ class CategoryController extends Controller
                                 }
                                 $this->postRepository->wheredelete('cate_id', $id);
                                 $this->cateRepository->whereDelete('lang_map', $cate['lang_map']);
-                                DB::commit();
                             }
+                            DB::commit();
                         } catch (Exception $e) {
                             DB::rollBack();
                             throw new Exception($e->getMessage());

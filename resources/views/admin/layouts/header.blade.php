@@ -82,6 +82,9 @@
                                 </ul>
                             </div>
                         </li>
+                        <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel">
+                            <a href="{!! route('client.index') !!}" class="m-dropdown__toggle btn btn-primary"><i class="m-menu__link-icon fa fa-home"></i></a>
+                        </li>
                     </ul>
                 </div>
             </div>
