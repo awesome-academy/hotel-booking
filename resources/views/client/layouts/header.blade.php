@@ -1,8 +1,8 @@
-<?php
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-?>
+@php
+    use Illuminate\Support\Facades\Request;
+    use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\Cookie;
+@endphp
 <div class="header">
     <div class="pre-header">
         <div class="container">
@@ -64,7 +64,10 @@ use Illuminate\Support\Facades\Cookie;
             <div class="row">
                 <div class="pull-left">
                     <div class="logo">
-                        <a href=""><img src="" class="img-responsive"/></a>
+                        <a href="{{ url('/') }}">
+                            <img src="{{ asset(config('upload.logo')) }}/{{ $web_setting->logo }}"
+                                 class="img-responsive"/>
+                        </a>
                     </div>
                 </div>
                 <div class="pull-right">
@@ -85,16 +88,39 @@ use Illuminate\Support\Facades\Cookie;
                                         @endforeach
                                     </ul>
                                 </li>
-                                <li @if (Request::is('blog*'))  class="active" @else class="" @endif>
-                                    <a href="{{ asset('blog') }}">{{ trans('messages.NEWS') }}</a>
+                                <li @if (Request::is('blog*'))  class="active parent-menu oppa"
+                                    @else class="parent-menu oppa" @endif>
+                                    <a href="javascript:;">{{ trans('messages.NEWS') }}</a>
+                                    <ul>
+                                        @foreach ($parent_categories as $parent_category)
+                                            <li class="parent-menu">
+                                                <a href="javascript:;">{{ $parent_category->name }}</a>
+                                                <ul>
+                                                    @php
+                                                        $children = $parent_category->getChild($parent_category->id);
+                                                    @endphp
+                                                    <li>
+                                                        @foreach ($children as $child)
+                                                            <a href="{{ route('client.blog.index', $child->id) }}">{{ $child->name }}</a>
+                                                        @endforeach
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 </li>
-                                <li @if (Request::is('contact*')) class="active parent-menu oppa" @else class="parent-menu oppa" @endif><a href="javascript:;">{{ __('messages.Contact') }}</a>
+                                <li @if (Request::is('contact*')) class="active parent-menu oppa"
+                                    @else class="parent-menu oppa" @endif><a
+                                            href="javascript:;">{{ __('messages.Contact') }}</a>
                                     <ul>
                                         @foreach ($provinces as $province)
-                                            <li class="parent-menu">{{ $province->name }}
+                                            <li class="parent-menu">
+                                                <a href="javascript:;">{{ $province->name }}</a>
                                                 <ul>
                                                     @foreach( $province['pro_loca'] as $loca)
-                                                    <li><a href="{{ route('client.contact.index', $loca->id) }}">{{ $loca->name }}</a></li>
+                                                        <li>
+                                                            <a href="{{ route('client.contact.index', $loca->id) }}">{{ $loca->name }}</a>
+                                                        </li>
                                                     @endforeach
                                                 </ul>
                                             </li>
@@ -103,11 +129,6 @@ use Illuminate\Support\Facades\Cookie;
                                 </li>
                             </ul>
                         </nav>
-                    </div>
-                    <div class="pull-right">
-                        <div class="button-style-1 margint45">
-                            <a href=""><i class="fa fa-calendar"></i>{{ trans('messages.Coming soon') }}</a>
-                        </div>
                     </div>
                 </div>
             </div>

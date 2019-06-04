@@ -180,6 +180,7 @@ class RoomDetailRepository extends EloquentRepository
                             $room->invoices()->detach();
                             $room->roomDetails()->delete();
                             $room->properties()->detach($properties_id);
+                            $room->comments()->delete();
                             $room->delete();
                             DB::commit();
 

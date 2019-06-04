@@ -48,6 +48,7 @@ class RoomController extends Controller
 
     public function detail($id)
     {
+        $base_lang_id = $this->baseLangId;
         $room = $this->roomRepository->find($id);
         if (is_null($room)) {
             abort(404);
@@ -68,7 +69,8 @@ class RoomController extends Controller
             'roomDetail',
             'images',
             'properties',
-            'comments'
+            'comments',
+            'base_lang_id'
         );
 
         return view('client.rooms.detail', $data);
@@ -95,6 +97,10 @@ class RoomController extends Controller
             return response()->json(['messages' => 'errors', 'data' => $validator->messages()], 200);
         }
         $data['object'] = 'room';
+        $checkEmail = $this->roomRepository->checkEmailComment($data['email'], $data['object_id']);
+        if (!$checkEmail) {
+            return response()->json(['messages' => 'errors_email'], 200);
+        }
         DB::beginTransaction();
         try {
             $this->roomRepository->updateRating($data['rating'], $data['object_id']);

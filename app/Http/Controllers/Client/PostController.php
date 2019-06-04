@@ -23,9 +23,6 @@ class PostController extends Controller
 
     public function index($cate_id)
     {
-        if (Session::has('locale')) {
-            App::setLocale(Session::get('locale'));
-        }
         $vi_id = $this->langRepository->whereFirst('short', 'vi');
         if (is_null($vi_id)) {
             abort('404');
@@ -43,9 +40,6 @@ class PostController extends Controller
                 abort('404');
             }
             $posts = $this->postRepo->paginateByLangCate($lag_id, env('PAGES'), $cate[0]['id']);
-        }
-        if (count($posts) <= 0) {
-            abort('404');
         }
         foreach ($posts as $key => $value) {
             $posts[$key]['image'] = asset('') . config('upload.default') . $value['image'];
@@ -97,7 +91,9 @@ class PostController extends Controller
 
     public function detail($id)
     {
-        $post = $this->postRepo->find($id);
+        if (session('locale')) {
+            $post = $this->postRepo->whereFirst('lang_id', session('locale'));
+        }
         if (is_null($post)) {
             abort('404');
         }
@@ -126,7 +122,7 @@ class PostController extends Controller
         foreach ($comments as $key => $value) {
             $comments[$key]['date'] = $value->created_at->format('Y M d');
         }
-        
+
         return view('client.blog.blogDetail', compact('post', 'new_posts', 'comments', 'allcomments'));
     }
 

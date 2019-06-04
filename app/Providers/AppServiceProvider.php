@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Language;
 use App\Models\Location;
+use App\Models\Post;
 use App\Models\User;
 use App\Models\Province;
 use App\Models\Comment;
+use App\Models\WebSetting;
+use App\Repositories\WebSetting\WebSettingRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
@@ -64,7 +68,7 @@ class AppServiceProvider extends ServiceProvider
         /**
          * Client
          */
-        View::composer(['client.layouts.header', 'client.layouts.slider', 'client.layouts.sidebar_rooms', 'client.booking.index'], function ($view) {
+        View::composer(['client.layouts.header', 'client.layouts.slider', 'client.layouts.sidebar_rooms', 'client.booking.index', 'client.index', 'client.layouts.footer', 'client.layouts.sidebar_posts'], function ($view) {
             $header_languages = Language::all();
             $view->with('header_languages', $header_languages);
             $locations_for_nav = Location::all();
@@ -99,6 +103,21 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
             $view->with('provinces', $provinces);
+            $webSettingRepository = new WebSettingRepository();
+            $web_setting = $webSettingRepository->getData();
+            $view->with('web_setting', $web_setting);
+            if (session('locale')) {
+                $new_posts = Post::where('lang_id', $current_language->id)->orderBy('id', 'desc')->limit(\config('pagination.limit_home'))->get();
+            } else {
+                $new_posts = Post::where('lang_id', $current_language->id)->orderBy('id', 'desc')->limit(\config('pagination.limit_home'))->get();
+            }
+            $view->with('new_posts', $new_posts);
+            if (session('locale')) {
+                $parent_categories = Category::where('parent_id', 0)->where('lang_id', \session('locale'))->orderBy('id', 'desc')->get();
+            } else {
+                $parent_categories = Category::where('parent_id', 0)->where('lang_id', $current_language->id)->orderBy('id', 'desc')->get();
+            }
+            $view->with('parent_categories', $parent_categories);
         });
     }
 }

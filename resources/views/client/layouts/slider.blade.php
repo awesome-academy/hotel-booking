@@ -82,10 +82,10 @@
         <div class="container">
             <div class="row pos-center">
                 <ul>
-                    <li><i class="fa fa-shopping-cart"></i>{{ trans('messages.Coming soon') }}</li>
-                    <li><i class="fa fa-globe"></i>{{ trans('messages.Coming soon') }}</li>
-                    <li><i class="fa fa-coffee"></i>{{ trans('messages.Coming soon') }}</li>
-                    <li><i class="fa fa-windows"></i>{{ trans('messages.Coming soon') }}</li>
+                    <li><i class="fa fa-shopping-cart"></i>{{ trans('messages.Have_mall') }}</li>
+                    <li><i class="fa fa-globe"></i>{{ trans('messages.Global') }}</li>
+                    <li><i class="fa fa-coffee"></i>{{ trans('messages.Free_coffee_breakfast') }}</li>
+                    <li><i class="fa fa-wifi"></i>{{ trans('messages.Free_wifi') }}</li>
                 </ul>
             </div>
         </div>

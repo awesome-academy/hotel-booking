@@ -24,4 +24,9 @@ class Category extends Model
     {
         $this->hasMany(Post::class, 'cate_id');
     }
+
+    public function getChild($id)
+    {
+        return Category::where('parent_id', $id)->orderBy('id', 'desc')->get();
+    }
 }
