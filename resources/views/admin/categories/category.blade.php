@@ -84,6 +84,12 @@
                     <label for="">{{ __('messages.Name') }}</label>
                     <input type="text" class="form-control" id="name_cate_1" placeholder="{{ __('messages.Category name') }}">
                 </div>
+                <div class="selectEdit">
+                    <input type="checkbox" name="" class="checkCate1"> <span>{{ __('messages.CheckCate') }}</span>
+                    <select id="selectCate1" class="form-control">
+
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('messages.Close') }}</button>

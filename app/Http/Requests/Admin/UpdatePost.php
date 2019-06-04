@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePost extends FormRequest
 {
@@ -25,19 +26,21 @@ class UpdatePost extends FormRequest
     {
 
         return [
-            'title' => 'required',
+            'title' => [
+                'required',
+                Rule::unique('posts')->ignore($this->post_id),
+                ],
             'description' => 'required',
             'body' => 'required',
-            'cate_id' => 'required',
         ];
     }
     public function messages(){
         
         return [
             'title.required' => __('messages.validate_title'),
+            'title.unique' => __('messages.Validate_unique'),
             'description.required' => __('messages.validate_description'),
             'body.required' => __('messages.validate_body'),
-            'cate_id.required' => __('messages.validate_cate'),
         ];
     }
 }

@@ -22,6 +22,7 @@
                             <table id="post-table">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>{{ __('messages.Title') }}</th>
                                         <th>{{ __('messages.Image') }}</th>
                                         <th>{{ __('messages.Desciption') }}</th>
@@ -130,8 +131,8 @@
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-12 col-sm-12">{{ __('messages.Category') }}</label>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div class="select">
-                                        <select id="selectCate2">
+                                    <div>
+                                        <select id="selectCate2" class="form-control">
                                             @foreach($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
@@ -226,7 +227,7 @@
     <div class="modal-dialog modal-lg" >
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">{{ __('messages.Add Post') }}</h4>
+                <h4 class="modal-title">{{ __('messages.Show Post') }}</h4>
             </div>
             <div class="modal-body" >
                 <div class="m-content">
@@ -271,6 +272,7 @@
     </div>
 </div>
 <input type="hidden" name="" id="hiddnasset" value="{{ asset('') }}">
+<input type="hidden" name="" id="hiddenimage" value="{{ asset(config('upload.default_image')) }}">
 @endsection
 @section('script')
 <script type="text/javascript" src="{{ asset('') }}bower_components/bower/admin/custom/js/post.js">
@@ -295,7 +297,11 @@
                 type: 'get',
                 url: $("#hiddnasset").val()+"admin/post/" + id,
                 success: function(response) {
-                    $('#post-table').DataTable().ajax.reload(null, false);
+                    if (response.errors) {
+                        toastr.error(response.errors);
+                    } else {
+                        $('#post-table').DataTable().ajax.reload(null, false);
+                    }
                 }
             });    
         });

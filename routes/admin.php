@@ -49,7 +49,7 @@ Route::prefix('properties')->name('properties.')->group(function () {
     Route::get('delete/{id}', $propertyController . 'delete')->name('delete');
 });
 Route::prefix('category')->group(function () {
-    Route::get('/', 'Admin\CategoryController@index');
+    Route::get('/', 'Admin\CategoryController@index')->name('category.index');
     Route::get('/anyway', 'Admin\CategoryController@anyway')->name('categoy.Datatable');
     Route::post('/', 'Admin\CategoryController@store')->name('store');
     Route::get('/{id}/edit', 'Admin\CategoryController@edit')->name('edit');
@@ -58,7 +58,7 @@ Route::prefix('category')->group(function () {
     Route::post('/trans', 'Admin\CategoryController@trans');
 });
 Route::prefix('post')->group(function () {
-    Route::get('/', 'Admin\PostController@index');
+    Route::get('/', 'Admin\PostController@index')->name('post.index');
     Route::get('/anyway', 'Admin\PostController@anyway')->name('categoy.Datatable');
     Route::post('/', 'Admin\PostController@store')->name('store');
     Route::get('/{id}/edit', 'Admin\PostController@edit')->name('edit');

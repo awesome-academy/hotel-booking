@@ -102,6 +102,24 @@
             </a>
         </li>
         <li class="m-menu__item" aria-haspopup="true">
+            <a href="{{ route('admin.category.index') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-bars"></i>
+                <span class="m-menu__link-text">{{ __('messages.Category_manage') }}</span>
+            </a>
+        </li>
+        <li class="m-menu__item" aria-haspopup="true">
+            <a href="{{ route('admin.post.index') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-copy"></i>
+                <span class="m-menu__link-text">{{ __('messages.Post_manage') }}</span>
+            </a>
+        </li>
+        <li class="m-menu__item" aria-haspopup="true">
+            <a href="{{ route('admin.contact.contact') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-address-card"></i>
+                <span class="m-menu__link-text">{{ __('messages.Contact_manage') }}</span>
+            </a>
+        </li>
+        <li class="m-menu__item" aria-haspopup="true">
             <a href="{{ route('admin.web-setting.index') }}" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon fa fa-wrench"></i>
                 <span class="m-menu__link-text">{{ __('messages.Websetting') }}</span>

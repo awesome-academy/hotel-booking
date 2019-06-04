@@ -109,7 +109,7 @@ abstract class EloquentRepository
         return $this->_model->orderBy('id', 'desc')->limit($limit)->get();
     }
 
-      public function whereall($column, $object)
+    public function whereall($column, $object)
     {
         return $this->_model->where($column, '=', $object)->orderBy('id', 'desc')->get();
     }
@@ -133,14 +133,14 @@ abstract class EloquentRepository
     {
         $post = $this->_model->find($id);
         if(is_null($post)) {
-            abort('404');
+            return response()->json(['error' => __('messages.Notfound')]);
         }
         $posts = $this->_model->where('lang_map', $post['lang_map'])->get();
+        $array = explode(',', $post['lang_map']);
+        $pos = array_search($post['id'], $array);
+        unset($array[$pos]);
+        $lang_map = implode(',', $array);
         foreach ($posts as $key => $value) {
-            $array = explode(',', $value['lang_map']);
-            $pos = array_search($post['id'], $array);
-            unset($array[$pos]);
-            $lang_map = implode(',', $array);
             $this->_model->find($value['id'])->update(['lang_map' => $lang_map]);
         }
     }
