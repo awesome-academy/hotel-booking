@@ -42,7 +42,19 @@ class ContactController extends Controller
  
             return '<button class="btn btn-sm btn-danger" contact_id="' . $contact->id . '" data-toggle="modal" id="deleteContact"><i class="far fa-trash-alt"></i></button>';
         })
-        ->rawColumns(['action'])
+        ->editColumn('subject', function($contact) {
+
+            return '<p class="truncate1">' . $contact['subject'] . '</p>';
+        })
+        ->editColumn('text', function($contact) {
+
+            return '<p class="truncate1">' . $contact['text'] . '</p>';
+        })
+        ->editColumn('name', function($contact) {
+
+            return '<p class="truncate1">' . $contact['name'] . '</p>';
+        })
+        ->rawColumns(['action', 'name', 'subject', 'text'])
         ->toJson();
     }
 

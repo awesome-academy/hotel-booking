@@ -6,6 +6,7 @@ use App\Models\Language;
 use App\Models\Location;
 use App\Models\User;
 use App\Models\Province;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
@@ -56,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
                 $current_language = Language::where('name', Config::get('language.name'))->where('short', Config::get('language.short'))->first();
             }
             $view->with('current_language', $current_language);
+            $comments = Comment::pluck('object')->toArray();
+            $view->with('comments', array_unique($comments));
         });
 
         /**

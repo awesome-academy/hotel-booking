@@ -91,3 +91,15 @@ Route::prefix('contact')->name('contact.')->group(function() {
     Route::get('/anyway', 'Admin\ContactController@anyway')->name('Datatable');
     Route::get('/{id}', 'Admin\ContactController@delete')->name('delete');
 });
+Route::prefix('comment')->name('comment.')->group(function() {
+    Route::get('/{object}', 'Admin\CommentController@index')->name('index');
+    Route::get('/anyway/{object}', 'Admin\CommentController@anyway')->name('Datatable');
+    Route::delete('/{id}', 'Admin\CommentController@delete')->name('delete');
+});
+Route::prefix('lang')->group(function() {
+    Route::get('/', 'Admin\LanguageController@index');
+    Route::get('/anyway', 'Admin\LanguageController@anyway')->name('laguage.Datatable');
+    Route::post('/', 'Admin\LanguageController@store');
+    Route::get('/{id}/edit', 'Admin\LanguageController@edit');
+    Route::post('/update', 'Admin\LanguageController@update');
+});

@@ -13,14 +13,16 @@ use App\Repositories\Category\CategoryRepository;
 use App\Models\Post;
 use Session;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\Comment\CommentRepository;
 
 class PostController extends Controller
 {
-    public function __construct(PostRepository $postRepository, CategoryRepository $cateRepository, LanguageRepository $langRepository)
+    public function __construct(PostRepository $postRepository, CategoryRepository $cateRepository, LanguageRepository $langRepository, CommentRepository $commentRepo)
     {
         $this->postRepository = $postRepository;
         $this->cateRepository = $cateRepository;
         $this->langRepository = $langRepository;
+        $this->commentRepo = $commentRepo;
     }
 
     public function index()
@@ -237,9 +239,14 @@ class PostController extends Controller
             if ((int)Session::get('locale') !== $vi_id['id']) {
                 $this->postRepository->lang_map($id);
                 $this->postRepository->delete($id);
+                $this->commentRepo->wherewhereDelete($id);
             } else {
                 $post = $this->postRepository->find($id);
                 if (!empty($post)) {
+                    $post_lang = $this->postRepository->pluck('lang_map', $post['lang_map'], 'id');
+                    foreach ($post_lang as $key => $value) {
+                        $this->commentRepo->wheredelete('object_id', $value);
+                    }
                     $this->postRepository->whereDelete('lang_map', $post['lang_map']);
                 } else {
                     $error = __('messages.NotfoundPost');
