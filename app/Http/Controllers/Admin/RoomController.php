@@ -127,8 +127,8 @@ class RoomController extends Controller
         if (is_null($room)) {
             abort(404);
         }
-        if (Session::get('locale') && Session::get('locale') != $this->base_lang_id) {
-            $roomDetail = $this->roomDetailRepository->getByLang($roomDetail->lang_parent_id, Session::get('locale'));
+        if (Session::get('locale')) {
+            $roomDetail = $room->roomDetails()->where('room_id', $room->id)->where('lang_id', \session('locale'))->first();
             if (!$roomDetail) {
                 abort(404);
             }

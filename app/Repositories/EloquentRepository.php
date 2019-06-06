@@ -149,4 +149,9 @@ abstract class EloquentRepository
     {
         return $this->_model->where('lang_id', $lang_id)->where('cate_id', $cate_id)->orderBy('id', 'desc')->paginate($per_page);
     }
+
+    public function limitByLang($lang_id, $limit)
+    {
+        return $this->_model->where('lang_id', $lang_id)->orderBy('id', 'desc')->limit($limit)->get();
+    }
 }

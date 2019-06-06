@@ -36,7 +36,12 @@
                             <h4>{{ __('messages.Properties_table') }}</h4>
                             <ul class="room-services">
                                 @foreach ($properties as $property)
-                                    <li>{{ $property->name }}</li>
+                                    @if (session('locale') && session('locale') != $base_lang_id)
+                                        @php($property = $property->where('lang_id', session('locale'))->where('lang_parent_id', $property->id)->first())
+                                    @endif
+                                    @if(!is_null($property))
+                                        <li>{{ $property->name }}</li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </div>
@@ -81,7 +86,8 @@
                                                     </div>
                                                 </section>
                                                 <div class="margint20">
-                                                    <input type="hidden" id="rating-room" name="rating" class="success-box">
+                                                    <input type="hidden" id="rating-room" name="rating"
+                                                           class="success-box">
                                                     <input type="hidden" id="object_id" name="object_id"
                                                            value="{{ $room->id }}">
                                                     <input type="hidden" name="url" id="url-comment"
@@ -114,7 +120,8 @@
                                                     <li>
                                                         <div class="comment-main-level">
                                                             <div class="comment-avatar"><img
-                                                                        src="{{ config('upload.avatar_comment') }}"></div>
+                                                                        src="{{ config('upload.avatar_comment') }}">
+                                                            </div>
                                                             <div class="comment-box">
                                                                 <div class="comment-head">
                                                                     <h6 class="comment-name">{{ $comment->email }}</h6>

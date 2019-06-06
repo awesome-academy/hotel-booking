@@ -20,7 +20,7 @@
                         <div class="blog-image marginb30 margint30">
                             <img alt="Blog Image 2" class="img-responsive img-blog" src="{{ $post->image }}" >
                         </div>
-                        <div class="button mini-button button-style-2 margint30">
+                        <div class="margint30">
                             {!! $post->body !!}
                         </div>
                     </div>
@@ -32,8 +32,8 @@
                         <h5><a href="#write-comment">{{ __('messages.write-comment') }}</a></h5>
                     </div>
                 </div>
-                <div class="comments-container clearfix comments-container-blog"><!-- Blog Comments Section -->
-                    <ul id="style-9">
+                <div class="clearfix comments-container-blog" id="style-9"><!-- Blog Comments Section -->
+                    <ul>
                         @foreach ($comments as $comment)
                         <li class="comment-box clearfix margint40 comment-blog">
                             <div class="col-lg-2 comment-author-image">
@@ -48,10 +48,6 @@
                         </li>
                         @endforeach
                     </ul>
-                    <br>
-                    @if (count($allcomments) > 5)
-                    <p><a href="" class="moreComment">{{ __('messages.XemThem') }}[..]</a></p>
-                    @endif
                 </div>
                 <div><!-- Write Comment -->
                     <div id="write-comment" class="write-comment-box padt60 marginb60 clearfix"><!-- Write Comment Section -->
@@ -67,56 +63,7 @@
                     </div>
                 </div>
                 </div>
-                <div class="col-lg-3 col-sm-4 margint60"><!-- Sidebar -->
-                    <div class="luxen-widget news-widget">
-                        <div class="title">
-                            <h5>{{ __('messages.recentNew') }}</h5>
-                        </div>
-                        <ul class="sidebar-recent">
-                            @if (isset($new_posts))
-                            @foreach ($new_posts as $new)
-                            <li class="clearfix">
-                                <h6><a href="{{ route('client.blog.detail', $new->id) }}">{{ $new->title }}</a></h6>
-                                <div class="pull-left blg-img margint20">
-                                    <img src="{{ $new->image }}" class="img-responsive img1" alt="">
-                                </div>
-                                <div class="pull-left blg-txt">
-                                    <p><a href="{{ route('client.blog.detail', $new->id) }}">{{ $new->description }}[...]</a></p>
-                                </div>
-                            </li>
-                            @endforeach
-                            @else
-                            <p>{{ __('messages.NoPost') }}</p>
-                            @endif
-                        </ul>
-                    </div>
-                    <div class="luxen-widget news-widget">
-                        <div class="title">
-                            <h5>{{ __('messages.HOTEL INFORMATION') }}</h5>
-                        </div>
-                        <p>{{ __('messages.lorem') }}</p>
-                    </div>
-                    <div class="luxen-widget news-widget">
-                        <div class="title">
-                            <h5>{{ __('messages.contact') }}</h5>
-                        </div>
-                        <ul class="footer-links">
-                            <li><p><i class="fa fa-map-marker"></i>{{ __('messages.lorem') }}</p></li>
-                            <li><p><i class="fa fa-phone"></i>{{ config('contact.phone') }}</p></li>
-                            <li><p><i class="fa fa-envelope"></i>{{ config('contact.email') }}</p></li>
-                        </ul>
-                    </div>
-                    <div class="luxen-widget news-widget">
-                        <div class="title">
-                            <h5>{{ __('messages.SOCIAL MEDIA') }}</h5>
-                        </div>
-                        <ul class="social-links">
-                            <li><a href=""><i class="fa fa-facebook"></i></a></li>
-                            <li><a href=""><i class="fa fa-twitter"></i></a></li>
-                            <li><a href=""><i class="fa fa-instagram"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
+               @include('client.layouts.sidebar_posts')
             </div>
         </div>
     </div>

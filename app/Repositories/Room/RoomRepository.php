@@ -272,4 +272,19 @@ class RoomRepository extends EloquentRepository
         $room->available_time = json_encode($available_time, true);
         $room->save();
     }
+
+    public function checkEmailComment($email, $room_id)
+    {
+        $email = Invoice::where('customer_email', $email)->first();
+        if (is_null($email)) {
+            return false;
+        } else {
+            $room = $email->rooms()->where('room_id', $room_id)->first();
+            if (is_null($room)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
 }
