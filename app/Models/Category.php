@@ -17,16 +17,17 @@ class Category extends Model
 
     public function language()
     {
-        $this->belongsTo(Language::class, 'lang_id');
+        return $this->belongsTo(Language::class, 'lang_id');
     }
 
     public function posts()
     {
-        $this->hasMany(Post::class, 'cate_id');
+        return $this->hasMany(Post::class, 'cate_id');
     }
 
-    public function getChild($id)
+    public function categories()
     {
-        return Category::where('parent_id', $id)->orderBy('id', 'desc')->get();
+        return $this->hasMany(Category::class, 'parent_id');
     }
+
 }
