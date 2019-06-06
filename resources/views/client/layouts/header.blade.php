@@ -97,7 +97,7 @@
                                                 <a href="javascript:;">{{ $parent_category->name }}</a>
                                                 <ul>
                                                     @php
-                                                        $children = $parent_category->getChild($parent_category->id);
+                                                        $children = $parent_category->categories()->get();
                                                     @endphp
                                                     <li>
                                                         @foreach ($children as $child)
