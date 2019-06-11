@@ -118,6 +118,8 @@ class AppServiceProvider extends ServiceProvider
                 $parent_categories = Category::where('parent_id', 0)->where('lang_id', $current_language->id)->orderBy('id', 'desc')->get();
             }
             $view->with('parent_categories', $parent_categories);
+            $base_lang_id = Language::where('name', Config::get('language.name'))->where('short', Config::get('language.short'))->first()->id;
+            $view->with('base_lang_id', $base_lang_id);
         });
     }
 }

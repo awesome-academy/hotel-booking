@@ -30,7 +30,7 @@ class LoginController extends Controller
 
     public function form()
     {
-        if (Auth::check()) {
+        if (Auth::check() || Cookie::get('remember_token')) {
             return redirect()->back();
         }
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Client;
 
@@ -14,11 +14,13 @@ use App\Http\Requests\Client\StoreComment;
 
 class PostController extends Controller
 {
-    public function __construct(PostRepository $postRepo, LanguageRepository $langRepository, CategoryRepository $cateRepository, CommentRepository $commentRepo) {
+    public function __construct(PostRepository $postRepo, LanguageRepository $langRepository, CategoryRepository $cateRepository, CommentRepository $commentRepo)
+    {
         $this->postRepo = $postRepo;
         $this->langRepository = $langRepository;
         $this->cateRepository = $cateRepository;
         $this->commentRepo = $commentRepo;
+        $this->base_lang_id = $langRepository->getBaseId();
     }
 
     public function index($cate_id)
@@ -32,7 +34,7 @@ class PostController extends Controller
         if (is_null($category)) {
             abort('404');
         }
-        if ( $category['lang_id'] == $lag_id) {
+        if ($category['lang_id'] == $lag_id) {
             $posts = $this->postRepo->paginateByLangCate($lag_id, env('PAGES'), $cate_id);
         } else {
             $cate = $this->cateRepository->wherewhere('lang_map', $category['lang_map'], 'lang_id', $lag_id);
@@ -48,15 +50,11 @@ class PostController extends Controller
             } else {
                 $posts[$key]['date'] = $value->created_at->format('Y M d');
             }
-                $posts[$key]['cate_name'] = $category['name'];
-                $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $value['id']);
-        }
-        $new_posts = $this->postRepo->whereall('lang_id', Session::get('locale'))->take(config('post.default'));
-        foreach ($new_posts as $key => $value) {
-            $new_posts[$key]['image'] = asset('') . config('upload.default') . $value['image'];
+            $posts[$key]['cate_name'] = $category['name'];
+            $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $value['id']);
         }
 
-        return view('client.blog.blog', compact('posts', 'new_posts', 'allcomments'));
+        return view('client.blog.blog', compact('posts', 'allcomments'));
     }
 
     public function category()
@@ -73,7 +71,7 @@ class PostController extends Controller
                     } else {
                         foreach ($cate_child as $key1 => $value1) {
                             $post = $this->postRepo->whereall('cate_id', $value1['id']);
-                            if (count($post) <= 0 ) {
+                            if (count($post) <= 0) {
                                 unset($cate_child[$key1]);
                             } else {
                                 $cates[$key]['image'] = asset('') . config('upload.default') . $post[0]['image'];
@@ -91,8 +89,10 @@ class PostController extends Controller
 
     public function detail($id)
     {
-        if (session('locale')) {
-            $post = $this->postRepo->whereFirst('lang_id', session('locale'));
+        if (session('locale') && session('locale') == $this->base_lang_id) {
+            $post = $this->postRepo->wherewhere('lang_id', session('locale'), 'id', $id)->first();
+        } else {
+            $post = $this->postRepo->wherewhere('lang_id', session('locale'), 'lang_parent_id', $id)->first();
         }
         if (is_null($post)) {
             abort('404');
@@ -115,15 +115,11 @@ class PostController extends Controller
             abort('404');
         }
         $post['cate_name'] = $category['name'];
-        $new_posts = $this->postRepo->whereall('lang_id', Session::get('locale'))->take(config('post.default'));
-        foreach ($new_posts as $key => $value) {
-            $new_posts[$key]['image'] = asset('') . config('upload.default') . $value['image'];
-        }
         foreach ($comments as $key => $value) {
             $comments[$key]['date'] = $value->created_at->format('Y M d');
         }
 
-        return view('client.blog.blogDetail', compact('post', 'new_posts', 'comments', 'allcomments'));
+        return view('client.blog.blogDetail', compact('post', 'comments', 'allcomments'));
     }
 
     public function comment(StoreComment $request)
