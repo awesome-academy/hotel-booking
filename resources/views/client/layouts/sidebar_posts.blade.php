@@ -7,17 +7,33 @@
             @if (isset($new_posts))
                 @foreach ($new_posts as $new)
                     <li class="clearfix">
-                        <h6><a href="{{ route('client.blog.detail', $new->id) }}">{{ $new->title }}</a></h6>
-                        <div class="pull-left blg-img margint20">
-                            <img src="{{ asset(config('upload.default')) }}/{{ $new->image }}" class="img-responsive img1">
-                        </div>
-                        <div class="pull-left blg-txt">
-                            <p class="news-short-description">
-                                <a href="{{ route('client.blog.detail', $new->id) }}">
-                                    {{ $new->description }}[...]
-                                </a>
-                            </p>
-                        </div>
+                        @if (session('locale') && session('locale') == $base_lang_id)
+                            <h6><a href="{{ route('client.blog.detail', $new->id) }}">{{ $new->title }}</a></h6>
+                            <div class="pull-left blg-img margint20">
+                                <img src="{{ asset(config('upload.default')) }}/{{ $new->image }}" class="img-responsive img1">
+                            </div>
+                            <div class="pull-left blg-txt">
+                                <p class="news-short-description">
+                                    <a href="{{ route('client.blog.detail', $new->id) }}">
+                                        {{ $new->description }}[...]
+                                    </a>
+                                </p>
+                            </div>
+                        @else
+                            <h6>
+                                <a href="{{ route('client.blog.detail', $new->lang_parent_id) }}">{{ $new->title }}</a>
+                            </h6>
+                            <div class="pull-left blg-img margint20">
+                                <img src="{{ asset(config('upload.default')) }}/{{ $new->image }}" class="img-responsive img1">
+                            </div>
+                            <div class="pull-left blg-txt">
+                                <p class="news-short-description">
+                                    <a href="{{ route('client.blog.detail', $new->lang_parent_id) }}">
+                                        {{ $new->description }}[...]
+                                    </a>
+                                </p>
+                            </div>
+                        @endif
                     </li>
                 @endforeach
             @else
