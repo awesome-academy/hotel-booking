@@ -14,11 +14,13 @@ use App\Repositories\Location\LocationRepository;
 use App\Repositories\Property\PropertyRepository;
 use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomDetail\RoomDetailRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class RoomController extends Controller
 {
@@ -94,6 +96,9 @@ class RoomController extends Controller
         try {
             if ($request->hasFile('image')) {
                 $dataRoom['image'] = uploadImage(Config::get('upload.rooms'), $request->image);
+            }
+            if ($data['sale_price'] != null && $data['sale_start_at'] == null && $data['sale_end_at'] == null) {
+                $dataRoom['sale_status'] = 1;
             }
             $room = $this->roomRepository->create($dataRoom);
             $dataRoomDetail['room_id'] = $room->id;
@@ -183,6 +188,11 @@ class RoomController extends Controller
             }
             if ($status == 1) {
                 $this->roomRepository->updateRoomNumberAvailableTime($room, $new_list_room);
+            }
+            if ($data['sale_price'] != null && $data['sale_start_at'] == null && $data['sale_end_at'] == null) {
+                $dataRoom['sale_status'] = 1;
+            } else if($data['sale_price'] == null && $data['sale_start_at'] == null && $data['sale_end_at'] == null) {
+                $dataRoom['sale_status'] = 0;
             }
             $this->roomRepository->update($data['room_id'], $dataRoom);
             $this->roomDetailRepository->update($id, $dataRoomDetail);

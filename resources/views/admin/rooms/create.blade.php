@@ -17,7 +17,7 @@
                         <div class="m-section">
                             <div class="m-section__content">
                                 <form method="post" action="{{ route('admin.rooms.store', $location->id) }}"
-                                      enctype="multipart/form-data">
+                                      enctype="multipart/form-data" onsubmit="return validation()">
                                     @csrf
                                     <div class="form-group m-form__group m--margin-top-10">
                                         <div class="alert alert-danger m-alert m-alert--default" role="alert">
@@ -62,17 +62,20 @@
                                         <div class="m_repeater">
                                             <div class="form-group  m-form__group row m_repeater">
                                                 <div data-repeater-list="" class="col-lg-10">
-                                                    <div data-repeater-item class="form-group m-form__group row align-items-center">
+                                                    <div data-repeater-item
+                                                         class="form-group m-form__group row align-items-center">
                                                         <div class="col-md-3">
                                                             <div class="m-form__group m-form__group--inline">
                                                                 <div class="m-form__control">
-                                                                    <input type="text" name="list_room_number[]" class="form-control m-input">
+                                                                    <input type="text" name="list_room_number[]"
+                                                                           class="form-control m-input">
                                                                 </div>
                                                             </div>
                                                             <div class="d-md-none m--margin-bottom-10"></div>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <div data-repeater-delete="" class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
+                                                            <div data-repeater-delete=""
+                                                                 class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
 																<span>
 																	<i class="la la-trash-o"></i>
 																	<span>{{ __('messages.Delete') }}</span>
@@ -84,7 +87,8 @@
                                             </div>
                                             <div class="m-form__group form-group row">
                                                 <div class="col-lg-4">
-                                                    <div data-repeater-create="" class="btn btn btn-sm btn-brand m-btn m-btn--icon m-btn--pill m-btn--wide">
+                                                    <div data-repeater-create=""
+                                                         class="btn btn btn-sm btn-brand m-btn m-btn--icon m-btn--pill m-btn--wide">
 														<span>
 															<i class="la la-plus"></i>
 															<span>{{ __('messages.Add') }}</span>
@@ -117,11 +121,13 @@
                                             <div class="m-input-icon m-input-icon--right">
                                                 <input type="text" class="form-control m-input" name="sale_price"
                                                        placeholder="{{ __('messages.Enter_sale_price') }}"
-                                                       value="{{ old('sale_price') }}">
+                                                       value="{{ old('sale_price') }}" id="sale_price">
                                             </div>
-                                            @if ($errors->has('sale_price'))
-                                                <b class="text-danger">{{ $errors->first('sale_price') }}</b>
-                                            @endif
+                                            <b class="sale_price_errors text-danger">
+                                                @if ($errors->has('sale_price'))
+                                                    {{ $errors->first('sale_price') }}
+                                                @endif
+                                            </b>
                                         </div>
                                     </div>
                                     <div class="form-group m-form__group row">
@@ -129,23 +135,29 @@
                                             <label>{{ __('messages.Sale_start_at') }}</label>
                                             <div class="m-input-icon m-input-icon--right">
                                                 <input type="text" class="form-control m-input my-datepicker"
-                                                       value="{{ old('sale_start_at') }}" name="sale_start_at"
+                                                       value="{{ old('sale_start_at') }}" id="sale_start_at"
+                                                       name="sale_start_at"
                                                        autocomplete="off">
                                             </div>
-                                            @if ($errors->has('sale_start_at'))
-                                                <b class="text-danger">{{ $errors->first('sale_start_at') }}</b>
-                                            @endif
+                                            <b class="sale_start_at_errors text-danger">
+                                                @if ($errors->has('sale_start_at'))
+                                                    {{ $errors->first('sale_start_at') }}
+                                                @endif
+                                            </b>
                                         </div>
                                         <div class="col-lg-6">
                                             <label class="">{{ __('messages.Sale_price') }}</label>
                                             <div class="m-input-icon m-input-icon--right">
                                                 <input type="text" class="form-control m-input my-datepicker"
-                                                       value="{{ old('sale_end_at') }}" name="sale_end_at"
+                                                       value="{{ old('sale_end_at') }}" id="sale_end_at"
+                                                       name="sale_end_at"
                                                        autocomplete="off">
                                             </div>
-                                            @if ($errors->has('sale_end_at'))
-                                                <b class="text-danger">{{ $errors->first('sale_end_at') }}</b>
-                                            @endif
+                                            <b class="sale_end_at_errors text-danger">
+                                                @if ($errors->has('sale_end_at'))
+                                                    {{ $errors->first('sale_end_at') }}
+                                                @endif
+                                            </b>
                                         </div>
                                     </div>
                                     <div class="form-group m-form__group">

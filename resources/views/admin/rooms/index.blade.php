@@ -83,7 +83,14 @@
                                                     <img src="{{ asset(config('upload.rooms')) }}/{{ $room->image }}"
                                                          class="image_table"></td>
                                                 <td>{{ $roomDetail->name }}</td>
-                                                <td class="price">{{ $roomDetail->price }} {{ __('messages.currency') }}</td>
+                                                <td>
+                                                    @if ($room->sale_status == 0)
+                                                       <p class="price">{{ $roomDetail->price }} {{ __('messages.currency') }}</p>
+                                                    @else
+                                                        <p><del class="price">{{ $roomDetail->price }}</del></p>
+                                                        <p class="price">{{ $roomDetail->sale_price }} {{ __('messages.currency') }}</p>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $room->rating }} {{ __('messages.star') }}</td>
                                                 <td>
                                                     @if ($roomDetail->lang_parent_id == 0)
