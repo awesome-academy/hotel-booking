@@ -25,7 +25,7 @@ class PostController extends Controller
 
     public function index($cate_id)
     {
-        $vi_id = $this->langRepository->whereFirst('short', 'vi');
+        $vi_id = $this->langRepository->whereFirst('short', config('language.short'));
         if (is_null($vi_id)) {
             abort('404');
         }
@@ -54,7 +54,7 @@ class PostController extends Controller
             $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $value['id']);
         }
 
-        return view('client.blog.blog', compact('posts', 'allcomments'));
+        return view('client.blog.blog', compact('posts', 'allcomments', 'vi_id'));
     }
 
     public function category()

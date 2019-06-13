@@ -14,36 +14,75 @@
                     @endif
                     @if (isset($posts))
                         @foreach ($posts as $post)
-                            <div class="blog-post"><!-- Blog Post -->
-                                <h3><a href="{{ route('client.blog.detail', $post->id) }}">{{ $post->title }}</a></h3>
-                                <div class="post-materials  clearfix">
-                                    <ul>
-                                        <li><h6><i class="fa fa-calendar"></i>{{ $post->date }}</h6></li>
-                                        <li><h6>
-                                                <i class="fa fa-comments"></i>{{ count($allcomments) }}</span> {{ __('messages.COMMENTS') }}
-                                            </h6>
-                                        </li>
-                                        <li>
-                                            <h6>
-                                                <a href="{{ route('client.blog.index', $post->cate_id) }}">
-                                                    <i class="fa fa-bars"></i>{{ $post->cate_name }}
-                                                </a>
-                                            </h6>
-                                        </li>
-                                    </ul>
+                            @if (session('locale') && session('locale') != $vi_id->id)
+                                <div class="blog-post"><!-- Blog Post -->
+                                    <h3>
+                                        <a href="{{ route('client.blog.detail', $post->lang_parent_id) }}">{{ $post->title }}</a>
+                                    </h3>
+                                    <div class="post-materials  clearfix">
+                                        <ul>
+                                            <li><h6><i class="fa fa-calendar"></i>{{ $post->date }}</h6></li>
+                                            <li><h6>
+                                                    <i class="fa fa-comments"></i>{{ count($allcomments) }}</span> {{ __('messages.COMMENTS') }}
+                                                </h6>
+                                            </li>
+                                            <li>
+                                                <h6>
+                                                    <a href="{{ route('client.blog.index', $post->cate_id) }}">
+                                                        <i class="fa fa-bars"></i>{{ $post->cate_name }}
+                                                    </a>
+                                                </h6>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="blog-image marginb30 margint30">
+                                        <img alt="Blog Image 2" class="img-responsive img-blog"
+                                             src="{{ $post->image }}">
+                                    </div>
+                                    <div class="post-content margint10">
+                                        <p>{{ $post->description }}</p>
+                                    </div>
+                                    <div class="button mini-button button-style-2 margint30">
+                                        <h6>
+                                            <a href="{{ route('client.blog.detail', $post->lang_parent_id) }}">{{ __('messages.READ MORE') }}</a>
+                                        </h6>
+                                    </div>
                                 </div>
-                                <div class="blog-image marginb30 margint30">
-                                    <img alt="Blog Image 2" class="img-responsive img-blog" src="{{ $post->image }}">
+                            @else
+                                <div class="blog-post"><!-- Blog Post -->
+                                    <h3>
+                                        <a href="{{ route('client.blog.detail', $post->id) }}">{{ $post->title }}</a>
+                                    </h3>
+                                    <div class="post-materials  clearfix">
+                                        <ul>
+                                            <li><h6><i class="fa fa-calendar"></i>{{ $post->date }}</h6></li>
+                                            <li><h6>
+                                                    <i class="fa fa-comments"></i>{{ count($allcomments) }}</span> {{ __('messages.COMMENTS') }}
+                                                </h6>
+                                            </li>
+                                            <li>
+                                                <h6>
+                                                    <a href="{{ route('client.blog.index', $post->cate_id) }}">
+                                                        <i class="fa fa-bars"></i>{{ $post->cate_name }}
+                                                    </a>
+                                                </h6>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="blog-image marginb30 margint30">
+                                        <img alt="Blog Image 2" class="img-responsive img-blog"
+                                             src="{{ $post->image }}">
+                                    </div>
+                                    <div class="post-content margint10">
+                                        <p>{{ $post->description }}</p>
+                                    </div>
+                                    <div class="button mini-button button-style-2 margint30">
+                                        <h6>
+                                            <a href="{{ route('client.blog.detail', $post->id) }}">{{ __('messages.READ MORE') }}</a>
+                                        </h6>
+                                    </div>
                                 </div>
-                                <div class="post-content margint10">
-                                    <p>{{ $post->description }}</p>
-                                </div>
-                                <div class="button mini-button button-style-2 margint30">
-                                    <h6>
-                                        <a href="{{ route('client.blog.detail', $post->id) }}">{{ __('messages.READ MORE') }}</a>
-                                    </h6>
-                                </div>
-                            </div>
+                            @endif
                         @endforeach
                     @else
                         <p>{{ __('messages.NoPost') }}</p>
