@@ -21,7 +21,7 @@ class Room extends Model
 
     public function properties()
     {
-        return $this->belongsToMany(Property::class, 'room_property');
+        return $this->belongsToMany(Property::class, 'room_property')->withPivot('property_id', 'room_id');
     }
 
     public function locations()

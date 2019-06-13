@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Language;
 use App\Models\Location;
 use App\Models\Post;
+use App\Models\Property;
 use App\Models\User;
 use App\Models\Province;
 use App\Models\Comment;
@@ -69,6 +70,8 @@ class AppServiceProvider extends ServiceProvider
          * Client
          */
         View::composer(['client.layouts.header', 'client.layouts.slider', 'client.layouts.sidebar_rooms', 'client.booking.index', 'client.index', 'client.layouts.footer', 'client.layouts.sidebar_posts'], function ($view) {
+            $base_lang_id = Language::where('name', Config::get('language.name'))->where('short', Config::get('language.short'))->first()->id;
+            $view->with('base_lang_id', $base_lang_id);
             $header_languages = Language::all();
             $view->with('header_languages', $header_languages);
             $locations_for_nav = Location::all();
@@ -115,11 +118,15 @@ class AppServiceProvider extends ServiceProvider
             if (session('locale')) {
                 $parent_categories = Category::where('parent_id', 0)->where('lang_id', \session('locale'))->orderBy('id', 'desc')->get();
             } else {
-                $parent_categories = Category::where('parent_id', 0)->where('lang_id', $current_language->id)->orderBy('id', 'desc')->get();
+                $parent_categories = Category::where('parent_id', 0)->where('lang_id', $base_lang_id)->orderBy('id', 'desc')->get();
             }
             $view->with('parent_categories', $parent_categories);
-            $base_lang_id = Language::where('name', Config::get('language.name'))->where('short', Config::get('language.short'))->first()->id;
-            $view->with('base_lang_id', $base_lang_id);
+            if (\session('locale')) {
+                $sidebar_properties = Property::where('lang_id', \session('locale'))->get();
+            } else {
+                $sidebar_properties = Property::where('lang_id', $base_lang_id)->get();
+            }
+            $view->with('sidebar_properties', $sidebar_properties);
         });
     }
 }

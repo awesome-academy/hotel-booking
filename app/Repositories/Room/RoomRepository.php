@@ -4,6 +4,7 @@ namespace App\Repositories\Room;
 
 use App\Models\Invoice;
 use App\Models\Location;
+use App\Models\Property;
 use App\Models\Room;
 use App\Models\RoomDetail;
 use App\Repositories\EloquentRepository;
@@ -132,7 +133,14 @@ class RoomRepository extends EloquentRepository
         if (is_null($location)) {
             return false;
         }
-        $rooms = $location->rooms()->get();
+        if (isset($_GET['properties'])) {
+            $properties = $_GET['properties'];
+            $rooms = Room::whereHas('properties', function ($query) use ($properties) {
+                $query->whereIn('properties.id', $properties);
+            })->get();
+        } else {
+            $rooms = $location->rooms()->get();
+        }
         foreach ($rooms as $room) {
             if ($room->available_time != null) {
                 $available_times = json_decode($room->available_time, true);
