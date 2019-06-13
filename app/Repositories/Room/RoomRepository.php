@@ -295,4 +295,49 @@ class RoomRepository extends EloquentRepository
             }
         }
     }
+
+    public function roomDetailAvailable($check_in, $check_out, $room_id)
+    {
+        $check_in_day = Carbon::parse($check_in);
+        $check_out_day = Carbon::parse($check_out);
+        $room = Room::find($room_id);
+        if (is_null($room)) {
+            return false;
+        }
+        if ($room->available_time != null) {
+            $available_times = json_decode($room->available_time, true);
+            foreach ($available_times as $available_time) {
+                $check_in_available = Carbon::parse($available_time['check_in']);
+                $check_out_available = Carbon::parse($available_time['check_out']);
+                $between_checkin = $check_in_available->diff($check_in_day);
+                $between_checkin_checkout = $check_in_day->diff($check_out_day);
+                $between_checkout = $check_out_day->diff($check_out_available);
+                if ($between_checkin->invert == 0 && $between_checkin_checkout->days <= $available_time['length'] && $between_checkout->invert == 0) {
+                    if (isset($available_rooms)) {
+                        $arr_push = array(
+                            'room_id' => $room->id,
+                            'room_number' => $available_time['available_rooms'],
+                        );
+                        array_push($available_rooms, $arr_push);
+                    } else {
+                        $available_rooms = [];
+                        $available_rooms = array(
+                            array(
+                                'room_id' => $room->id,
+                                'room_number' => $available_time['available_rooms'],
+                            ),
+                        );
+                    };
+                }
+            }
+        };
+        if (!isset($available_rooms)) {
+            return false;
+        }
+        $result = array(
+            'available_rooms' => $available_rooms,
+        );
+
+        return $result;
+    }
 }

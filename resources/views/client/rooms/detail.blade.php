@@ -30,6 +30,9 @@
                     <div class="col-lg-8 clearfix col-sm-8">
                         <h4>{{ __('messages.Short_description') }}</h4>
                         <p class="margint30">{{ $roomDetail->short_description }}</p>
+                        <div class="button-style-3">
+                            <button data-toggle="modal" data-target="#myModal">{{ __('messages.Book_now') }}</button>
+                        </div>
                     </div>
                     <div class="col-lg-4 clearfix col-sm-4">
                         <div class="room-services"><!-- Room Services -->
@@ -152,7 +155,43 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        @csrf
+                        <input type="hidden" id="booking_room_id" name="room_id" value="{{ $room->id }}">
+                        <input type="hidden" id="booking_price" name="price"
+                               value="{{ ($room->sale_status == 1) ? $roomDetail->sale_price : $roomDetail->price }}">
+                        <input type="hidden" id="booking-url" value="{{ route('client.booking.detailBooking') }}">
+                        <div class="custom-quick-reservation-container">
+                            <div class="custom-quick-reservation clearfix">
+                                <div class="reserve-form-area">
+                                    <label class="my-label">{{ trans('messages.Check_in_day') }}</label>
+                                    <input type="text" id="detail_check_in" name="check_in"
+                                           data-date-format="mm/dd/yyyy"
+                                           class="date-selector" placeholder="&#xf073;" autocomplete="off"/>
+                                    <label class="my-label">{{ trans('messages.Check_out_day') }}</label>
+                                    <input type="text" id="detail_check_out" name="check_out"
+                                           data-date-format="mm/dd/yyyy"
+                                           class="date-selector" placeholder="&#xf073;" autocomplete="off"/>
+                                    <div class="button-style-3">
+                                        <button type="submit" class="btn-book">{{ trans('messages.Book_now') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script src="{{ asset('bower_components/bower/js/comment.js') }}"></script>
+    <script src="{{ asset('bower_components/bower/js/room.js') }}"></script>
 @endsection

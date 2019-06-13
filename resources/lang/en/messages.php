@@ -241,4 +241,6 @@ return [
     'commentroom_table' => 'Room comment',
     'Comment_manage' => 'Comments management',
     'No_posts' => 'No post',
+    'Require_check_in' => 'Must select check in day',
+    'Require_check_out' => 'Must select check out day',
 ];

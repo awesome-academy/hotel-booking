@@ -37,6 +37,7 @@ Route::prefix('booking')->name('booking.')->middleware('checkUserLogin')->group(
     Route::get('/', $bookingController . 'index')->name('index');
     Route::post('/submit', $bookingController . 'submit')->name('submit');
     Route::post('/checkout', $bookingController . 'checkout')->name('checkout');
+    Route::post('/detail-booking', $bookingController . 'detailBooking')->name('detailBooking');
 });
 Route::prefix('blog')->group(function() {
     Route::get('/list/{cate_id}', 'Client\PostController@index')->name('blog.index');

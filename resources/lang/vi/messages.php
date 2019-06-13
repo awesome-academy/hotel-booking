@@ -241,4 +241,6 @@ return [
     'commentroom_table' => 'Bình luận phòng',
     'Comment_manage' => 'Quản lý bình luận',
     'No_posts' => 'Chưa có bài viết',
+    'Require_check_in' => 'Vui lòng chọn ngày check in',
+    'Require_check_out' => 'Vui lòng chọn ngày check out',
 ];
