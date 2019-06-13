@@ -11,6 +11,7 @@ use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomDetail\RoomDetailRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
 {
@@ -49,7 +50,7 @@ class BookingController extends Controller
             }
         } else {
             $roomDetail = $room->roomDetails()->where('lang_id', $this->baseLangId)->first();
-            }
+        }
         $data = compact(
             'room',
             'roomDetail',
@@ -69,6 +70,46 @@ class BookingController extends Controller
         $request->session()->put('booking', $data);
 
         return redirect(route('client.booking.index'));
+    }
+
+    public function detailBooking(Request $request)
+    {
+        if (session('booking')) {
+            $request->session()->forget('booking');
+        }
+        $data = $request->all();
+        $check = $this->roomRepository->roomDetailAvailable($data['check_in'], $data['check_out'], $data['room_id']);
+        $rules = [
+            'check_in' => 'required',
+            'check_out' => 'required',
+        ];
+        $messages = [
+            'check_in.required' => __('messages.Require_check_in'),
+            'check_out.required' => __('messages.Require_check_out'),
+        ];
+        $validator = Validator::make($data, $rules, $messages);
+        if ($validator->fails()) {
+            $data_response = [
+                'messages' => 'validation_fails',
+                'data' => $validator->messages(),
+            ];
+        } else {
+            if (!$check) {
+                $data_response = [
+                    'messages' => 'no_available_room',
+                ];
+            } else {
+                $request->session()->put('booking', $data);
+                $data_response = [
+                    'messages' => 'success',
+                    'data' => [
+                        'url' => route('client.booking.index')
+                    ]
+                ];
+            }
+        }
+
+        return response()->json($data_response, 200);
     }
 
     public function checkout(BookingRequest $request)
