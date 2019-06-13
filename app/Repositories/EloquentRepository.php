@@ -154,4 +154,9 @@ abstract class EloquentRepository
     {
         return $this->_model->where('lang_id', $lang_id)->orderBy('id', 'desc')->limit($limit)->get();
     }
+
+    public function where($column, $operation, $value)
+    {
+        return $this->_model->where($column, $operation, $value);
+    }
 }

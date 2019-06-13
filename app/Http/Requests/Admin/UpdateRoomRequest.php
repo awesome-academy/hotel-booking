@@ -29,8 +29,8 @@ class UpdateRoomRequest extends FormRequest
             'list_room_number.*' => 'required|numeric',
             'price' => 'required|numeric|min:1',
             'sale_price' => 'nullable|lt:price|numeric',
-            'sale_start_at' => 'nullable|after:yesterday',
-            'sale_end_at' => 'nullable|after_or_equal:sale_start_at',
+            'sale_start_at' => 'nullable',
+            'sale_end_at' => 'nullable|after:sale_start_at',
             'short_description' => 'required',
             'description' => 'required',
         ];
@@ -51,7 +51,7 @@ class UpdateRoomRequest extends FormRequest
             'sale_price.numeric' => __('messages.Validate_numeric'),
             'sale_price.lt' => __('messages.Sale_price_lt'),
             'sale_start_at' => __('messages.Date_after_yesterday'),
-            'sale_end_at.after_or_equal' => __('messages.Date_end_after_or_equal'),
+            'sale_end_at.after' => __('messages.Date_end_after_or_equal'),
             'short_description.required' => __('messages.Validate_required'),
             'description.required' => __('messages.Validate_required'),
         ];

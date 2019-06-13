@@ -18,7 +18,7 @@
                             <div class="m-section__content">
                                 <form method="post"
                                       action="{{ route('admin.rooms.update', [$location->id, $roomDetail->id]) }}"
-                                      enctype="multipart/form-data">
+                                      enctype="multipart/form-data" onsubmit="return validation()">
                                     <input type="hidden" id="old_list_room_number" name="old_list_room_number"
                                            value="{{ $room->list_room_number }}">
                                     @csrf
@@ -158,11 +158,13 @@
                                                         <input type="text" class="form-control m-input"
                                                                name="sale_price"
                                                                placeholder="{{ __('messages.Enter_sale_price') }}"
-                                                               value="{{ old('sale_price', $roomDetail->sale_price) }}">
+                                                               value="{{ old('sale_price', $roomDetail->sale_price) }}" id="sale_price">
                                                     </div>
-                                                    @if ($errors->has('sale_price'))
-                                                        <b class="text-danger">{{ $errors->first('sale_price') }}</b>
-                                                    @endif
+                                                    <b class="sale_price_errors text-danger">
+                                                        @if ($errors->has('sale_price'))
+                                                            {{ $errors->first('sale_price') }}
+                                                        @endif
+                                                    </b>
                                                 </div>
                                             </div>
                                             <div class="form-group m-form__group row">
@@ -171,22 +173,26 @@
                                                     <div class="m-input-icon m-input-icon--right">
                                                         <input type="text" class="form-control m-input my-datepicker"
                                                                value="{{ old('sale_start_at', $room->sale_start_at) }}"
-                                                               name="sale_start_at" autocomplete="off">
+                                                               name="sale_start_at" autocomplete="off" id="sale_start_at">
                                                     </div>
-                                                    @if ($errors->has('sale_start_at'))
-                                                        <b class="text-danger">{{ $errors->first('sale_start_at') }}</b>
-                                                    @endif
+                                                    <b class="sale_start_at_errors text-danger">
+                                                        @if ($errors->has('sale_start_at'))
+                                                            {{ $errors->first('sale_start_at') }}
+                                                        @endif
+                                                    </b>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label class="">{{ __('messages.Sale_price') }}</label>
                                                     <div class="m-input-icon m-input-icon--right">
                                                         <input type="text" class="form-control m-input my-datepicker"
                                                                value="{{ old('sale_end_at', $room->sale_end_at) }}"
-                                                               name="sale_end_at" autocomplete="off">
+                                                               name="sale_end_at" autocomplete="off" id="sale_end_at">
                                                     </div>
-                                                    @if ($errors->has('sale_end_at'))
-                                                        <b class="text-danger">{{ $errors->first('sale_end_at') }}</b>
-                                                    @endif
+                                                    <b class="sale_end_at_errors text-danger">
+                                                        @if ($errors->has('sale_end_at'))
+                                                            {{ $errors->first('sale_end_at') }}
+                                                        @endif
+                                                    </b>
                                                 </div>
                                             </div>
                                             <div class="form-group m-form__group">
