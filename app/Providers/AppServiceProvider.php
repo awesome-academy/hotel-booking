@@ -64,6 +64,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('current_language', $current_language);
             $comments = Comment::pluck('object')->toArray();
             $view->with('comments', array_unique($comments));
+            $header_comments = Comment::where('object', \config('comment.room'))->orderBy('id', 'desc')->limit(\config('comment.notification_limit'))->get();
+            $view->with('header_comments', $header_comments);
         });
 
         /**

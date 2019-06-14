@@ -19,8 +19,8 @@ class Comment extends Model
         return $this->belongsTo(Post::class, 'object_id');
     }
 
-    public function roomDetail()
+    public function room()
     {
-        return $this->belongsTo(RoomDetail::class, 'object_id');
+        return $this->belongsTo(Room::class, 'object_id');
     }
 }
