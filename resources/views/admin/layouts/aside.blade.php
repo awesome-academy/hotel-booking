@@ -113,12 +113,7 @@
                 <span class="m-menu__link-text">{{ __('messages.Post_manage') }}</span>
             </a>
         </li>
-        <li class="m-menu__item" aria-haspopup="true">
-            <a href="{{ route('admin.contact.contact') }}" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon fa fa-address-card"></i>
-                <span class="m-menu__link-text">{{ __('messages.Contact_manage') }}</span>
-            </a>
-        </li>
+        <contact v-bind:contacts="contacts"></contact>
         <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
             <a href="javascript:;" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon fa fa-comments"></i>

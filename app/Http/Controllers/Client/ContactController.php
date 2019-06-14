@@ -11,14 +11,17 @@ use App\Repositories\Province\ProvinceRepository;
 use Mail;
 use App\Repositories\Contact\ContactRepository;
 use App\Http\Requests\Client\StoreContact;
+use App\Notifications\ContactNotification;
+use App\Repositories\User\UserRepository;
 
 class ContactController extends Controller
 {
-    public function __construct(LocationRepository $loRepo, ProvinceRepository $proRepo, ContactRepository $contactRepo)
+    public function __construct(LocationRepository $loRepo, ProvinceRepository $proRepo, ContactRepository $contactRepo, UserRepository $userRepo)
     {
         $this->loRepo = $loRepo;
         $this->proRepo = $proRepo;
         $this->contactRepo = $contactRepo;
+        $this->userRepo = $userRepo;
     }
 
     public function index($loca_id)
@@ -33,8 +36,13 @@ class ContactController extends Controller
 
     public function send(StoreContact $request)
     {
-    	$input = $request->all();
+        $input = $request->all();
+        if ($input['user_id'] == 'undefined') {
+            $input['user_id'] = 0;
+        }
         $contact_send = $this->contactRepo->create($input);
+        $user = $this->userRepo->userNotifi($input['user_id']);
+        \Notification::send($user, new ContactNotification($contact_send));
 
         return response()->json(['success' => __('messages.Successfully'), 'error' => false]);
     }
