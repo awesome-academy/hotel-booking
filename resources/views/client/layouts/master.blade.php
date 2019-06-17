@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/2035.responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/bower/css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/chat.css') }}">
     <script src="{{ asset('bower_components/bower/client/js/vendor/modernizr-2.8.3-respond-1.1.0.min.js') }}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
@@ -26,6 +27,7 @@
     @include('client.layouts.header')
     @yield('content')
     @include('client.layouts.footer')
+    @include('client.layouts.chat')
 </div>
 <script src="{{ asset('bower_components/bower/client/js/vendor/jquery-1.11.1.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower/client/js/vendor/bootstrap.min.js') }}"></script>
@@ -41,7 +43,9 @@
 <script src="{{ asset('bower_components/bower/js/toastr.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower/js/register.js') }}"></script>
 <script src="{{ asset('bower_components/bower/js/sweetalert.js') }}"></script>
+<script src="//js.pusher.com/3.1/pusher.min.js"></script>
 <script type="text/javascript" src="{{ asset('bower_components/bower/js/script.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bower_components/bower/js/chat.js') }}"></script>
 @yield('script')
 </body>
 </html>

@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         /**
          * Admin
          */
-        View::composer(['admin.layouts.header', 'admin.layouts.aside'], function ($view) {
+        View::composer(['admin.layouts.header', 'admin.layouts.aside', 'admin.chat.index'], function ($view) {
             if (Auth::check()) {
                 $admin = Auth::user();
             } elseif (Cookie::get('remember_token')) {

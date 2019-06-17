@@ -54,3 +54,9 @@ Route::prefix('users')->name('users.')->middleware('checkUserLogin')->group(func
 });
 Route::get('/contact/{loca_id}', 'Client\ContactController@index')->name('contact.index');
 Route::post('/contact/send', 'Client\ContactController@send')->name('contact.send');
+
+Route::prefix('chat-with-admin')->name('chatWithAdmin.')->group(function () {
+    $chatController = 'Client\ChatController@';
+    Route::post('submit-email', $chatController . 'submitEmail')->name('submitEmail');
+    Route::post('send', $chatController . 'send')->name('send');
+});

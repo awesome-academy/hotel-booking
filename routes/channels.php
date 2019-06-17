@@ -15,4 +15,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
+//Comment Room Notification
 Broadcast::channel('room-comment', 'CommentNotification@broadcastOn');
+
+//Chat
+Broadcast::channel('chat', 'Chat@broadcastOn');
+Broadcast::channel('admin-chat', 'Admin\Chat@broadcastOn');

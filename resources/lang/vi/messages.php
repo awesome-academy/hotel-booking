@@ -243,4 +243,8 @@ return [
     'No_posts' => 'Chưa có bài viết',
     'Require_check_in' => 'Vui lòng chọn ngày check in',
     'Require_check_out' => 'Vui lòng chọn ngày check out',
+    'Chat_with_admin' => 'Trò chuyện với quản trị viên',
+    'Send_messages' => 'Gửi tin nhắn',
+    'Chat' => 'Trò chuyện',
+    'Search_contacts' => 'Tìm kiếm liên hệ',
 ];
