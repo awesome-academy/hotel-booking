@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Events\CommentNotification;
 use App\Http\Requests\Client\SearchHomeRequest;
 use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Language\LanguageRepository;
@@ -106,6 +107,7 @@ class RoomController extends Controller
             $this->roomRepository->updateRating($data['rating'], $data['object_id']);
             $this->commentRepository->create($data);
             DB::commit();
+            event(new CommentNotification($request));
 
             return response()->json(['messages' => 'success', 'data' => $data], 200);
         } catch (\Exception $e) {

@@ -25,7 +25,8 @@
                     </div>
                 </div>
             </div>
-            <div id="m_header_topbar" class="m-header-menu m-aside-header-menu-mobile m-header-menu--skin-light m-header-menu--submenu-skin-light">
+            <div id="m_header_topbar"
+                 class="m-header-menu m-aside-header-menu-mobile m-header-menu--skin-light m-header-menu--submenu-skin-light">
                 <div id="m_header_menu"
                      class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas m-header-menu--skin-light">
                     <ul class="m-menu__nav m-menu__nav--submenu-arrow ">
@@ -83,7 +84,49 @@
                             </div>
                         </li>
                         <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel">
-                            <a href="{!! route('client.index') !!}" class="m-dropdown__toggle btn btn-primary"><i class="m-menu__link-icon fa fa-home"></i></a>
+                            <a href="{!! route('client.index') !!}" class="m-dropdown__toggle btn btn-primary"><i
+                                        class="m-menu__link-icon fa fa-home"></i></a>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click"
+                            m-menu-link-redirect="1" aria-haspopup="true">
+                            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                                <i class="notification-holder m-menu__link-icon flaticon-music-2">
+                                    <span class="count-notification-circle">0</span>
+                                </i>
+                                <i class="m-menu__hor-arrow la la-angle-down"></i>
+                                <i class="m-menu__ver-arrow la la-angle-right"></i>
+
+                            </a>
+                            <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left">
+                                <span class="m-menu__arrow m-menu__arrow--adjust"></span>
+                                <ul class="m-menu__subnav dropdown-notifications m-widget4">
+                                    @foreach ($header_comments as $header_comment)
+                                        @php
+                                            $room = $header_comment->room()->first();
+                                            $roomDetail = $room->roomDetails()->where('lang_id', session('locale'))->first();
+                                        @endphp
+                                        @if (!is_null($room) && !is_null($roomDetail))
+                                            <li class="m-menu__item dropdown-notifications-item" aria-haspopup="true">
+                                                <p class="notification-title">{{ $header_comment->email }}</p>
+                                                <div class="comment-rating">
+                                                    <ul>
+                                                        @for($i = 0; $i < $header_comment->rating; $i++)
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        @endfor
+                                                    </ul>
+                                                </div>
+                                                <p class="block-ellipsis">
+                                                    {{ $header_comment->body }}
+                                                </p>
+                                                <a href="{{ route('client.rooms.detail', $header_comment->object_id) }}">{{ $roomDetail->name }}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                    <li class="m-menu__item dropdown-notifications-item" aria-haspopup="true">
+                                        <a href="{{ route('admin.comment.index', config('comment.room')) }}">{{ __('messages.See_more') }}</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                 </div>

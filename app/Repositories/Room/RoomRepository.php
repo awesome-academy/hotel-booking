@@ -283,12 +283,12 @@ class RoomRepository extends EloquentRepository
 
     public function checkEmailComment($email, $room_id)
     {
-        $email = Invoice::where('customer_email', $email)->first();
-        if (is_null($email)) {
+        $room = Room::find($room_id);
+        if (is_null($room)) {
             return false;
         } else {
-            $room = $email->rooms()->where('room_id', $room_id)->first();
-            if (is_null($room)) {
+            $invoice = $room->invoices()->where('customer_email', $email)->first();
+            if (is_null($invoice)) {
                 return false;
             } else {
                 return true;
