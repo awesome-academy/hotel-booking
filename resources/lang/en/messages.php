@@ -243,4 +243,8 @@ return [
     'No_posts' => 'No post',
     'Require_check_in' => 'Must select check in day',
     'Require_check_out' => 'Must select check out day',
+    'Chat_with_admin' => 'Chat with Admin',
+    'Send_messages' => 'Gửi tin nhắn',
+    'Chat' => 'Trò chuyện',
+    'Search_contacts' => 'Seach contacts',
 ];

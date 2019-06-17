@@ -103,3 +103,9 @@ Route::prefix('lang')->group(function() {
     Route::get('/{id}/edit', 'Admin\LanguageController@edit');
     Route::post('/update', 'Admin\LanguageController@update');
 });
+
+Route::prefix('chat')->name('chat.')->group(function () {
+   $chatController = 'Admin\ChatController@';
+   Route::get('/', $chatController . 'index')->name('index');
+   Route::post('/send', $chatController . 'send')->name('send');
+});
