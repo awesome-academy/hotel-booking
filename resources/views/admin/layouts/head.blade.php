@@ -9,4 +9,9 @@
     <link href="{{ asset('bower_components/bower/admin/demo/default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('bower_components/bower/admin/custom/css/style.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/bower/admin/vendors/custom/datatables/datatables.bundle.css') }}">
+    @if (!auth()->guest())
+        <script>
+            window.Laravel.userId = <?php echo auth()->user()->id ?>;
+        </script>
+    @endif
 </head>

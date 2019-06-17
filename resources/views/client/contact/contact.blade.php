@@ -39,13 +39,27 @@
             <div class="col-lg-9 col-sm-8"><!-- Contact -->
                 <div class="contact-form margint60">
                     <p id="successcontact"></p><!-- Contact Form -->
-                    <input type="text" id="cname" placeholder="Name" >
+                    @if (auth()->user())
+                    <input type="hidden" name="" id="hiddenuser" value="{{auth()->user()->id}}">
                     <h6 id="errorname" class="error"></h6>
-                    <input type="text" id="csubject" placeholder="Subject">
-                    <h6 id="errorsubject" class="error"></h6>
-                    <input type="text" id="cmail" placeholder="E-Mail">
+                    <label class="labelContact">{{ __('messages.Name' )}}</label>
+                    <input type="text" id="cname" placeholder="{{ __('messages.Name' )}}" value="{{auth()->user()->full_name}}">
+                    <label class="labelContact">{{ __('messages.Email' )}}</label>
+                    <input type="text" id="cmail" placeholder="{{ __('messages.Email' )}}" value="{{auth()->user()->email}}">
                     <h6 id="erroremail" class="error"></h6>
-                    <textarea placeholder="Write what do you want..." id="ctext"></textarea>
+                    @else
+                    <label class="labelContact">{{ __('messages.Name' )}}</label>
+                    <input type="text" id="cname" placeholder="{{ __('messages.Name' )}}" >
+                    <h6 id="errorname" class="error"></h6>
+                    <label class="labelContact">{{ __('messages.Email' )}}</label>
+                    <input type="text" id="cmail" placeholder="{{ __('messages.Email' )}}">
+                    <h6 id="erroremail" class="error"></h6>
+                    @endif
+                    <label class="labelContact">{{ __('messages.Subject' )}}</label>
+                    <input type="text" id="csubject" placeholder="{{ __('messages.Subject' )}}" >
+                    <h6 id="errorsubject" class="error"></h6>
+                    <label class="labelContact">{{ __('messages.Body' )}}</label>
+                    <textarea placeholder="{{ __('messages.Body' )}}" id="ctext"></textarea>
                     <h6 id="errortext" class="error"></h6>
                     <button class="pull-right margint10 submit btn btn-primary" >{{ __('messages.Submit') }}</button>
                 </div>
