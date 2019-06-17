@@ -113,7 +113,8 @@
                 <span class="m-menu__link-text">{{ __('messages.Post_manage') }}</span>
             </a>
         </li>
-        <contact v-bind:contacts="contacts"></contact>
+        <contact v-bind:contacts="contacts" v-bind:name="name"></contact>
+        <input type="hidden" name="" id="hiddenNameContact" value="{{ __('messages.Contact_manage') }}">
         <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
             <a href="javascript:;" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon fa fa-comments"></i>

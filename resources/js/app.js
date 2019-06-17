@@ -14,15 +14,17 @@ const app = new Vue({
     el: '#app',
     data : {
         contacts: '',
+        name: '',
     },
     created(){
         if (window.Laravel.userId) {
-            axios.post('/admin/notification/contact/notification').then(response => {
+            axios.post('/admin/contact/notification').then(response => {
                 this.contacts = response.data;
             });
         }
         Echo.private('App.Models.User.' + window.Laravel.userId).listen('.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', (e) => { 
             this.contacts.push({"data":e});
         });
+        this.name = $("#hiddenNameContact").val();
     }
 });
