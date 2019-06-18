@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Admin;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Http\Request;
@@ -11,19 +11,17 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class Chat implements ShouldBroadcast
+class ShowNewChat implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $email;
     public $message;
-    public $time;
 
     public function __construct(Request $request)
     {
         $this->email = $request->email;
         $this->message = $request->message;
-        $this->time = $request->time;
     }
 
     /**
@@ -33,8 +31,6 @@ class Chat implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $chat_channel = $this->email;
-
-        return [$chat_channel];
+        return ['show-new-chat'];
     }
 }

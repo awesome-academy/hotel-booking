@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Events\Admin\ShowNewChat;
 use App\Events\Chat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -56,6 +59,22 @@ class ChatController extends Controller
                 'data' => $validator->messages(),
             ];
         } else {
+            $history = [
+                'id' => uniqid(),
+                'body' => $data['message'],
+                'time' => $now,
+                'type' => 'client'
+            ];
+            if (Redis::exists('chat_log:' . $data['email'])) {
+                $log = Redis::get('chat_log:' . $data['email']);
+                $arr_log = json_decode($log, true);
+                array_push($arr_log, $history);
+                Redis::getSet('chat_log:' . $data['email'], json_encode($arr_log));
+            } else {
+                $log = json_encode(array($history));
+                Redis::set('chat_log:' . $data['email'], $log);
+                event(new ShowNewChat($request));
+            }
             event(new Chat($request));
             $data_response = [
                 'messages' => 'success',

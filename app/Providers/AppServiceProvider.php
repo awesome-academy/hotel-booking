@@ -15,6 +15,7 @@ use App\Repositories\WebSetting\WebSettingRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use View;
@@ -129,6 +130,11 @@ class AppServiceProvider extends ServiceProvider
                 $sidebar_properties = Property::where('lang_id', $base_lang_id)->get();
             }
             $view->with('sidebar_properties', $sidebar_properties);
+            if (session('chat_with_admin_email')) {
+                $email_client = \session('chat_with_admin_email');
+                $client_logs = json_decode(Redis::get('chat_log:' . $email_client), true);
+                $view->with('client_logs', $client_logs);
+            }
         });
     }
 }

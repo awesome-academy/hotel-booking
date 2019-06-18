@@ -18,6 +18,7 @@ class Chat implements ShouldBroadcast
     public $email;
     public $message;
     public $time;
+    public $channel;
     /**
      * Create a new event instance.
      *
@@ -28,6 +29,7 @@ class Chat implements ShouldBroadcast
         $this->email = $request->email;
         $this->message = $request->message;
         $this->time = $request->time;
+        $this->channel = $request->channel;
     }
 
     /**
@@ -37,6 +39,8 @@ class Chat implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['admin-chat'];
+        $chat_channel = 'admin-' . $this->channel;
+
+        return [$chat_channel];
     }
 }
