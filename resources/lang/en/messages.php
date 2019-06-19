@@ -247,4 +247,5 @@ return [
     'Send_messages' => 'Gửi tin nhắn',
     'Chat' => 'Trò chuyện',
     'Search_contacts' => 'Seach contacts',
+    'Admin' => 'Admin',
 ];

@@ -106,6 +106,6 @@ Route::prefix('lang')->group(function() {
 
 Route::prefix('chat')->name('chat.')->group(function () {
    $chatController = 'Admin\ChatController@';
-   Route::get('/', $chatController . 'index')->name('index');
+   Route::get('/{email}', $chatController . 'index')->name('index');
    Route::post('/send', $chatController . 'send')->name('send');
 });

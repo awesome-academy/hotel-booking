@@ -32,3 +32,21 @@ if (!function_exists('roundRating')) {
         return round(($total_rating)/2, 1 , PHP_ROUND_HALF_EVEN);
     }
 }
+
+if (!function_exists('cutRedisKey')) {
+    function cutRedisKey($key)
+    {
+        $new = str_replace('laravel_database_', '', $key);
+
+        return $new;
+    }
+}
+
+if (!function_exists('getEmailRedis')) {
+    function getEmailRedis($key)
+    {
+        $email = str_replace('chat_log:', '', $key);
+
+        return $email;
+    }
+}
