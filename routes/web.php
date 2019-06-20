@@ -51,6 +51,8 @@ Route::prefix('users')->name('users.')->middleware('checkUserLogin')->group(func
     Route::get('/{id}', $userController . 'profile')->name('profile');
     Route::post('/update/{id}', $userController . 'update')->name('update');
     Route::post('/changepassword', $userController . 'changePassword')->name('changepassword');
+    Route::get('show-info/{id}', $userController . 'showInfo')->name('showInfo');
+    Route::post('update-info', $userController . 'updateInfo')->name('updateInfo');
 });
 Route::get('/contact/{loca_id}', 'Client\ContactController@index')->name('contact.index');
 Route::post('/contact/send', 'Client\ContactController@send')->name('contact.send');
