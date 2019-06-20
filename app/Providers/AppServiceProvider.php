@@ -72,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
         /**
          * Client
          */
-        View::composer(['client.layouts.header', 'client.layouts.slider', 'client.layouts.sidebar_rooms', 'client.booking.index', 'client.index', 'client.layouts.footer', 'client.layouts.sidebar_posts'], function ($view) {
+        View::composer(['client.layouts.header', 'client.layouts.slider', 'client.layouts.sidebar_rooms', 'client.booking.index', 'client.index', 'client.layouts.footer', 'client.layouts.sidebar_posts', 'client.layouts.chat'], function ($view) {
             $base_lang_id = Language::where('name', Config::get('language.name'))->where('short', Config::get('language.short'))->first()->id;
             $view->with('base_lang_id', $base_lang_id);
             $header_languages = Language::all();

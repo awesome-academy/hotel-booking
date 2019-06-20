@@ -171,4 +171,17 @@ class InvoiceRepository extends EloquentRepository
             return false;
         }
     }
+
+    public function checkDateForUpdate($invoice)
+    {
+        $now = Carbon::parse(date('m/d/Y'));
+        $invoice_info = $invoice->rooms()->first();
+        $check_in = Carbon::parse($invoice_info->pivot->check_in_date);
+        $diff = $check_in->diff($now);
+        if ($diff->invert == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
