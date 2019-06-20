@@ -1,29 +1,31 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Admin;
 
+use http\Env\Request;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Facades\Redis;
 
-class Chat implements ShouldBroadcast
+class UpdateStatus implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $email;
-    public $message;
-    public $time;
 
-    public function __construct(Request $request)
+    public function __construct($email)
     {
-        $this->email = $request->email;
-        $this->message = $request->message;
-        $this->time = $request->time;
+        $this->email = $email;
+        $logs = json_decode(Redis::get('chat_log:' . $email), true);
+        foreach ($logs as $key => $log) {
+            $logs[$key]['status'] = 1;
+        }
+        Redis::getSet('chat_log:' . $email, json_encode($logs));
     }
 
     /**
@@ -33,8 +35,7 @@ class Chat implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $chat_channel = md5($this->email);
-
-        return [$chat_channel];
+        $channel = 'update-status-' . md5($this->email);
+        return [$channel];
     }
 }

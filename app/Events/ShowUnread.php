@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,19 +10,24 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class Chat implements ShouldBroadcast
+class ShowUnread implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
     public $email;
     public $message;
-    public $time;
+    public $md5;
 
-    public function __construct(Request $request)
+    public function __construct($data)
     {
-        $this->email = $request->email;
-        $this->message = $request->message;
-        $this->time = $request->time;
+        $this->email = $data['email'];
+        $this->message = $data['message'];
+        $this->md5 = md5($data['email']);
     }
 
     /**
@@ -33,8 +37,8 @@ class Chat implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $chat_channel = md5($this->email);
+        $channel = 'show-unread';
 
-        return [$chat_channel];
+        return [$channel];
     }
 }

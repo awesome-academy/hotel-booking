@@ -248,4 +248,5 @@ return [
     'Chat' => 'Trò chuyện',
     'Search_contacts' => 'Seach contacts',
     'Admin' => 'Admin',
+    'Unread' => 'unread messages',
 ];

@@ -108,4 +108,5 @@ Route::prefix('chat')->name('chat.')->group(function () {
    $chatController = 'Admin\ChatController@';
    Route::get('/{email}', $chatController . 'index')->name('index');
    Route::post('/send', $chatController . 'send')->name('send');
+   Route::post('/update-status/{email}', $chatController . 'updateStatus')->name('updateStatus');
 });

@@ -36,11 +36,18 @@
                                                             <ul class="list-contacts" id="list-contacts">
                                                                 @foreach ($contacts as $contact)
                                                                     <a href="{{ route('admin.chat.index', $contact['email']) }}">
-                                                                        <li class="contact @if ($user_email == $contact['email']) {{ 'active' }} @endif">
+                                                                        <li class="contact @if (isset($user_email) && $user_email == $contact['email']) {{ 'active' }} @endif">
                                                                             <div class="wrap">
                                                                                 <div class="meta">
-                                                                                    <p class="name">{{ $contact['email'] }}</p>
-                                                                                    <p class="preview">{{ $contact['new_message'] }}</p>
+                                                                                    <p id="notification-unread-item-{{ md5($contact['email']) }}"
+                                                                                       class="notification-unread text-danger">
+                                                                                        @if ($contact['unread'] > 0)
+                                                                                            <span id="notification-unread-{{ md5($contact['email']) }}">{{ $contact['unread'] }}</span> {{ __('messages.Unread') }}
+                                                                                        @endif
+                                                                                    </p>
+                                                                                    <p class="name">{{ $contact['email'] }} </p>
+                                                                                    <p id="preview-{{ md5($contact['email']) }}"
+                                                                                       class="preview">{{ $contact['new_message'] }}</p>
                                                                                 </div>
                                                                             </div>
                                                                         </li>
@@ -51,23 +58,29 @@
                                                     </div>
                                                     <div class="content">
                                                         <div class="contact-profile">
-                                                            <p class="m--margin-left-20">{{ $user_email }}</p>
+                                                            <p class="m--margin-left-20">
+                                                                @if (isset($user_email))
+                                                                    {{ $user_email }}
+                                                                @endif
+                                                            </p>
                                                         </div>
                                                         <div class="messages">
                                                             <ul>
-                                                                @foreach ($logs as $log)
-                                                                    @if ($log['type'] == 'client')
-                                                                        <li class="sent">
-                                                                            <p>{{ $log['body'] }}</p>
-                                                                            <br>
-                                                                            <span class="message-time">{{ $log['time'] }} </span>
-                                                                        </li>
-                                                                    @else
-                                                                        <li class="replies">
-                                                                            <p>{{ $log['body'] }}</p>
-                                                                        </li>
-                                                                    @endif
-                                                                @endforeach
+                                                                @if (isset($logs))
+                                                                    @foreach ($logs as $log)
+                                                                        @if ($log['type'] == 'client')
+                                                                            <li class="sent">
+                                                                                <p>{{ $log['body'] }}</p>
+                                                                                <br>
+                                                                                <span class="message-time">{{ $log['time'] }} </span>
+                                                                            </li>
+                                                                        @else
+                                                                            <li class="replies">
+                                                                                <p>{{ $log['body'] }}</p>
+                                                                            </li>
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
                                                             </ul>
                                                         </div>
                                                         <div class="message-input">
@@ -95,8 +108,12 @@
             </div>
         </div>
     </div>
-    <input type="hidden" id="channel-chat" value="{{ $user_email }}">
+    <input type="hidden" id="channel-chat" value="{{ isset($user_email) ? $user_email : '' }}">
+    <input type="hidden" id="md5-channel-chat" value="{{ isset($user_email) ? md5($user_email) : '' }}">
     <input type="hidden" id="url-channel" value="{{ route('admin.chat.index', '') }}">
+    @if (isset($user_email))
+        <input type="hidden" id="update-status-url" value="{{ route('admin.chat.updateStatus', $user_email) }}">
+    @endif
 @endsection
 @section('script')
     <script src="{{ asset('bower_components/bower/admin/custom/js/chat.js') }}"></script>

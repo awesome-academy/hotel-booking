@@ -142,5 +142,11 @@
                 <span class="m-menu__link-text">{{ __('messages.Websetting') }}</span>
             </a>
         </li>
+        <li class="m-menu__item" aria-haspopup="true">
+            <a href="{{ route('admin.chat.index', config('chat.default')) }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-comment-alt"></i>
+                <span class="m-menu__link-text">{{ __('messages.Chat') }}</span>
+            </a>
+        </li>
     </ul>
 </div>

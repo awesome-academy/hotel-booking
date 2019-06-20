@@ -17,11 +17,13 @@ class ShowNewChat implements ShouldBroadcast
 
     public $email;
     public $message;
+    public $md5;
 
     public function __construct(Request $request)
     {
         $this->email = $request->email;
         $this->message = $request->message;
+        $this->md5 = md5($request->message);
     }
 
     /**

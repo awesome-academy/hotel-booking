@@ -11,6 +11,7 @@ use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomDetail\RoomDetailRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
