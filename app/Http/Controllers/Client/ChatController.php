@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Events\Admin\ShowNewChat;
 use App\Events\Chat;
+use App\Events\ShowUnread;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -63,7 +64,8 @@ class ChatController extends Controller
                 'id' => uniqid(),
                 'body' => $data['message'],
                 'time' => $now,
-                'type' => 'client'
+                'type' => 'client',
+                'status' => 0,
             ];
             if (Redis::exists('chat_log:' . $data['email'])) {
                 $log = Redis::get('chat_log:' . $data['email']);
@@ -76,6 +78,7 @@ class ChatController extends Controller
                 event(new ShowNewChat($request));
             }
             event(new Chat($request));
+            event(new ShowUnread($data));
             $data_response = [
                 'messages' => 'success',
                 'data' => $data

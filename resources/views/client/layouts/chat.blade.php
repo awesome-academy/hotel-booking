@@ -3,6 +3,7 @@
     <div id="chat-circle" class="btn btn-raised">
         <div id="chat-overlay"></div>
         <i class="fa fa-envelope"></i>
+        <div id="chat-unread">0</div>
     </div>
     <div class="chat-box">
         <div class="chat-box-header">
@@ -29,18 +30,20 @@
                 </div>
                 <div class="chat-logs" id="logs">
                     @if (session('chat_with_admin_email'))
-                        @foreach ($client_logs as $client_log)
-                            @if ($client_log['type'] == 'admin')
-                                <div class="chat-msg user">
-                                    <div>{{ __('messages.Admin') }}</div>
-                                    <div class="cm-msg-text">{{ $client_log['body'] }}</div>
-                                </div>
-                            @else
-                                <div class="chat-msg self">
-                                    <div class="cm-msg-text">{{ $client_log['body'] }}</div>
-                                </div>
-                            @endif
-                        @endforeach
+                        @if (!is_null($client_logs))
+                            @foreach ($client_logs as $client_log)
+                                @if ($client_log['type'] == 'admin')
+                                    <div class="chat-msg user">
+                                        <div>{{ __('messages.Admin') }}</div>
+                                        <div class="cm-msg-text">{{ $client_log['body'] }}</div>
+                                    </div>
+                                @else
+                                    <div class="chat-msg self">
+                                        <div class="cm-msg-text">{{ $client_log['body'] }}</div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        @endif
                     @endif
                 </div>
             </div>
