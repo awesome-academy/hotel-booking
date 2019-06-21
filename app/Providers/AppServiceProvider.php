@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use View;
+use Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
         /**
          * Admin
          */
+        Schema::defaultStringLength(191);
         View::composer(['admin.layouts.header', 'admin.layouts.aside', 'admin.chat.index'], function ($view) {
             if (Auth::check()) {
                 $admin = Auth::user();

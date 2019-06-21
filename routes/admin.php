@@ -90,6 +90,8 @@ Route::prefix('contact')->name('contact.')->group(function() {
     Route::get('/', 'Admin\ContactController@index')->name('contact');
     Route::get('/anyway', 'Admin\ContactController@anyway')->name('Datatable');
     Route::get('/{id}', 'Admin\ContactController@delete')->name('delete');
+    Route::post('/notification', 'Admin\ContactController@notification');
+    Route::get('/show/{id}', 'Admin\ContactController@show')->name('show');
 });
 Route::prefix('comment')->name('comment.')->group(function() {
     Route::get('/{object}', 'Admin\CommentController@index')->name('index');

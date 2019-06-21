@@ -20,18 +20,40 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>{{ __('messages.Name') }}</th>
                                         <th>{{ __('messages.Subject') }}</th>
-                                        <th>{{ __('messages.Text') }}</th>
                                         <th>{{ __('messages.Email') }}</th>
                                         <th>{{ __('messages.Loca_name') }}</th>
                                         <th>{{ __('messages.Province_name') }}</th>
+                                        <th>{{ __('messages.Time') }}</th>
                                         <th>{{ __('messages.Action') }}</th>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ShowContact" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ __('messages.Show Contact') }}</h4>
+            </div>
+            <div class="modal-body" >
+                <div class="form-group">
+                    <label for="">{{ __('messages.Name') }}</label>
+                    <p id="nameContact"></p>
+                </div>
+                <div class="form-group">
+                    <label for="">{{ __('messages.Subject') }}</label>
+                    <p id="subjectContact"></p>
+                </div>
+                <div class="form-group">
+                    <label for="">{{ __('messages.Body') }}</label>
+                    <p id="bodyContact"></p>
                 </div>
             </div>
         </div>

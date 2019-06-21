@@ -13,5 +13,6 @@ class Contact extends Model
         'text',
         'location_id',
         'id',
+        'user_id'
     ];
 }

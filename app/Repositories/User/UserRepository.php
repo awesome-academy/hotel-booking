@@ -47,4 +47,10 @@ class UserRepository extends EloquentRepository
         return $id;
     }
 
+    public function userNotifi($id)
+    {
+        $user = User::where('role_id', 1)->where('id', '!=', $id)->get();
+        
+        return $user;
+    }
 }
