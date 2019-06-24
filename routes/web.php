@@ -62,3 +62,7 @@ Route::prefix('chat-with-admin')->name('chatWithAdmin.')->group(function () {
     Route::post('submit-email', $chatController . 'submitEmail')->name('submitEmail');
     Route::post('send', $chatController . 'send')->name('send');
 });
+
+//Login Social
+Route::get('/redirect/{social}', 'Auth\SocialAuthController@redirect')->name('socialRedirect');
+Route::get('/callback/{social}', 'Auth\SocialAuthController@callback')->name('socialCallback');

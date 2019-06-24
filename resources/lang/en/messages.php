@@ -249,4 +249,11 @@ return [
     'Search_contacts' => 'Seach contacts',
     'Admin' => 'Admin',
     'Unread' => 'unread messages',
+    'Login_facebook' => 'Login with facebook',
+    'Login_google' => 'Login with google',
+    'Sun_hotel' => 'Sun Hotel',
+    'Validate_date' => 'Please select date',
+    'Validate_date_format' => 'Please select date format: mm/dd/yyyy',
+    'Validate_after_yesterday' => 'Please select from today',
+    'Validate_after_check_in' => 'Please select after check in day',
 ];

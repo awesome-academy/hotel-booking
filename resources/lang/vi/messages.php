@@ -249,4 +249,11 @@ return [
     'Search_contacts' => 'Tìm kiếm liên hệ',
     'Admin' => 'Admin',
     'Unread' => 'tin nhắn chưa đọc',
+    'Login_facebook' => 'Đăng nhập qua facebook',
+    'Login_google' => 'Đăng nhập qua google',
+    'Sun_hotel' => 'Khách sạn Sun',
+    'Validate_date' => 'Vui lòng chọn đúng định dạng',
+    'Validate_date_format' => 'Vui lòng chọn đúng định dạng tháng/ngày/năm',
+    'Validate_after_yesterday' => 'Vui lòng chọn ngày bắt đầu từ hôm nay',
+    'Validate_after_check_in' => 'Vui lòng chọn sau ngày tới',
 ];

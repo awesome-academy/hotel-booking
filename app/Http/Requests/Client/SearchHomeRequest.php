@@ -24,8 +24,8 @@ class SearchHomeRequest extends FormRequest
     public function rules()
     {
         return [
-            'check_in' => 'required',
-            'check_out' => 'required',
+            'check_in' => 'required|date|date_format:m/d/Y|after:yesterday',
+            'check_out' => 'required|date|date_format:m/d/Y|after:check_in',
             'location' => 'required',
         ];
     }
@@ -34,7 +34,13 @@ class SearchHomeRequest extends FormRequest
     {
         return [
             'check_in.required' => __('messages.Validate_required'),
+            'check_in.date' => __('messages.Validate_date'),
+            'check_in.date_format' => __('messages.Validate_date_format'),
+            'check_in.after' => __('messages.Validate_after_yesterday'),
             'check_out.required' => __('messages.Validate_required'),
+            'check_out.date' => __('messages.Validate_date'),
+            'check_out.date_format' => __('messages.Validate_date_format'),
+            'check_out.after' => __('messages.Validate_after_check_in'),
             'location.required' => __('messages.Validate_required'),
         ];
     }
