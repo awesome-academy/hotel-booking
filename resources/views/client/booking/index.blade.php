@@ -84,7 +84,12 @@
                 </div>
                 <div class="col-md-12">
                     <label class="my-label">{{ __('messages.Price') }}</label>
-                    <p class="price">{{ $roomDetail->price }} {{ __('messages.currency') }}</p>
+                    @if ($room->sale_status == 1)
+                        <del class="text-danger price">{{ $roomDetail->price }} {{ __('messages.currency') }}</del>
+                        <p class="text-success price">{{ $roomDetail->sale_price }} {{ __('messages.currency') }}</p>
+                    @else
+                        <p class="text-success price">{{ $roomDetail->price }} {{ __('messages.currency') }}</p>
+                    @endif
                 </div>
             </div>
         </div>

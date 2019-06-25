@@ -52,7 +52,7 @@
                                         <p>{{ $roomDetail->short_description }}</p>
                                     </td>
                                     <td>
-                                        @if ($room->sale_start == 1)
+                                        @if ($room->sale_status == 1)
                                             <del class="text-danger price">{{ $roomDetail->price }} {{ __('messages.currency') }}</del>
                                             <p class="text-success price">{{ $roomDetail->sale_price }} {{ __('messages.currency') }}</p>
                                         @else
