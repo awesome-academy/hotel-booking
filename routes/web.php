@@ -45,6 +45,9 @@ Route::prefix('blog')->group(function() {
     Route::get('/{id}/detail', 'Client\PostController@detail')->name('blog.detail');
     Route::post('/send', 'Client\PostController@comment');
     Route::get('/more/{id}', 'Client\PostController@more')->name('blog.more');
+    Route::post('/getComment/{id}', 'Client\PostController@getComment')->name('blog.getComment');
+    Route::get('/comment/{id}', 'Client\PostController@delete')->name('blog.deleteComment');
+    Route::post('/send/{id}', 'Client\PostController@editCmt');
 });
 Route::prefix('users')->name('users.')->middleware('checkUserLogin')->group(function(){
     $userController = 'Client\UserController@';

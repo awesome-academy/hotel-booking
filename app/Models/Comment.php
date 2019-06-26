@@ -12,6 +12,7 @@ class Comment extends Model
         'email',
         'body',
         'rating',
+        'cookie_name',
     ];
 
     public function post()
