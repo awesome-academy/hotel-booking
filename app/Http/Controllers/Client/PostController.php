@@ -11,6 +11,8 @@ use App\Repositories\Language\LanguageRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Comment\CommentRepository;
 use App\Http\Requests\Client\StoreComment;
+use App\Http\Requests\Client\UpdateComment;
+use App\Events\CommentEvent;
 
 class PostController extends Controller
 {
@@ -122,22 +124,56 @@ class PostController extends Controller
         return view('client.blog.blogDetail', compact('post', 'comments', 'allcomments'));
     }
 
+    public function getComment($post_id)
+    {
+        $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $post_id);
+
+        return $allcomments;
+    }
+
     public function comment(StoreComment $request)
     {
         $input = $request->all();
         $input['object'] = 'post';
         $input['body'] = $input['text'];
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $arr_ip = $_SERVER['HTTP_CLIENT_IP'];
+        } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $arr_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $arr_ip = $_SERVER['REMOTE_ADDR'];
+        }
+        $array = array();
+        $array = explode('.', $arr_ip);
+        $arr_ip = implode('_', $array);
+        $cookie_name = 'client_ip_' . $arr_ip;
+        $data = array();
+        $input['cookie_name'] = $cookie_name;
         $comment_send = $this->commentRepo->create($input);
         $comment_send['date'] = $comment_send->created_at->format('Y M d');
         $comment_send['number'] = count($this->commentRepo->all());
+        $id = $comment_send['id'];
+        if (isset($_COOKIE[$cookie_name])) {
+            $cookie = json_decode($_COOKIE[$cookie_name]);
+            $data = $cookie . ',' . $id;
+        } else {
+            $data = $id;
+        }
+        setcookie($cookie_name, json_encode($data), time()+3600);
+        event(New CommentEvent($comment_send));
 
-        return response()->json(['data' => $comment_send, 'error' => false]);
+        return response()->json(['data' => $comment_send, 'error' => false, 'success' => __('messages.Successfully')]);
     }
 
-    public function more($id)
+    public function editCmt($id, UpdateComment $request)
     {
-        $comments = $this->commentRepo->skipByComment($id);
+        $comment_send = $this->commentRepo->update($id, ['body' => $request->text]);
 
-        return $comments;
+        return response()->json(['data' => $comment_send, 'error' => false, 'success' => __('messages.Successfully')]);
+    }
+
+    public function delete($id)
+    {
+        $this->commentRepo->delete($id);
     }
 }

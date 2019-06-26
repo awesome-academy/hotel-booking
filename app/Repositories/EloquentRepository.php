@@ -116,7 +116,7 @@ abstract class EloquentRepository
     
     public function wherewhere($column1, $object1, $column2, $object2)
     {
-        return $this->_model->where($column1, '=', $object1)->where($column2, '=', $object2)->get();
+        return $this->_model->where($column1, '=', $object1)->where($column2, '=', $object2)->orderBy('id', 'desc')->get();
     }
 
     public function pluck($colum, $object, $id)

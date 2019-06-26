@@ -20,10 +20,15 @@
     <link rel="stylesheet" href="{{ asset('bower_components/bower/client/css/chat.css') }}">
     <script src="{{ asset('bower_components/bower/client/js/vendor/modernizr-2.8.3-respond-1.1.0.min.js') }}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+    </script>
 </head>
 <body data-notification="{{ session('notification') }}">
-
-<div id="wrapper">
+<input type="hidden" name="" a="{{ __('messages.Are_you_sure') }}" b="{{ __('messages.Delete') }}" c="{{ __('messages.Cancel') }}" id="hiddendelete">
+<div id="app">
     @include('client.layouts.header')
     @yield('content')
     @include('client.layouts.footer')
