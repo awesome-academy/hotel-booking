@@ -21,7 +21,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>{{ __('messages.Email') }}</th>
-                                        <th>{{ __('messages.body') }}</th>
+                                        <th>{{ __('messages.Body') }}</th>
                                         <th>{{ __('messages.Room') }}</th>
                                         <th>{{ __('messages.Rating') }}</th>
                                         <th>{{ __('messages.Action') }}</th>

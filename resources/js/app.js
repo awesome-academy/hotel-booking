@@ -27,6 +27,7 @@ const app = new Vue({
             });
             Echo.private('App.Models.User.' + window.Laravel.userId).listen('.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', (e) => { 
                 this.contacts.push({ "data" : e });
+                $('#contact-table').DataTable().ajax.reload(null, false);
             });
         }
         this.name = $("#hiddenNameContact").val();
