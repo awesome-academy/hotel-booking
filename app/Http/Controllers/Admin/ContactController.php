@@ -47,7 +47,7 @@ class ContactController extends Controller
         })
         ->editColumn('id', function($contact) {
             if ($contact['read_at'] == null) {
-                return '<span class="noti-unread">' . __('messages.Unread') . '</span><p>' . $contact['data']['contact']['id'] . '</p>';
+                return '<span class="noti-unread"></span><p>' . $contact['data']['contact']['id'] . '</p>';
             } else {
                 return '<p>' . $contact['data']['contact']['id'] . '</p>';
             }

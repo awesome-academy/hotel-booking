@@ -256,4 +256,7 @@ return [
     'Validate_date_format' => 'Please select date format: mm/dd/yyyy',
     'Validate_after_yesterday' => 'Please select from today',
     'Validate_after_check_in' => 'Please select after check in day',
+    'Room' => 'Room',
+    'Successfully' => 'Successfully',
+    'Show Contact' => 'Show Contact'
 ];

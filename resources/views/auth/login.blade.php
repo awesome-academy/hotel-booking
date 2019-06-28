@@ -51,8 +51,8 @@ use Illuminate\Support\Facades\Config;
                                         class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air  m-login__btn">{{ __('messages.Sign_in') }}</button>
                             </div>
                             <div class="login-box">
-                                <a href="{{ route('client.socialRedirect', 'facebook') }}" class="social-button" id="facebook-connect"> <span>{{ __('messages.Login_facebook') }}</span></a>
-                                <a href="{{ route('client.socialRedirect', 'google') }}" class="social-button" id="google-connect"> <span>{{ __('messages.Login_google') }}</span></a>
+                                <a href="{{ route('client.socialRedirect', 'facebook') }}" class="social-button loginBtn loginBtn--facebook" id="facebook-connect"> <span>{{ __('messages.Login_facebook') }}</span></a>
+                                <a href="{{ route('client.socialRedirect', 'google') }}" class="social-button loginBtn loginBtn--google" id="google-connect"> <span>{{ __('messages.Login_google') }}</span></a>
                             </div>
                         </form>
                     </div>

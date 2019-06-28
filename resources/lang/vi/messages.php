@@ -256,4 +256,7 @@ return [
     'Validate_date_format' => 'Vui lòng chọn đúng định dạng tháng/ngày/năm',
     'Validate_after_yesterday' => 'Vui lòng chọn ngày bắt đầu từ hôm nay',
     'Validate_after_check_in' => 'Vui lòng chọn sau ngày tới',
+    'Room' => 'Phòng',
+    'Successfully' => 'Thành công',
+    'Show Contact' => 'Hiện nội dung'
 ];

@@ -25,6 +25,26 @@
                             @endforeach
                         </ul>
                     </div>
+                    <div class="col-lg-4 col-sm-4">
+                        <h6>{{ trans('messages.Contact') }}</h6>
+                        <ul id="accordion" class="accordion">
+                            @foreach ($provinces as $province)
+                            <li>
+                                <div class="link">
+                                    {{ $province->name }}
+                                    <i class="fa fa-chevron-down"></i>
+                                </div>
+                                <ul class="submenu">
+                                    @foreach ($province['pro_loca'] as $loca)
+                                    <li>
+                                        <a href="{{ route('client.contact.index', $loca->id) }}">{{ $loca->name }}</a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,3 +64,4 @@
         </div>
     </div>
 </div>
+<a id="back-to-top"></a>
