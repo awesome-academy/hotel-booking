@@ -2,7 +2,7 @@
 @section('breadcumb')
 @endsection
 @section('content')
-    <div class="container margint40">
+    <div class="container margint40 min-h-400">
         <div class="row">
             <div class="col-md-3 col-sm-3 col-xs-12">
                 <ul class="nav nav-pills nav-pills-success nav-stacked">
