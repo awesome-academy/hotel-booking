@@ -49,7 +49,7 @@
                             <h5><a href="#write-comment">{{ __('messages.write-comment') }}</a></h5>
                         </div>
                     </div>
-                    <input type="hidden" comment="{{ count($comments) }}" id="hiddencomment">
+                    <input type="hidden" comment="{{ count($allcomments) }}" id="hiddencomment">
                     <div class="clearfix comments-container-blog" id="style-9"><!-- Blog Comments Section -->
                         <comment v-bind:comments="comments" v-bind:messages="messages"></comment>
                     </div>

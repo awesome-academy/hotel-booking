@@ -91,11 +91,12 @@ class PostController extends Controller
 
     public function detail($id)
     {
-        if (session('locale') && session('locale') == $this->base_lang_id) {
-            $post = $this->postRepo->wherewhere('lang_id', session('locale'), 'id', $id)->first();
+        if (session('locale') == $this->base_lang_id) {
+            $post = $this->postRepo->find($id);
         } else {
             $post = $this->postRepo->wherewhere('lang_id', session('locale'), 'lang_parent_id', $id)->first();
         }
+        $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $id);
         if (is_null($post)) {
             abort('404');
         }
@@ -105,7 +106,6 @@ class PostController extends Controller
             abort('404');
         }
         $lag_id = Session::get('locale');
-        $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $id);
         $comments = $this->commentRepo->takeByComment($id);
         if ($lag_id == $vi_id['id']) {
             $post['date'] = $post->created_at->format('d/m/Y');
@@ -124,9 +124,19 @@ class PostController extends Controller
         return view('client.blog.blogDetail', compact('post', 'comments', 'allcomments'));
     }
 
-    public function getComment($post_id)
+    public function getComment($id)
     {
-        $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $post_id);
+        if (session('locale') == $this->base_lang_id) {
+            $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $id);
+        } else {
+            $post = $this->postRepo->find($id);
+            if (!empty($post)) {
+                $parent_post = $this->postRepo->find($post['lang_parent_id']);
+                if (!empty($parent_post)) {
+                    $allcomments = $this->commentRepo->wherewhere('object', 'post', 'object_id', $parent_post['id']);
+                }
+            }
+        }
 
         return $allcomments;
     }
@@ -136,6 +146,15 @@ class PostController extends Controller
         $input = $request->all();
         $input['object'] = 'post';
         $input['body'] = $input['text'];
+        $vi_id = $this->langRepository->whereFirst('short', config('language.short'));
+        if (is_null($vi_id)) {
+            abort('404');
+        }
+        $lag_id = Session::get('locale');
+        if ((int)$lag_id !== (int)$vi_id['id']) {
+           $parent_post = $this->postRepo->wherewhere('id', $input['object_id'], 'lang_id', $lag_id);
+           $input['object_id'] = $parent_post[0]['lang_parent_id'];
+        }
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $arr_ip = $_SERVER['HTTP_CLIENT_IP'];
         } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
